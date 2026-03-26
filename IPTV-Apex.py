@@ -544,9 +544,31 @@ class StreamChecker:
         self.session.mount('https://', adapter)
 
     # ✅ 失效重验白名单：域名/IP 命中则 ffprobe 失败后降级重试 HTTP
+    # 包含：IPTV 代理网关、非标准流媒体平台
     FFPRobe_FALLBACK_DOMAINS = {
-        "194.147.100.173", "dxjc.pp.ua", "goiptv.de5.net",
-        "goiptv.de", "jsy.p.php",  # IPTV 代理/Gateway 常见域
+        "194.147.100.173",   # jsy/p.php IPTV 代理
+        "dxjc.pp.ua",         # 龙祥、东森代理
+        "goiptv.de5.net",     # 龙华等台代理
+        "goiptv.de",           # 同上
+        "jsy.p.php",           # IPTV 代理路径
+        "zkbhj.com",           # 加密跳转代理
+        "264788.xyz",         # 非标准流媒体 CDN
+        "ffzy-play",          # 非标准播放器 CDN
+        "ffzy-play7",         # 同上
+        "live.264788",        # 同上
+        "lv-cdn7.com",        # 非标准 CDN
+        "ffstream",           # 非标准流
+        "vip.lz-cdn7",        # 同上
+        "go-iptv",            # go-iptv 代理
+        "goiptv.ggff",        # go-iptv 变种
+        "858.qzz.io",         # Smart.php 代理
+        "858.qzz",            # 同上
+        "xghqws.cn",          # 环球卫视代理
+        "hkstv.tv",           # 香港卫视
+        "zhibo.hkstv",        # 同上
+        "smt.go-iptv",        # Smart.php 代理
+        "deshitv",            # 孟加拉 DESHI TV
+        "live.264788.xyz",    # 4K 频道 CDN
     }
 
     def check(self, line: str, proxy: Optional[str] = None) -> Dict[str, Any]:
@@ -590,20 +612,19 @@ class StreamChecker:
             overseas = NameProcessor.is_overseas(name)
             timeout = Config.TIMEOUT_OVERSEAS if overseas else Config.TIMEOUT_CN
 
-            # ffprobe 检测（已合并分辨率检测，一次调用搞定）
-            result = self._check_with_ffprobe(url, name, timeout, proxy, overseas)
-
-            # ✅ 失效重验：ffprobe 失败但域名命中白名单 → 降级重试 HTTP
-            if result is None and self._should_fallback(url):
+            # ✅ 命中降级白名单：跳过 ffprobe，直接 HTTP 检测（避免无谓等待）
+            if self._should_fallback(url):
                 result = self._check_with_http(url, name, timeout, proxy, overseas, fallback=True)
-                # ✅ 降级源直接放行（无 ffprobe 数据，不跑分辨率/速度过滤，跳过质量阈值）
                 if result.get("status") == "有效":
                     if Config.ENABLE_CACHE:
                         SpeedCache.set(url, {
                             'valid': True, 'delay': result.get('lat', 0),
                             'speed': 1.0, 'resolution': None
                         })
-                    return result
+                return result if result else {"status": "失效", "name": name, "url": url}
+
+            # ffprobe 检测（已合并分辨率检测）
+            result = self._check_with_ffprobe(url, name, timeout, proxy, overseas)
 
             if result and result.get("status") == "有效":
                 # ✅ 分辨率过滤
@@ -615,14 +636,14 @@ class StreamChecker:
                             result['status'] = '失效'
                             result['reason'] = f'分辨率过低({res})'
                 # ✅ 速度检测
-                if Config.ENABLE_SPEED_TEST:
+                if Config.ENABLE_SPEED_TEST and result.get('status') == '有效':
                     speed = self._test_speed(url, proxy)
                     result['speed'] = speed
                     if speed < Config.MIN_SPEED_MBPS and speed != float('inf'):
                         result['status'] = '失效'
                         result['reason'] = f'速度过低({speed:.2f}MB/s)'
                 # 缓存结果
-                if result['status'] == '有效' and Config.ENABLE_CACHE:
+                if result.get('status') == '有效' and Config.ENABLE_CACHE:
                     SpeedCache.set(url, {
                         'valid': True, 'delay': result.get('lat', 0),
                         'speed': result.get('speed', 0), 'resolution': result.get('resolution')
@@ -637,8 +658,9 @@ class StreamChecker:
         """检测 URL 是否命中降级重验白名单（ffprobe 不友好但 HTTP 可能通的域名）"""
         parsed = urlparse(url)
         netloc = parsed.netloc.lower()
+        path = parsed.path.lower()
         for domain in self.FFPRobe_FALLBACK_DOMAINS:
-            if domain in netloc:
+            if domain in netloc or domain in path:
                 return True
         return False
 
@@ -1016,10 +1038,9 @@ class IPTVChecker:
                     channels.sort(key=lambda x: x.get('quality', 0), reverse=True)
                     grouped: Dict[str, List[Dict]] = defaultdict(list)
                     for ch in channels:
-                        # ✅ ffprobe 验证通过的源（fallback 未设置）：跳过质量过滤
-                        #    HTTP 降级源（fallback=True）：可走质量阈值过滤
-                        #    建议关闭 ENABLE_QUALITY_FILTER，因为 ffprobe 已做流级别验证，无需二次筛选
-                        if Config.ENABLE_QUALITY_FILTER and ch.get('fallback') is True:
+                        # ✅ 降级源(fallback)跳过质量过滤（无 ffprobe 数据，quality 分低）
+                        is_fallback = ch.get('fallback')
+                        if Config.ENABLE_QUALITY_FILTER and not is_fallback:
                             if ch.get('quality', 0) < Config.MIN_QUALITY_SCORE:
                                 continue
                         name = NameProcessor.normalize(ch['name'])
