@@ -34,8 +34,8 @@ class Config:
     CACHE_FILE  = BASE_DIR / "speed_cache.json"
     STATS_FILE  = BASE_DIR / "stats.json"
 
-    ENABLE_WEB_FETCH    = True  # 是否启用自动爬取新增网络直播源的功能
-    ENABLE_WEB_CHECK    = True  # 是否启用拉取并检测预设网络源的功能
+    ENABLE_WEB_FETCH    = False # 是否启用自动爬取新增网络直播源的功能
+    ENABLE_WEB_CHECK    = False # 是否启用拉取并检测预设网络源的功能
     ENABLE_LOCAL_CHECK  = True  # 是否启用读取并检测本地输入文件的功能
 
     DEBUG_MODE          = False  # 调试模式开关
@@ -196,26 +196,17 @@ class Config:
     @classmethod
     def load_from_file(cls):
         if not cls.CONFIG_FILE.exists():
-            print(f"⚠️ 配置文件不存在，将使用默认值")
             return
         try:
             with open(cls.CONFIG_FILE, 'r', encoding='utf-8') as f:
                 config = json.load(f)
-            # 从 config.json 读取所有 SAVEABLE_KEYS 字段（缺失则保留默认值）
-            loaded_keys = []
-            for key in cls.SAVEABLE_KEYS:
-                if key in config and hasattr(cls, key):
-                    setattr(cls, key, config[key])
-                    loaded_keys.append(key)
-            # 加载 web_sources
+            for key, value in config.items():
+                if key in cls.SAVEABLE_KEYS and hasattr(cls, key):
+                    setattr(cls, key, value)
+            # 加载 config.json 中的 web_sources
             if 'web_sources' in config and isinstance(config['web_sources'], list):
                 cls.WEB_SOURCES = config['web_sources']
-            print(f"✅ 加载配置文件：{cls.CONFIG_FILE}（{len(loaded_keys)} 项）")
-            # 打印用户关心的开关状态
-            flags = {k: getattr(cls, k, None) for k in loaded_keys if 'ENABLE' in k}
-            if flags:
-                flag_str = ' | '.join(f"{k}={v}" for k, v in sorted(flags.items()))
-                print(f"   {flag_str}")
+            print(f"✅ 加载配置文件：{cls.CONFIG_FILE}")
         except Exception as e:
             print(f"⚠️ 加载配置文件失败：{e}")
 
@@ -580,7 +571,6 @@ class StreamChecker:
                     "resolution": "1920x1080",
                     "overseas": NameProcessor.is_overseas(name),
                     "quality": 100,
-                    "skip_quality_filter": True,
                     "ipv6": True
                 }
 
@@ -594,8 +584,7 @@ class StreamChecker:
                         "speed": cached.get('speed', 0),
                         "resolution": cached.get('resolution'),
                         "overseas": NameProcessor.is_overseas(name),
-                        "quality": self._calc_quality(cached.get('delay', 99), cached.get('speed', 0)),
-                        "skip_quality_filter": True,  # 缓存来自 ffprobe 验证
+                        "quality": self._calc_quality(cached.get('delay', 99), cached.get('speed', 0))
                     }
 
             overseas = NameProcessor.is_overseas(name)
@@ -675,8 +664,7 @@ class StreamChecker:
             if stdout and (b'video' in stdout or b'audio' in stdout):
                 lat = round(time.time() - start, 2)
                 result = {"status": "有效", "name": name, "url": url, "lat": lat,
-                          "overseas": overseas, "quality": self._calc_quality(lat, 0),
-                          "skip_quality_filter": True}
+                          "overseas": overseas, "quality": self._calc_quality(lat, 0)}
                 # ✅ 合并分辨率检测：解析 ffprobe 输出
                 parts = stdout.decode().strip().split(',')
                 if len(parts) >= 3 and parts[0] == 'video':
@@ -702,7 +690,7 @@ class StreamChecker:
                 default_speed = 1.0 if fallback else 0
                 return {"status": "有效", "name": name, "url": url, "lat": lat,
                         "overseas": overseas, "quality": self._calc_quality(lat, default_speed),
-                        "fallback": fallback, "skip_quality_filter": False}
+                        "fallback": fallback}
         except:
             pass
         return {"status": "失效", "name": name, "url": url}
@@ -1028,9 +1016,9 @@ class IPTVChecker:
                     channels.sort(key=lambda x: x.get('quality', 0), reverse=True)
                     grouped: Dict[str, List[Dict]] = defaultdict(list)
                     for ch in channels:
-                        # ✅ ffprobe 验证通过的源跳过质量过滤（已确认有效）
-                        #    HTTP 降级源才走质量阈值过滤
-                        if Config.ENABLE_QUALITY_FILTER and not ch.get('skip_quality_filter'):
+                        # ✅ ffprobe 验证通过的源（fallback 未设置/None）：跳过质量过滤，直接放行
+                        #    HTTP 降级源（fallback=True）：走质量阈值过滤
+                        if Config.ENABLE_QUALITY_FILTER and ch.get('fallback') is True:
                             if ch.get('quality', 0) < Config.MIN_QUALITY_SCORE:
                                 continue
                         name = NameProcessor.normalize(ch['name'])
@@ -1151,7 +1139,7 @@ def dedup_only(input_file: str):
             n, u = ln.split(',', 1)
             cat = NameProcessor.get_category(n)
             if cat:
-                cat_map[cat].append({"name": n, "url": u, "quality": 100, "skip_quality_filter": True})
+                cat_map[cat].append({"name": n, "url": u, "quality": 100, "fallback": False})
 
     output_path = Config.BASE_DIR / "live_ok.txt"
     tmp_path = output_path.with_suffix('.tmp')
