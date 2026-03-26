@@ -1,0 +1,30 @@
+{
+  "web_sources": [
+    "https://raw.githubusercontent.com/hujingguang/ChinaIPTV/main/TaiWan.m3u8",
+    "https://raw.githubusercontent.com/MichaelJorky/Free-IPTV-M3U-Playlist/main/iptv-hongkong.m3u",
+    "https://live.zbds.top/tv/iptv4.m3u",
+    "https://peterhchina.github.io/iptv/CNTV-V4.m3u",
+    "https://raw.githubusercontent.com/hujingguang/ChinaIPTV/main/Macao.m3u8",
+    "https://raw.githubusercontent.com/FGBLH/FG/refs/heads/main/%E6%B8%AF%E5%8F%B0%E5%A4%A7%E9%99%86",
+    "https://raw.githubusercontent.com/imDazui/Tvlist-awesome-m3u-m3u8/master/m3u/%E5%8F%B0%E6%B9%BE%E9%A6%99%E6%B8%AF%E6%BE%B3%E9%97%A8202506.m3u",
+    "https://dsj-1312694395.cos.ap-guangzhou.myqcloud.com/dsj10.1.txt",
+    "https://iptv-org.github.io/iptv/countries/tw.m3u",
+    "http://47.120.41.246:8899/xinzb.txt",
+    "https://iptv-org.github.io/iptv/countries/hk.m3u",
+    "http://iptv.4666888.xyz/FYTV.m3u",
+    "https://raw.githubusercontent.com/judy-gotv/iptv/main/litv.m3u",
+    "https://live.hacks.tools/tv/ipv4/categories/hong_kong.m3u",
+    "https://live.hacks.tools/iptv/languages/zho.m3u",
+    "https://live.hacks.tools/tv/ipv4/categories/macau.m3u",
+    "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt",
+    "http://tv123.vvvv.ee/tv.m3u",
+    "https://live.hacks.tools/tv/ipv4/categories/%E7%94%B5%E5%BD%B1%E9%A2%91%E9%81%93.m3u",
+    "https://live.hacks.tools/tv/ipv4/categories/taiwan.m3u",
+    "https://raw.githubusercontent.com/Guovin/iptv-api/gd/output/result.txt",
+    "https://raw.githubusercontent.com/Jsnzkpg/Jsnzkpg/Jsnzkpg/Jsnzkpg1",
+    "https://raw.githubusercontent.com/zxmlxw520/5566/refs/heads/main/fhtv.txt",
+    "https://raw.githubusercontent.com/hujingguang/ChinaIPTV/main/HongKong.m3u8"
+  ],
+  "MAX_SOURCES_PER_DOMAIN": 0,
+  "last_update": "2026-03-26 08:12:26"
+}
