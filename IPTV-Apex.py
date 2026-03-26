@@ -571,6 +571,7 @@ class StreamChecker:
                     "resolution": "1920x1080",
                     "overseas": NameProcessor.is_overseas(name),
                     "quality": 100,
+                    "skip_quality_filter": True,
                     "ipv6": True
                 }
 
@@ -584,7 +585,8 @@ class StreamChecker:
                         "speed": cached.get('speed', 0),
                         "resolution": cached.get('resolution'),
                         "overseas": NameProcessor.is_overseas(name),
-                        "quality": self._calc_quality(cached.get('delay', 99), cached.get('speed', 0))
+                        "quality": self._calc_quality(cached.get('delay', 99), cached.get('speed', 0)),
+                        "skip_quality_filter": True,  # 缓存来自 ffprobe 验证
                     }
 
             overseas = NameProcessor.is_overseas(name)
@@ -664,7 +666,8 @@ class StreamChecker:
             if stdout and (b'video' in stdout or b'audio' in stdout):
                 lat = round(time.time() - start, 2)
                 result = {"status": "有效", "name": name, "url": url, "lat": lat,
-                          "overseas": overseas, "quality": self._calc_quality(lat, 0)}
+                          "overseas": overseas, "quality": self._calc_quality(lat, 0),
+                          "skip_quality_filter": True}
                 # ✅ 合并分辨率检测：解析 ffprobe 输出
                 parts = stdout.decode().strip().split(',')
                 if len(parts) >= 3 and parts[0] == 'video':
@@ -690,7 +693,7 @@ class StreamChecker:
                 default_speed = 1.0 if fallback else 0
                 return {"status": "有效", "name": name, "url": url, "lat": lat,
                         "overseas": overseas, "quality": self._calc_quality(lat, default_speed),
-                        "fallback": fallback}
+                        "fallback": fallback, "skip_quality_filter": False}
         except:
             pass
         return {"status": "失效", "name": name, "url": url}
@@ -1016,9 +1019,9 @@ class IPTVChecker:
                     channels.sort(key=lambda x: x.get('quality', 0), reverse=True)
                     grouped: Dict[str, List[Dict]] = defaultdict(list)
                     for ch in channels:
-                        # ✅ 降级源(fallback)跳过质量过滤（无 ffprobe 数据，quality 分低）
-                        is_fallback = ch.get('fallback')
-                        if Config.ENABLE_QUALITY_FILTER and not is_fallback:
+                        # ✅ ffprobe 验证通过的源跳过质量过滤（已确认有效）
+                        #    HTTP 降级源才走质量阈值过滤
+                        if Config.ENABLE_QUALITY_FILTER and not ch.get('skip_quality_filter'):
                             if ch.get('quality', 0) < Config.MIN_QUALITY_SCORE:
                                 continue
                         name = NameProcessor.normalize(ch['name'])
@@ -1139,7 +1142,7 @@ def dedup_only(input_file: str):
             n, u = ln.split(',', 1)
             cat = NameProcessor.get_category(n)
             if cat:
-                cat_map[cat].append({"name": n, "url": u, "quality": 100, "fallback": False})
+                cat_map[cat].append({"name": n, "url": u, "quality": 100, "skip_quality_filter": True})
 
     output_path = Config.BASE_DIR / "live_ok.txt"
     tmp_path = output_path.with_suffix('.tmp')
