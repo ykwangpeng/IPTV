@@ -196,17 +196,26 @@ class Config:
     @classmethod
     def load_from_file(cls):
         if not cls.CONFIG_FILE.exists():
+            print(f"⚠️ 配置文件不存在，将使用默认值")
             return
         try:
             with open(cls.CONFIG_FILE, 'r', encoding='utf-8') as f:
                 config = json.load(f)
-            for key, value in config.items():
-                if key in cls.SAVEABLE_KEYS and hasattr(cls, key):
-                    setattr(cls, key, value)
-            # 加载 config.json 中的 web_sources
+            # 从 config.json 读取所有 SAVEABLE_KEYS 字段（缺失则保留默认值）
+            loaded_keys = []
+            for key in cls.SAVEABLE_KEYS:
+                if key in config and hasattr(cls, key):
+                    setattr(cls, key, config[key])
+                    loaded_keys.append(key)
+            # 加载 web_sources
             if 'web_sources' in config and isinstance(config['web_sources'], list):
                 cls.WEB_SOURCES = config['web_sources']
-            print(f"✅ 加载配置文件：{cls.CONFIG_FILE}")
+            print(f"✅ 加载配置文件：{cls.CONFIG_FILE}（{len(loaded_keys)} 项）")
+            # 打印用户关心的开关状态
+            flags = {k: getattr(cls, k, None) for k in loaded_keys if 'ENABLE' in k}
+            if flags:
+                flag_str = ' | '.join(f"{k}={v}" for k, v in sorted(flags.items()))
+                print(f"   {flag_str}")
         except Exception as e:
             print(f"⚠️ 加载配置文件失败：{e}")
 
