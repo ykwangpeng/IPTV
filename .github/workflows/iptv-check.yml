@@ -12,7 +12,7 @@ jobs:
   iptv-check:
     runs-on: ubuntu-latest
     outputs:
-      final_count: ${{ steps.post_check.outputs.final_count }}
+      final_count: ${{ steps.limit_check.outputs.final_count }}
       is_low: ${{ steps.pre_check.outputs.is_low }}
     steps:
       - name: Checkout repository
@@ -130,7 +130,6 @@ jobs:
             echo "final_count=0" >> "$GITHUB_OUTPUT"
           fi
 
-      # ========== 新增：限制源数量不超过 2000 个 ==========
       - name: Limit sources to 2000
         id: limit_check
         run: |
@@ -221,14 +220,17 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="v$(date +'%Y%m%d-%H%M')"
+          export TAG="v$(date +'%Y%m%d-%H%M')"
+          export REPO="${{ github.repository }}"
+          export CNT="${{ needs.iptv-check.outputs.final_count }}"
           python3 << 'PYEOF'
           import json,subprocess,os
-          repo='${{ github.repository }}'
+          tag=os.environ['TAG']
+          repo=os.environ['REPO']
           token=os.environ['GH_TOKEN']
-          cnt='${{ needs.iptv-check.outputs.final_count }}'
+          cnt=os.environ['CNT']
           body='自动更新 | {} sources\n\n影视仓：https://raw.githubusercontent.com/{}/master/live_ok.txt'.format(cnt,repo)
-          payload=json.dumps({'tag_name':TAG,'name':'IPTV {}'.format(TAG),'body':body,'draft':False})
+          payload=json.dumps({'tag_name':tag,'name':'IPTV {}'.format(tag),'body':body,'draft':False})
           subprocess.run(['curl','-s','-X','POST','-H','Authorization: token '+token,'-H','Content-Type: application/json','https://api.github.com/repos/'+repo+'/releases','-d',payload])
-          print('Release created: {}'.format(TAG))
+          print('Release created: {}'.format(tag))
           PYEOF
