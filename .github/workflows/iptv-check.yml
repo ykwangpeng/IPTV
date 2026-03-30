@@ -125,16 +125,8 @@ jobs:
           import json
           with open('config.json', 'r', encoding='utf-8') as f:
               config = json.load(f)
-          for key in config.keys():
-              if key.endswith(' ') or key.startswith(' '):
-                  print(f"⚠️ 键名有空格：'{key}'")
           web_sources = config.get('web_sources', [])
           print(f"📊 web_sources 数量：{len(web_sources)}")
-          for i, url in enumerate(web_sources[:5]):
-              if url.endswith(' ') or url.startswith(' '):
-                  print(f"⚠️ URL {i} 有空格")
-              else:
-                  print(f"✓ URL {i} 正确")
           print(f"🔑 ENABLE_WEB_CHECK: {config.get('ENABLE_WEB_CHECK')}")
           print(f"🔑 ENABLE_WEB_FETCH: {config.get('ENABLE_WEB_FETCH')}")
           PYEOF
@@ -202,6 +194,7 @@ jobs:
                       f.write(url+'\n')
           print('Generated live_ok.m3u with {} channels'.format(len(lines)))
           PYEOF
+          echo "M3U 文件生成完成"
           fi
 
       - name: Commit and push results
@@ -216,6 +209,7 @@ jobs:
           else
             count=$(wc -l < live_ok.txt 2>/dev/null || echo 0)
             git commit -m "chore: auto-update $(date +'%Y-%m-%d %H:%M') sources=${count}"
+            echo "正在推送到仓库..."
             git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:master
             echo "推送完成！"
           fi
@@ -236,15 +230,27 @@ jobs:
           GH_TOKEN: ${{ secrets.GIST_TOKEN }}
         run: |
           if [ -f live_ok.txt ]; then
+            echo "=== 同步到 Gist ==="
             python3 << 'PYEOF'
           import json,subprocess,os
           with open('live_ok.txt','r',encoding='utf-8') as f: c=f.read()
           cnt=len([l for l in c.splitlines() if l.strip()])
           payload=json.dumps({'description':'IPTV | {} sources'.format(cnt),'files':{'IPTV.txt':{'content':c}}})
-          subprocess.run(['curl','-s','-X','PATCH','-H','Authorization: token '+os.environ['GH_TOKEN'],'-H','Content-Type: application/json','https://api.github.com/gists/dc272a4f2e95ffbd41e7e31d27ef3d76','-d',payload])
-          print('Gist synced: {} sources'.format(cnt))
+          result=subprocess.run(['curl','-s','-X','PATCH','-H','Authorization: token '+os.environ['GH_TOKEN'],'-H','Content-Type: application/json','https://api.github.com/gists/dc272a4f2e95ffbd41e7e31d27ef3d76','-d',payload], capture_output=True, text=True)
+          print(result.stdout)
+          if result.returncode == 0:
+              print('✅ Gist 同步成功')
+          else:
+              print('❌ Gist 同步失败')
+              print(result.stderr)
           PYEOF
           fi
+
+      - name: Wait for Gist cache refresh
+        run: |
+          echo "⏳ 等待 Gist CDN 缓存刷新..."
+          sleep 30
+          echo "✅ 等待完成"
 
       - name: Create Release
         env:
@@ -261,6 +267,7 @@ jobs:
           cnt=os.environ['CNT']
           body='自动更新 | {} sources\n\n影视仓：https://raw.githubusercontent.com/{}/master/live_ok.txt'.format(cnt,repo)
           payload=json.dumps({'tag_name':tag,'name':'IPTV {}'.format(tag),'body':body,'draft':False})
-          subprocess.run(['curl','-s','-X','POST','-H','Authorization: token '+token,'-H','Content-Type: application/json','https://api.github.com/repos/'+repo+'/releases','-d',payload])
+          result=subprocess.run(['curl','-s','-X','POST','-H','Authorization: token '+token,'-H','Content-Type: application/json','https://api.github.com/repos/'+repo+'/releases','-d',payload], capture_output=True, text=True)
+          print(result.stdout)
           print('Release created: {}'.format(tag))
           PYEOF
