@@ -11,6 +11,8 @@ env:
 jobs:
   iptv-check:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     outputs:
       final_count: ${{ steps.limit_check.outputs.final_count }}
       is_low: ${{ steps.pre_check.outputs.is_low }}
