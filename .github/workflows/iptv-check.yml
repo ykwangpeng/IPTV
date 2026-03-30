@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          lfs: true  # 支持大文件存储
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -32,13 +34,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg
 
-      - name: Create config
+      - name: Update config with network sources
         run: |
           cat > config.json << 'EOF'
           {
             "ENABLE_WEB_CHECK": true,
             "ENABLE_WEB_FETCH": false,
-            "ENABLE_LOCAL_CHECK": false,
+            "ENABLE_LOCAL_CHECK": true,
             "ENABLE_SPEED_CHECK": false,
             "ENABLE_CACHE": true,
             "DEBUG_MODE": false,
@@ -89,10 +91,18 @@ jobs:
         env:
           TZ: Asia/Shanghai
 
+      - name: Count live_ok lines
+        run: |
+          if [ -f live_ok.txt ]; then
+            lines=$(wc -l < live_ok.txt)
+            echo "live_ok.txt: $lines lines"
+          fi
+
       - name: Commit results
+        if: success()
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add live_ok.txt live_ok_fail.txt config.json .iptv_stats.json 2>/dev/null || true
+          git add live_ok.txt live_ok_fail.txt config.json .iptv_stats.json paste.txt 2>/dev/null || true
           git diff --staged --quiet || git commit -m "chore: 自动更新检测结果 $(date +'%Y-%m-%d %H:%M')"
-          git push 2>/dev/null || echo "无需更新或推送失败"
+          git push 2>/dev/null || echo "无需更新"

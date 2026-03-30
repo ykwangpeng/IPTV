@@ -1,0 +1,1024 @@
+import os, sys, re, time, json, random, argparse, warnings, logging, subprocess, asyncio
+from pathlib import Path
+from typing import Dict, List, Set, Optional, Any, Tuple
+from functools import lru_cache, wraps
+from collections import defaultdict
+from urllib.parse import urlparse, parse_qs, urlencode
+import threading
+from queue import Queue
+import requests
+import httpx
+import zhconv
+from tqdm import tqdm
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+# 修复 Windows 控制台编码问题
+if sys.platform == 'win32':
+    import io
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+
+# ==================== 配置管理 ====================
+class Config:
+    BASE_DIR = Path(__file__).parent
+    INPUT_FILE = BASE_DIR / "paste.txt"
+    OUTPUT_FILE = BASE_DIR / "live_ok.txt"
+    FAIL_FILE = BASE_DIR / "live_fail.txt"
+    LOG_FILE = BASE_DIR / "iptv_check.log"
+    STATS_FILE = BASE_DIR / "stats.json"
+    CONFIG_FILE = BASE_DIR / "config.json"
+    
+    ENABLE_WEB_FETCH = False          # 是否启用自动爬取新增网络直播源的功能，开启后会通过异步爬虫挖掘网络上的优质IPTV源
+    ENABLE_WEB_CHECK = False        # 是否启用拉取并检测预设网络源的功能，开启后会处理WEB_SOURCES列表中的预设源地址
+    ENABLE_LOCAL_CHECK = True         # 是否启用读取并检测本地输入文件的功能，开启后会解析INPUT_FILE指定的本地直播源文件
+        
+    DEBUG_MODE = False                # 调试模式开关
+    AUTO_BACKUP = True                # 自动备份开关
+    ARCHIVE_FAIL = True               # 失效源归档开关
+    MAX_WORKERS = 80                  # 直播源检测的最大并发线程数
+    FETCH_WORKERS = 8                 # 网络源拉取的最大并发线程数
+    TIMEOUT_CN = 8                    # 境内直播源检测超时时间（秒）- 优化：从15秒降到8秒
+    TIMEOUT_OVERSEAS = 15             # 境外直播源检测超时时间（秒）- 优化：从30秒降到15秒
+    RETRY_COUNT = 2                   # 网络请求重试次数 - 优化：从3次降到2次
+    REQUEST_JITTER = False            # 请求抖动开关 - 优化：关闭抖动以提高速度
+    MAX_LINKS_PER_NAME = 3            # 每个频道保留的最大有效链接数
+    FILTER_PRIVATE_IP = True          # 内网IP过滤开关
+    REMOVE_REDUNDANT_PARAMS = False   # URL冗余参数清理开关
+    ENABLE_QUALITY_FILTER = True      # 质量过滤开关
+    MIN_QUALITY_SCORE = 80            # 最低质量评分阈值
+    PROXY = None                      # 请求使用代理配置
+
+    BLACKLIST = {
+        "购物", "备用", "测试", "福利", "广告", "下线", "加群", "提示", 
+        "教程", "联系", "推广", "免费"
+    }
+    OVERSEAS_KEYWORDS = {
+        "TVB", "凤凰", "翡翠", "明珠", "香港", "台湾", "台视", "华视", "民视",
+        "东森", "三立", "纬来", "中天", "非凡", "龙祥", "靖天", "爱尔达",
+        "CNN", "BBC", "NHK", "KBS", "SBS", "MBC", "DISCOVERY", "国家地理",
+        "HBO", "STAR", "AXN", "KIX", "VIU", "NOW", "FOX", "ESPN", "beIN",
+    }
+    FATAL_ERROR_KEYWORDS = {
+        "404 not found", "403 forbidden", "500 internal server error",
+        "connection timed out", "could not resolve host", "connection refused",
+        "no route to host", "network unreachable", "name or service not known",
+        "unable to open file", "invalid url", "protocol not found",
+        "server returned 404", "server returned 403", "server returned 500",
+        "host unreachable", "dns resolution failed", "empty reply from server",
+    }
+
+    CATEGORY_RULES_COMPILED = {}
+
+    CATEGORY_RULES = {
+        "4K 專區": ["4K", "8K", "UHD", "ULTRAHD", "2160", "超高清", "HDR"],
+        "央衛頻道": ["CCTV", "中央", "央视", "卫视"],
+        "體育賽事": [
+            "体育", "运动", "足球", "篮球", "网球", "羽毛球", "乒乓球", "排球",
+            "台球", "棋", "赛马", "CCTV5", "CCTV5+", "五星体育", "咪视", "竞技",
+            "SPORT", "SPOTV", "BALL", "晴彩", "咪咕", "NBA", "英超", "西甲", "意甲",
+            "德甲", "法甲", "欧冠", "欧联", "亚冠", "中超", "J 联赛", "K 联赛", "美职",
+            "MLS", "F1", "MotoGP", "WWE", "UFC", "拳击", "高尔夫", "GOLF", "PGA",
+            "ATP", "WTA", "澳网", "法网", "温网", "美网", "斯诺克", "世锦赛", "奥运", "文体",
+            "亚运", "世界杯", "欧洲杯", "美洲杯", "非洲杯", "亚洲杯", "CBA", "五大联赛", "Pac-12"
+        ],
+        "音樂頻道": [
+            "音乐", "歌", "MTV", "演唱会", "演唱", "点播", "CMUSIC", "KTV",
+            "流行", "嘻哈", "摇滚", "古典", "爵士", "民谣", "电音", "EDM",
+            "纯音乐", "伴奏", "Karaoke", "Channel V", "Trace", "VH1", "MTV Hits",
+            "MTV Live", "KKBOX", "女团", "Space Shower", "KAYOPOPS", "Musicon"
+        ],
+        "少兒動漫": [
+            "卡通", "动漫", "动画", "曼迪", "儿童", "少儿", "幼", "宝宝", "宝贝",
+            "炫动", "卡通片", "动漫片", "动画片", "CARTOON", "ANIME", "ANIMATION",
+            "KIDS", "CHILDREN", "TODDLER", "BABY", "NICK", "DISNEY", "CARTOONS",
+            "TOON", "BOOMERANG", "尼克", "小公视", "蓝猫", "喜羊羊", "熊出没"
+        ],
+        "影視劇集": [
+            "爱奇艺", "优酷", "腾讯视频", "芒果 TV", "IQIYI", "POPC", 
+            "剧集", "电影", "影院", "影视", "剧场", "Hallmark", "龙华",
+            "Prime", "Paramount+", "电视剧", "Peacock", "Max", "靖洋",
+            "Showtime", "Starz", "AMC", "FX", "TNT", "TBS", "Syfy", "Lifetime",
+            "华纳", "环球", "派拉蒙", "索尼", "狮门", "A24", "漫威", "DC", "星战",
+            "Marvel", "DCU", "Star Wars", "NETFLIX", "SERIES", "MOVIE", "SHORTS",
+            "网剧", "短剧", "微剧", "首播", "独播", "热播", "天映",
+            "港片", "台剧", "韩剧", "日剧", "美剧", "英剧", "HBO",
+            "悬疑", "科幻", "古装", "都市", "喜剧", "爱情", "冒险",
+            "制片", "影业", "院线", "怀旧", "经典", "邵氏", "华剧", 
+            "华影", "金鹰", "星河", "新视觉"
+        ],
+        "港澳台頻": [
+            "翡翠", "博斯", "凤凰", "TVB", "CNN", "BBC", "DISCOVERY", "国家地理",
+            "香港", "华文", "八度", "华艺", "环球", "生命", "镜", "澳", "台湾", "探索",
+            "年代", "明珠", "唯心", "公视", "东森", "三立", "爱尔达", "NOW", "VIU",
+            "STAR", "星空", "纬来", "非凡", "中天", "中视", "无线", "寰宇",
+            "GOOD", "ROCK", "华视", "台视", "民视", "TVBS", "八大", "龙祥", "靖天",
+            "AXN", "KIX", "HOY", "LOTUS", "莲花", "GEM", "J2", "ViuTV", "开电视",
+            "大爱", "人间", "客家", "壹电视", "CTI", "CTS", "PTS", "NTV", "Fuji TV",
+            "NHK", "TBS", "WOWOW", "Sky", "ESPN", "beIN", "DAZN", "Eleven Sports",
+            "SPOTV NOW", "TrueVisions", "Astro", "Unifi TV", "HyppTV", "myTV SUPER",
+            "Now TV", "Cable TV", "PCCW", "HKTV", "Viu", "Netflix", "Disney+",
+            "TTV", "FTV", "TRANSTV", "TLC", "SURIA", "SUPERFREE", "SUNTV", "SUNEWS",
+            "SUMUSIC", "SULIF", "SUKART", "SPOT2", "SPOT", "SONYTEN3", "SET 新闻",
+            "RTV", "ROCKACTION", "RIA", "QJ", "OKEY", "NET", "MTLIVE", "猪王", "华仁",
+            "华视", "台视", "民视", "八大", "东森", "三立", "中天", "TVBS", "壹电视",
+            "客家", "公视", "宏达", "卫视", "卫视中文", "卫视电影", "卫视音乐", "凤凰"
+        ],
+        "其他頻道": []
+    }
+
+    CATEGORY_ORDER = ["4K 專區", "央衛頻道", "體育賽事", "少兒動漫", "音樂頻道", "影視劇集", "港澳台頻", "其他頻道"]
+
+    # ✅ 优化：每个域名最多保留的源数量（0表示不限制）
+    # 0 = 不限制（像 IPTV_Optimized.py）
+    # 20 = 每个域名最多20个（默认）
+    MAX_SOURCES_PER_DOMAIN = 20
+
+    PRESET_FILES = [
+        "https://live.zbds.top/tv/iptv4.m3u",
+        "https://raw.githubusercontent.com/imDazui/Tvlist-awesome-m3u-m3u8/master/m3u/%E5%8F%B0%E6%B9%BE%E9%A6%99%E6%B8%AF%E6%BE%B3%E9%97%A8202506.m3u",
+        "https://raw.githubusercontent.com/hujingguang/ChinaIPTV/main/HongKong.m3u8",
+        "https://raw.githubusercontent.com/hujingguang/ChinaIPTV/main/TaiWan.m3u8",
+        "https://raw.githubusercontent.com/hujingguang/ChinaIPTV/main/Macao.m3u8",
+        "https://raw.githubusercontent.com/MichaelJorky/Free-IPTV-M3U-Playlist/main/iptv-hongkong.m3u",
+        "https://peterhchina.github.io/iptv/CNTV-V4.m3u",
+        "https://raw.githubusercontent.com/zxmlxw520/5566/refs/heads/main/fhtv.txt",
+        "http://txt.gt.tc/users/HKTV.txt",
+        "https://raw.githubusercontent.com/nianxinmj/nxpz/refs/heads/main/lib/live.txt",
+        "https://raw.githubusercontent.com/big-mouth-cn/tv/main/iptv-ok.m3u",
+        "https://raw.githubusercontent.com/FGBLH/FG/refs/heads/main/%E6%B8%AF%E5%8F%B0%E5%A4%A7%E9%99%86",
+        "https://live.264788.xyz/sub/02RvO5i5Zn1LSQUCr56kkUp2I9xa9A/txt",
+        "https://dsj-1312694395.cos.ap-guangzhou.myqcloud.com/dsj10.1.txt",
+        "http://tv123.vvvv.ee/tv.m3u",
+        "https://iptv-org.github.io/iptv/countries/hk.m3u",
+        "https://iptv-org.github.io/iptv/countries/tw.m3u",
+        "http://47.120.41.246:8899/xinzb.txt",
+        "http://iptv.4666888.xyz/FYTV.m3u",
+        "https://raw.githubusercontent.com/judy-gotv/iptv/main/litv.m3u",
+        "https://live.hacks.tools/iptv/languages/zho.m3u",
+        "https://live.hacks.tools/tv/ipv4/categories/hong_kong.m3u",
+        "https://live.hacks.tools/tv/ipv4/categories/macau.m3u",
+        "https://live.hacks.tools/tv/ipv4/categories/taiwan.m3u",
+        "https://live.hacks.tools/tv/ipv4/categories/%E7%94%B5%E5%BD%B1%E9%A2%91%E9%81%93.m3u",
+        "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt",
+        "https://raw.githubusercontent.com/Guovin/iptv-api/gd/output/result.txt",
+        "https://raw.githubusercontent.com/Jsnzkpg/Jsnzkpg/Jsnzkpg/Jsnzkpg1"
+    ]
+
+    UA_POOL = [
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 14_2_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15',
+        'VLC/3.0.18 LibVLC/3.0.18 (LGPLv2.1+)',
+        'IINA/1.3.3 (Macintosh; Intel Mac OS X 14.5.0)',
+        'PotPlayer/230502 (Windows NT 10.0; x64)',
+    ]
+
+    @classmethod
+    def load_from_file(cls):
+        if cls.CONFIG_FILE.exists():
+            try:
+                with open(cls.CONFIG_FILE, 'r', encoding='utf-8') as f:
+                    config = json.load(f)
+                for key, value in config.items():
+                    if hasattr(cls, key) and key != 'web_sources':
+                        setattr(cls, key, value)
+                print(f"✅ 加载配置文件：{cls.CONFIG_FILE}")
+            except Exception as e:
+                print(f"⚠️ 加载配置文件失败：{e}, 使用默认配置")
+
+    @classmethod
+    def save_to_file(cls, web_sources):
+        """保存成功的网页源到配置文件"""
+        try:
+            # 先读取现有配置，保留其他字段
+            existing_config = {}
+            if cls.CONFIG_FILE.exists():
+                with open(cls.CONFIG_FILE, 'r', encoding='utf-8') as f:
+                    existing_config = json.load(f)
+
+            # 更新 web_sources 和 last_update
+            existing_config['web_sources'] = web_sources
+            existing_config['last_update'] = time.strftime('%Y-%m-%d %H:%M:%S')
+
+            # 保存配置
+            with open(cls.CONFIG_FILE, 'w', encoding='utf-8') as f:
+                json.dump(existing_config, f, ensure_ascii=False, indent=2)
+            print(f"✅ 保存成功的网页源到配置文件：{cls.CONFIG_FILE}")
+        except Exception as e:
+            print(f"⚠️ 保存配置文件失败：{e}")
+
+    @classmethod
+    def init_compiled_rules(cls):
+        """✅ 初始化时编译正则表达式"""
+        for cat, keywords in cls.CATEGORY_RULES.items():
+            pattern = '|'.join(re.escape(kw) for kw in keywords)
+            cls.CATEGORY_RULES_COMPILED[cat] = re.compile(pattern, re.IGNORECASE)
+
+
+# ==================== 正则表达式预编译 ====================
+class RegexPatterns:
+    PRIVATE_IP = re.compile(
+        r'^(127\.|192\.168\.|10\.|172\.(1[6-9]|2[0-9]|3[0-1])\.|'
+        r'::1$|fc00:|fe80:|fd[0-9a-f]{2}:|localhost|0\.0\.0\.0)',
+        re.IGNORECASE
+    )
+    DATE_TAG = re.compile(r'\[.*?\]|\(.*?\)|【.*?】|\{.*?\}', re.IGNORECASE)
+
+
+# ==================== 重试装饰器 ====================
+def retry(max_attempts: int = 3, delay: float = 1.0, backoff: float = 2.0):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            last_exception = None
+            for attempt in range(max_attempts):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    last_exception = e
+                    if attempt < max_attempts - 1:
+                        wait_time = delay * (backoff ** attempt)
+                        time.sleep(wait_time)
+            raise last_exception
+        return wrapper
+    return decorator
+
+
+# ==================== URL 清理器 ====================
+class URLCleaner:
+    @staticmethod
+    @lru_cache(maxsize=10000)
+    def get_fingerprint(url: str) -> str:
+        """✅ 优化：URL指纹提取，带缓存"""
+        parsed = urlparse(url)
+        if Config.REMOVE_REDUNDANT_PARAMS:
+            keep_params = {'id', 'token', 'key', 'sign', 'auth'}
+            query_dict = {k: v for k, v in parse_qs(parsed.query).items() 
+                         if k.lower() in keep_params}
+            query_str = urlencode(query_dict, doseq=True) if query_dict else ''
+        else:
+            query_str = parsed.query
+        fingerprint = f"{parsed.scheme}://{parsed.netloc}{parsed.path}?{query_str}"
+        return fingerprint
+
+    @staticmethod
+    def is_valid(url: str) -> bool:
+        """✅ 优化：URL有效性检查"""
+        try:
+            parsed = urlparse(url)
+            return all([parsed.scheme in ('http', 'https', 'rtmp', 'rtmps'), 
+                       parsed.netloc])
+        except Exception:
+            return False
+
+    @staticmethod
+    def filter_private_ip(url: str) -> bool:
+        """✅ 优化：内网IP过滤"""
+        parsed = urlparse(url)
+        if not Config.FILTER_PRIVATE_IP:
+            return True
+        netloc = parsed.netloc.split('@')[-1]
+        hostname = netloc.split(':')[0]
+        return not RegexPatterns.PRIVATE_IP.match(hostname)
+
+
+# ==================== M3U 解析器 ====================
+class M3UParser:
+    @staticmethod
+    def parse(lines: List[str]) -> List[str]:
+        """✅ 优化：M3U文件解析"""
+        parsed = []
+        extinf_line = None
+        
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+            
+            if line.startswith('#EXTINF:'):
+                extinf_line = line
+            elif not line.startswith('#'):
+                if extinf_line:
+                    name_part = extinf_line.split(',', 1)[-1].strip()
+                    name_part = RegexPatterns.DATE_TAG.sub('', name_part).strip() or '未知频道'
+                    parsed.append(f"{name_part},{line}")
+                    extinf_line = None
+        
+        return parsed
+
+
+# ==================== 网络源获取 ====================
+class WebSourceFetcher:
+    """✅ 优化：连接池复用，减少 SSL 握手开销"""
+    def __init__(self):
+        self.session = requests.Session()
+        self.session.verify = False
+        adapter = requests.adapters.HTTPAdapter(
+            pool_connections=Config.FETCH_WORKERS * 2,  # 增加连接池
+            pool_maxsize=Config.FETCH_WORKERS * 2,
+            max_retries=1,
+            pool_block=False  # 非阻塞模式
+        )
+        self.session.mount('http://', adapter)
+        self.session.mount('https://', adapter)
+        warnings.filterwarnings('ignore', message='Unverified HTTPS request')
+    
+    def __del__(self):
+        self.session.close()
+
+    @retry(max_attempts=2, delay=0.5, backoff=2)
+    def fetch(self, url: str, proxy: Optional[str] = None) -> List[str]:
+        """✅ 优化：网络源拉取 - 增加超时处理和异常捕获"""
+        headers = {
+            'User-Agent': random.choice(Config.UA_POOL),
+            'Accept': 'text/plain,text/html,*/*;q=0.8',
+            'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Cache-Control': 'no-cache',
+            'Referer': 'https://www.baidu.com',
+        }
+        
+        proxies = {'http': proxy, 'https': proxy} if proxy else None
+        # 优化：减少超时时间，GitHub用30秒，其他用20秒
+        timeout = (15, 30) if "githubusercontent" in url else (10, 20)
+        
+        try:
+            resp = self.session.get(url, headers=headers, timeout=timeout, 
+                                   allow_redirects=True, proxies=proxies, stream=False)
+            resp.raise_for_status()
+            resp.encoding = resp.apparent_encoding or 'utf-8'
+            
+            lines = [l.strip() for l in resp.text.splitlines() if l.strip()]
+            
+            if not lines:
+                return []  # 返回空列表而不是 None
+            
+            if any(l.startswith('#EXTM3U') for l in lines[:10]):
+                parsed = M3UParser.parse(lines)
+            else:
+                parsed = self._parse_plain_text(lines)
+            
+            unique, seen = [], set()
+            for item in parsed:
+                if ',' not in item:
+                    continue
+                _, url_part = item.split(',', 1)
+                fp = URLCleaner.get_fingerprint(url_part.strip())
+                if fp not in seen:
+                    seen.add(fp)
+                    unique.append(item)
+            
+            return unique
+            
+        except Exception as e:
+            # 优化：捕获所有异常并记录
+            if Config.DEBUG_MODE:
+                print(f"⚠️ 拉取异常 {url}: {e}")
+            return []  # 返回空列表
+
+    @staticmethod
+    def _parse_plain_text(lines: List[str]) -> List[str]:
+        parsed = []
+        for line in lines:
+            if ',' not in line or '://' not in line:
+                continue
+            name_part, url_part = line.split(',', 1)
+            url_part = url_part.strip()
+            if URLCleaner.is_valid(url_part):
+                parsed.append(f"{name_part.strip()},{url_part}")
+        return parsed
+
+
+# ==================== 异步爬虫 ====================
+class AsyncWebSourceCrawler:
+    SOURCE_SITES = [
+        "https://raw.githubusercontent.com/fanmingming/live/main/tv.m3u",
+        "https://raw.githubusercontent.com/Guovin/iptv-api/gd/output/result.txt",
+        "https://raw.githubusercontent.com/iptv-org/iptv/master/countries/cn.m3u",
+        "https://raw.githubusercontent.com/yuanzl77/IPTV/master/live.txt",
+        "https://raw.githubusercontent.com/hujingguang/ChinaIPTV/main/HongKong.m3u8",
+    ]
+
+    def __init__(self):
+        self.session = None
+        self.new_sources = set()
+
+    async def __aenter__(self):
+        timeout = httpx.Timeout(15.0, connect=10.0)
+        limits = httpx.Limits(max_keepalive_connections=30, max_connections=50)
+        self.session = httpx.AsyncClient(timeout=timeout, limits=limits, verify=False, follow_redirects=True)
+        return self
+
+    async def __aexit__(self, *args):
+        if self.session:
+            await self.session.aclose()
+
+    async def quick_validate(self, url: str) -> bool:
+        """快速验证源是否有效"""
+        try:
+            resp = await self.session.head(url, timeout=3.0)
+            return resp.status_code == 200
+        except Exception:
+            return False
+
+    async def extract_sources_from_content(self, url: str) -> Set[str]:
+        """从内容中提取更多源"""
+        try:
+            resp = await self.session.get(url, timeout=12.0)
+            if resp.status_code != 200:
+                return set()
+            
+            text = resp.text
+            url_pattern = r'https?://[^\s<>"]+\.(?:m3u|m3u8|txt)[^\s<>"]*'
+            matches = re.findall(url_pattern, text)
+            
+            valid_sources = set()
+            semaphore = asyncio.Semaphore(20)
+            
+            async def validate_and_add(source):
+                try:
+                    async with semaphore:
+                        if await self.quick_validate(source):
+                            valid_sources.add(source)
+                except Exception:
+                    pass
+            
+            tasks = [validate_and_add(src) for src in matches[:100]]
+            await asyncio.gather(*tasks, return_exceptions=True)
+            
+            return valid_sources
+            
+        except Exception:
+            return set()
+
+    async def crawl_all(self) -> Set[str]:
+        """爬取所有预设站点"""
+        print("🔍 开始异步爬取网络源...")
+
+        # ✅ 直接从预设源文件中提取新的源地址
+        print(f"📋 待爬取源数: {len(self.SOURCE_SITES)} 个")
+        print(f"🔄 开始验证和提取...")
+
+        semaphore = asyncio.Semaphore(30)
+
+        async def process_source(url):
+            async with semaphore:
+                # 快速验证源是否可访问
+                if await self.quick_validate(url):
+                    # 从源内容中提取更多源地址
+                    extracted = await self.extract_sources_from_content(url)
+                    if extracted:
+                        self.new_sources.update(extracted)
+                        if Config.DEBUG_MODE:
+                            print(f"  ✓ {url[:50]}... 提取 {len(extracted)} 个源")
+
+        await asyncio.gather(*[process_source(src) for src in self.SOURCE_SITES], return_exceptions=True)
+
+        print(f"✅ 爬取完成，发现新源: {len(self.new_sources)} 个")
+
+        return self.new_sources
+
+
+# ==================== 直播源检测 ====================
+class StreamChecker:
+    """✅ 优化：直播源检测"""
+    def __init__(self):
+        self.session = requests.Session()
+        adapter = requests.adapters.HTTPAdapter(
+            pool_connections=Config.MAX_WORKERS * 2,
+            pool_maxsize=Config.MAX_WORKERS * 2,
+            max_retries=0
+        )
+        self.session.mount('http://', adapter)
+        self.session.mount('https://', adapter)
+
+    def __del__(self):
+        self.session.close()
+
+    def check(self, line: str, proxy: Optional[str] = None) -> Dict[str, Any]:
+        """✅ 优化：检测单条直播源"""
+        if ',' not in line:
+            return {"status": "失效", "name": "未知频道", "url": line, "overseas": False}
+        
+        try:
+            name_part, url_part = line.split(',', 1)
+            url = url_part.strip()
+            name = name_part.strip()[:100]
+            
+            if not URLCleaner.is_valid(url):
+                return {"status": "失效", "name": name, "url": url, "overseas": False}
+            
+            if not URLCleaner.filter_private_ip(url):
+                return {"status": "失效", "name": name, "url": url, "overseas": False}
+            
+            if any(kw in name for kw in Config.BLACKLIST):
+                return {"status": "失效", "name": name, "url": url, "overseas": False}
+            
+            overseas = NameProcessor.is_overseas(name)
+            timeout = Config.TIMEOUT_OVERSEAS if overseas else Config.TIMEOUT_CN
+            
+            # 优化：关闭抖动以提高速度
+            if Config.REQUEST_JITTER:
+                time.sleep(random.uniform(0.01, 0.05))
+            
+            result = self._check_with_ffprobe(url, name, timeout, proxy, overseas)
+            return result if result else self._check_with_http(url, name, timeout, proxy, overseas)
+            
+        except Exception as e:
+            return {"status": "失效", "name": "未知频道", "url": line, "reason": str(e)[:30]}
+
+    def _check_with_ffprobe(self, url: str, name: str, timeout: int, 
+                           proxy: Optional[str], overseas: bool) -> Optional[Dict[str, Any]]:
+        """✅ 优化：ffprobe检测"""
+        start_time = time.time()
+        domain = f"{urlparse(url).scheme}://{urlparse(url).netloc}"
+        headers_str = f'User-Agent: {random.choice(Config.UA_POOL)}\r\nReferer: {domain}\r\n'
+        
+        cmd = [
+            'ffprobe', '-headers', headers_str, '-v', 'error',
+            '-show_entries', 'stream=codec_type:format=duration,format_name',
+            '-probesize', '5000000', '-analyzeduration', '10000000',  # 优化：减少分析时间
+            '-timeout', str(int(timeout * 1_000_000)), '-reconnect', '1',  # 优化：减少重连次数
+            '-reconnect_streamed', '1', '-reconnect_delay_max', '2',
+            '-err_detect', 'ignore_err', '-fflags', 'nobuffer+flush_packets',
+            '-user_agent', random.choice(Config.UA_POOL),
+        ]
+        
+        if proxy:
+            cmd.extend(['-http_proxy', proxy])
+        cmd.append(url)
+        
+        proc = None
+        try:
+            proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+            stdout, stderr = proc.communicate(timeout=timeout + 2)  # 优化：减少超时缓冲
+            
+            stdout_text = stdout.decode('utf-8', errors='ignore').lower()
+            stderr_text = stderr.decode('utf-8', errors='ignore').lower()
+            
+            has_fatal = any(kw in stderr_text for kw in Config.FATAL_ERROR_KEYWORDS)
+            has_stream = 'codec_type=video' in stdout_text or 'codec_type=audio' in stdout_text
+            
+            if not has_fatal and has_stream:
+                latency = round(time.time() - start_time, 2)
+                return {
+                    "status": "有效", "name": name, "url": url, "lat": latency,
+                    "overseas": overseas, "quality": self._calc_quality_score(latency, 0)
+                }
+                
+        except subprocess.TimeoutExpired:
+            if proc:
+                proc.kill()
+                proc.communicate()
+        except Exception:
+            if proc:
+                proc.kill()
+                proc.communicate()
+        
+        return None
+
+    def _check_with_http(self, url: str, name: str, timeout: int, 
+                         proxy: Optional[str], overseas: bool) -> Dict[str, Any]:
+        """✅ 优化：HTTP检测"""
+        start_time = time.time()
+        domain = f"{urlparse(url).scheme}://{urlparse(url).netloc}"
+        headers = {'User-Agent': random.choice(Config.UA_POOL), 'Referer': domain}
+        proxies = {'http': proxy, 'https': proxy} if proxy else None
+        
+        try:
+            resp = self.session.head(url, headers=headers, timeout=timeout//2, 
+                                    allow_redirects=True, proxies=proxies)
+            
+            if resp.status_code in (200, 206, 301, 302, 304):
+                latency = round(time.time() - start_time, 2)
+                return {"status": "有效", "name": name, "url": url, "lat": latency,
+                        "overseas": overseas, "quality": self._calc_quality_score(latency, 0)}
+            
+            return {"status": "失效", "name": name, "url": url, "overseas": overseas, 
+                    "reason": f"HTTP{resp.status_code}"}
+            
+        except Exception:
+            return {"status": "失效", "name": name, "url": url, "overseas": overseas, 
+                    "reason": "检测超时"}
+
+    @staticmethod
+    def _calc_quality_score(latency: float, retries: int) -> int:
+        """✅ 优化：质量评分计算"""
+        if latency <= 1:
+            return 100
+        elif latency <= 3:
+            return max(95 - int(latency * 5), 80)
+        elif latency <= 5:
+            return max(80 - int(latency * 8), 60)
+        else:
+            return max(60 - int(latency * 5), 20)
+
+
+# ==================== 名称处理器 ====================
+class NameProcessor:
+    _simplify_cache = {}
+    _simplify_lock = threading.Lock()
+    
+    @staticmethod
+    def simplify(text: str) -> str:
+        """✅ 优化：使用双层缓存减少转换次数（按照原脚本逻辑）"""
+        if not text or not isinstance(text, str):
+            return text or ""
+        
+        with NameProcessor._simplify_lock:
+            if text in NameProcessor._simplify_cache:
+                return NameProcessor._simplify_cache[text]
+        
+        result = zhconv.convert(text, 'zh-hans').strip()
+        
+        with NameProcessor._simplify_lock:
+            NameProcessor._simplify_cache[text] = result
+        return result
+    
+    @staticmethod
+    @lru_cache(maxsize=5000)
+    def is_overseas(name: str) -> bool:
+        """✅ 优化：判断是否为境外频道，带缓存"""
+        name_upper = name.upper()
+        return any(kw in name_upper for kw in Config.OVERSEAS_KEYWORDS)
+
+    @staticmethod
+    @lru_cache(maxsize=8192)
+    def get_category(name: str) -> Optional[str]:
+        """✅ 优化：使用预编译正则表达式（按照原脚本逻辑）"""
+        s = NameProcessor.simplify(name)
+        if any(kw in s for kw in Config.BLACKLIST):
+            return None
+        
+        for cat in Config.CATEGORY_ORDER[:-1]:
+            if cat in Config.CATEGORY_RULES_COMPILED:
+                if Config.CATEGORY_RULES_COMPILED[cat].search(s):
+                    return cat
+        
+        return "其他頻道"
+
+    @staticmethod
+    def normalize(name: str) -> str:
+        """✅ 优化：频道名称标准化"""
+        name = zhconv.convert(name, 'zh-cn')
+        name = RegexPatterns.DATE_TAG.sub('', name).strip()
+        name = re.sub(r'\s+', ' ', name)
+        name = re.sub(r'[^\w\u4e00-\u9fff\-_.（）《》「」『』【】\s]', '', name)
+        return name
+
+
+# ==================== 主程序 ====================
+class IPTVChecker:
+    """✅ 优化：主程序类"""
+    def __init__(self):
+        self.logger = logging.getLogger(__name__)
+        self.fetcher = WebSourceFetcher()
+        self.checker = StreamChecker()
+        self.stats = {
+            'total': 0, 'valid': 0, 'failed': 0,
+            'by_overseas': {'cn': 0, 'overseas': 0},
+            'by_category': {cat: 0 for cat in Config.CATEGORY_ORDER}
+        }
+
+    def setup_logger(self):
+        """设置日志"""
+        self.logger.setLevel(logging.INFO if not Config.DEBUG_MODE else logging.DEBUG)
+        handler = logging.StreamHandler()
+        formatter = logging.Formatter('%(message)s')
+        handler.setFormatter(formatter)
+        self.logger.addHandler(handler)
+
+    def pre_check(self, input_file: Path, output_file: Path) -> bool:
+        """✅ 优化：环境预检"""
+        try:
+            subprocess.run(['ffprobe', '-version'], capture_output=True, check=True)
+            self.logger.info("✅ ffprobe 正常")
+        except Exception:
+            self.logger.error("❌ 未安装 ffprobe")
+            return False
+        
+        if not input_file.exists():
+            self.logger.warning(f"⚠️ 本地文件不存在: {input_file}")
+        
+        if Config.AUTO_BACKUP and output_file.exists():
+            backup_file = output_file.with_suffix('.txt.bak')
+            output_file.rename(backup_file)
+            self.logger.info(f"📦 备份原文件: {backup_file}")
+        
+        return True
+
+    def process_lines(self, lines: List[str], seen_fp: Set[str], domain_lines: Dict[str, List[str]]):
+        """✅ 优化：处理源列表"""
+        for line in lines:
+            if ',' not in line:
+                continue
+            
+            name_part, url_part = line.split(',', 1)
+            url = url_part.strip()
+            name = name_part.strip()
+            
+            if not URLCleaner.is_valid(url):
+                continue
+            
+            if not URLCleaner.filter_private_ip(url):
+                continue
+            
+            fp = URLCleaner.get_fingerprint(url)
+            if fp in seen_fp:
+                continue
+            
+            seen_fp.add(fp)
+            
+            parsed = urlparse(url)
+            domain = f"{parsed.scheme}://{parsed.netloc}"
+            
+            if domain not in domain_lines:
+                domain_lines[domain] = []
+            domain_lines[domain].append(f"{name},{url}")
+
+    def run(self, args):
+        """✅ 优化：同步运行模式"""
+        seen_fp = set()
+        domain_lines = defaultdict(list)
+        lines_to_check = []
+        
+        # ✅ 读取本地文件
+        # 优先级：-i参数 > 默认INPUT_FILE
+        input_path = args.input if args.input else Config.INPUT_FILE
+        
+        if Config.ENABLE_LOCAL_CHECK:
+            self.logger.info(f"✅ 本地文件：{input_path}")
+            self.logger.info(f"📂 读取本地文件...")
+            try:
+                with open(input_path, 'r', encoding='utf-8') as f:
+                    local_lines = [l.strip() for l in f if l.strip()]
+                self.process_lines(local_lines, seen_fp, domain_lines)
+                self.logger.info(f"✅ 本地处理完成：{len(local_lines)}条")
+            except Exception as e:
+                self.logger.error(f"❌ 读取本地文件失败: {e}")
+        elif args.input:
+            self.logger.info(f"📂 读取本地文件: {args.input}")
+            try:
+                with open(args.input, 'r', encoding='utf-8') as f:
+                    local_lines = [l.strip() for l in f if l.strip()]
+                self.process_lines(local_lines, seen_fp, domain_lines)
+                self.logger.info(f"✅ 本地处理完成：{len(local_lines)}条")
+            except Exception as e:
+                self.logger.error(f"❌ 读取本地文件失败: {e}")
+        
+        # ✅ 网络源拉取（增强日志）
+        successful_web_sources = []
+        if Config.ENABLE_WEB_CHECK and not args.no_web:
+            self.logger.info(f"🌐 并发拉取 {len(Config.PRESET_FILES)} 个网络源...")
+            web_sources = Config.PRESET_FILES
+            self.logger.info(f"🌐 并发拉取 {len(web_sources)} 个网络源...")
+            
+            with ThreadPoolExecutor(max_workers=Config.FETCH_WORKERS) as executor:
+                future_to_url = {
+                    executor.submit(self.fetcher.fetch, url, Config.PROXY): url
+                    for url in web_sources
+                }
+                
+                success_count = 0
+                fail_count = 0
+                total_extracted = 0
+                
+                for future in as_completed(future_to_url):
+                    url = future_to_url[future]
+                    try:
+                        lines = future.result()
+                        if lines:
+                            self.process_lines(lines, seen_fp, domain_lines)
+                            success_count += 1
+                            total_extracted += len(lines)
+                            self.logger.info(f"✅ 拉取成功: {url} ({len(lines)}条)")
+                            successful_web_sources.append(url)
+                        else:
+                            fail_count += 1
+                            self.logger.warning(f"❌ 拉取失败: {url} - 返回空内容")
+                    except Exception as e:
+                        fail_count += 1
+                        self.logger.error(f"❌ 拉取异常: {url} - {e}")
+                
+                self.logger.info(f"📊 网络源拉取完成: 成功{success_count}/{len(web_sources)} | 失败{fail_count} | 提取{total_extracted}条")
+                
+                # 保存成功的网页源到配置文件
+                if successful_web_sources:
+                    Config.save_to_file(successful_web_sources)
+        
+        # 收集待测源
+        # ✅ 优化：借鉴 IPTV_Optimized.py 的逻辑
+        # 如果 MAX_SOURCES_PER_DOMAIN = 0，不限制数量
+        # 如果 > 0，每个域名最多保留指定数量
+        if Config.MAX_SOURCES_PER_DOMAIN <= 0:
+            # 不限制，添加所有源
+            for urls in domain_lines.values():
+                lines_to_check.extend(urls)
+        else:
+            # 每个域名最多保留 MAX_SOURCES_PER_DOMAIN 个源
+            for domain, urls in domain_lines.items():
+                lines_to_check.extend(urls[:Config.MAX_SOURCES_PER_DOMAIN])
+        
+        total = len(lines_to_check)
+        if total == 0:
+            self.logger.warning("⚠️ 没有待测源")
+            return
+        
+        self.stats['total'] = total
+        
+        overseas_total = sum(1 for ln in lines_to_check if NameProcessor.is_overseas(ln.split(',', 1)[0]))
+        cn_total = total - overseas_total
+        self.logger.info(f"待测源: {total} 条 | 境内 {cn_total} | 境外 {overseas_total}")
+        
+        cat_map = {c: [] for c in Config.CATEGORY_ORDER}
+        
+        real_workers = min(args.workers, total)
+        self.logger.info(f"🚀 并发检测：{real_workers}个工作线程")
+        
+        with ThreadPoolExecutor(max_workers=real_workers) as executor, \
+             tqdm(total=total, desc="测活中", unit="源", ncols=80) as pbar:
+            
+            # ✅ 使用列表而不是字典，提高性能
+            futures = [executor.submit(self.checker.check, ln, Config.PROXY) for ln in lines_to_check]
+            
+            for future in as_completed(futures):
+                r = future.result()
+                pbar.update(1)
+                
+                if r["status"] == "有效":
+                    self.stats['valid'] += 1
+                    key = 'overseas' if r["overseas"] else 'cn'
+                    self.stats['by_overseas'][key] += 1
+                    
+                    cat = NameProcessor.get_category(r["name"])
+                    if cat and cat in cat_map:
+                        cat_map[cat].append(r)
+                        self.stats['by_category'][cat] += 1
+                else:
+                    self.stats['failed'] += 1
+                
+                pbar.set_postfix({"有效率": f"{self.stats['valid'] / pbar.n * 100:.1f}%"})
+
+        # 写入结果
+        # ✅ 修复: 使用 output_file 而不是 args.output (args.output 可能是 None)
+        output_file = args.output if args.output else str(Config.OUTPUT_FILE)
+        self.write_results(output_file, cat_map, total)
+
+    async def run_async(self, args):
+        """✅ 优化：异步运行模式（启用异步爬虫）"""
+        seen_fp = set()
+        domain_lines = defaultdict(list)
+
+        # ✅ 异步爬取新源
+        self.logger.info("🌐 启动异步爬虫，扫描新源...")
+        async with AsyncWebSourceCrawler() as crawler:
+            new_sources = await crawler.crawl_all()
+            if new_sources:
+                self.logger.info(f"🔍 发现新源: {len(new_sources)} 个")
+                # ✅ 将新发现的源转换为临时文件
+                # 使用特殊的域名 "crawled_sources" 避免被 urls[:20] 限制
+                import tempfile
+                with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', encoding='utf-8', delete=False) as f:
+                    for url in new_sources:
+                        f.write(f"爬取源,{url}\n")
+                    temp_file = f.name
+                self.logger.info(f"✅ 新源已保存到临时文件: {temp_file}")
+
+                # ✅ 直接添加到 domain_lines，避免被 urls[:20] 限制
+                for url in new_sources:
+                    if URLCleaner.is_valid(url) and URLCleaner.filter_private_ip(url):
+                        fp = URLCleaner.get_fingerprint(url)
+                        if fp not in seen_fp:
+                            seen_fp.add(fp)
+                            # 使用特殊域名确保不会被过滤
+                            domain_lines["crawled_sources"].append(f"爬取源,{url}")
+
+                self.logger.info(f"✅ 新源已添加到待测列表: {len(new_sources)} 个")
+
+        # 继续正常流程
+        self.run(args)
+
+    def write_results(self, output_file: str, cat_map: Dict[str, List[Dict]], total: int):
+        """✅ 优化：写入结果"""
+        output_path = Path(output_file)
+        
+        results = []
+        for cat in Config.CATEGORY_ORDER:
+            channels = cat_map.get(cat, [])
+            if not channels:
+                continue
+            
+            # 添加分组标签
+            results.append(f"{cat},#genre#")
+            
+            # 按质量排序
+            channels.sort(key=lambda x: x.get('quality', 0), reverse=True)
+            
+            # 每个频道保留最多 N 个链接
+            grouped = defaultdict(list)
+            for ch in channels:
+                name = NameProcessor.normalize(ch['name'])
+                if len(grouped[name]) < Config.MAX_LINKS_PER_NAME:
+                    grouped[name].append(ch)
+            
+            # 央衛頻道使用特殊排序逻辑（原脚本）
+            if cat == "央衛頻道":
+                cctv_channels, other = {}, {}
+                for name, items in grouped.items():
+                    (cctv_channels if name.startswith('CCTV') else other)[name] = items
+                
+                # CCTV1-CCTV17 按数字顺序
+                for num in range(1, 18):
+                    if f"CCTV{num}" in cctv_channels:
+                        for ch in sorted(cctv_channels[f"CCTV{num}"], key=lambda x: -x.get('quality', 0))[:Config.MAX_LINKS_PER_NAME]:
+                            results.append(f"{ch['name']},{ch['url']}")
+                
+                # CCTV5+
+                if 'CCTV5+' in cctv_channels:
+                    for ch in sorted(cctv_channels['CCTV5+'], key=lambda x: -x.get('quality', 0))[:Config.MAX_LINKS_PER_NAME]:
+                        results.append(f"{ch['name']},{ch['url']}")
+                
+                # 其他频道（按名称排序）
+                for name in sorted(other.keys()):
+                    for ch in sorted(other[name], key=lambda x: -x.get('quality', 0))[:Config.MAX_LINKS_PER_NAME]:
+                        results.append(f"{name},{ch['url']}")
+            else:
+                # 其他分类：按频道名称排序
+                for name in sorted(grouped.keys()):
+                    # 每个频道的链接按质量排序
+                    for ch in sorted(grouped[name], key=lambda x: -x.get('quality', 0))[:Config.MAX_LINKS_PER_NAME]:
+                        results.append(f"{name},{ch['url']}")
+            
+            # 分组之间添加空行
+            results.append("")
+        
+        # 写入有效源
+        with open(output_path, 'w', encoding='utf-8') as f:
+            f.write('\n'.join(results))
+        
+        # 写入统计信息
+        self.logger.info(f"\n{'='*60}")
+        self.logger.info(f"✅ 检测完成: {total} 条")
+        self.logger.info(f"✅ 有效源: {self.stats['valid']} 条 | 失效: {self.stats['failed']} 条")
+        self.logger.info(f"✅ 有效率: {self.stats['valid']/total*100:.1f}%")
+        self.logger.info(f"📊 境内: {self.stats['by_overseas']['cn']} | 境外: {self.stats['by_overseas']['overseas']}")
+        self.logger.info(f"📋 分类统计:")
+        for cat, count in sorted(self.stats['by_category'].items(), key=lambda x: -x[1]):
+            if count > 0:
+                self.logger.info(f"   {cat}: {count}")
+        self.logger.info(f"📁 结果文件: {output_path}")
+        self.logger.info(f"{'='*60}\n")
+
+
+# ==================== 命令行入口 ====================
+def main():
+    """✅ 优化：命令行入口"""
+    Config.init_compiled_rules()
+    Config.load_from_file()
+    
+    parser = argparse.ArgumentParser(description='IPTV 直播源检测工具 (终极优化版)')
+    parser.add_argument('-i', '--input', default=None, help='输入文件路径')
+    parser.add_argument('-o', '--output', default=None, help='输出文件路径')
+    parser.add_argument('-w', '--workers', type=int, default=80, help='并发线程数')
+    parser.add_argument('-t', '--timeout', type=int, default=8, help='超时时间(秒)')
+    parser.add_argument('--no-web', action='store_true', help='跳过网络源拉取')
+    parser.add_argument('--proxy', default=None, help='代理地址')
+    parser.add_argument('--async-crawl', action='store_true', help='启用异步爬虫')
+    
+    args = parser.parse_args()
+    
+    if args.timeout:
+        Config.TIMEOUT_CN = args.timeout
+        Config.TIMEOUT_OVERSEAS = args.timeout * 2
+    if args.workers:
+        Config.MAX_WORKERS = args.workers
+    
+    input_file = Path(args.input) if args.input else Config.INPUT_FILE
+    output_file = Path(args.output) if args.output else Config.OUTPUT_FILE
+    
+    checker = IPTVChecker()
+    checker.setup_logger()
+    
+    print(f"{'='*60}")
+    print(f"🔍 开始环境预检...")
+    if not checker.pre_check(input_file, output_file):
+        sys.exit(1)
+    print(f"{'='*60}\n")
+    
+    try:
+        # ✅ 修复: 根据 ENABLE_WEB_FETCH 配置自动启用异步爬虫
+        if args.async_crawl or Config.ENABLE_WEB_FETCH:
+            asyncio.run(checker.run_async(args))
+        else:
+            checker.run(args)
+    except KeyboardInterrupt:
+        print("\n⚠️ 用户中断")
+        sys.exit(1)
+    except Exception as e:
+        print(f"\n❌ 程序异常: {e}")
+        sys.exit(1)
+
+
+if __name__ == '__main__':
+    main()

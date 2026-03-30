@@ -1,0 +1,23 @@
+# 缓存和临时文件
+.iptv_cache.json
+.iptv_stats.json
+*.log
+__pycache__/
+*.pyc
+*.pyo
+
+# FFmpeg
+ffmpeg/
+
+# Karing
+Karing/
+
+# 工作目录
+.workbuddy/
+
+# 备份文件
+*.bak
+*_backup_*.txt
+
+# 测试文件
+test_*.py
