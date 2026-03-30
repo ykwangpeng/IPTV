@@ -32,8 +32,60 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg
 
+      - name: Create config
+        run: |
+          cat > config.json << 'EOF'
+          {
+            "ENABLE_WEB_CHECK": true,
+            "ENABLE_WEB_FETCH": false,
+            "ENABLE_LOCAL_CHECK": false,
+            "ENABLE_SPEED_CHECK": false,
+            "ENABLE_CACHE": true,
+            "DEBUG_MODE": false,
+            "AUTO_BACKUP": false,
+            "ARCHIVE_FAIL": true,
+            "MAX_WORKERS": 10,
+            "FETCH_WORKERS": 8,
+            "TIMEOUT_CN": 15,
+            "TIMEOUT_OVERSEAS": 30,
+            "RETRY_COUNT": 2,
+            "MAX_LINKS_PER_NAME": 3,
+            "FILTER_PRIVATE_IP": true,
+            "ENABLE_QUALITY_FILTER": true,
+            "MIN_QUALITY_SCORE": 15,
+            "MIN_SPEED_MBPS": 0.005,
+            "ENABLE_IPV6_OPTIMIZE": true,
+            "IPV6_DEFAULT_DELAY": 0.1,
+            "IPV6_DEFAULT_SPEED": 10.0,
+            "ENABLE_CACHE": true,
+            "CACHE_TTL_HOURS": 24,
+            "ENABLE_RESOLUTION_FILTER": false,
+            "WEB_SOURCES": [
+              "https://live.zbds.top/tv/iptv4.m3u",
+              "https://raw.githubusercontent.com/imDazui/Tvlist-awesome-m3u-m3u8/master/m3u/台湾港澳.m3u",
+              "https://raw.githubusercontent.com/hujingguang/ChinaIPTV/main/HongKong.m3u8",
+              "https://raw.githubusercontent.com/hujingguang/ChinaIPTV/main/TaiWan.m3u8",
+              "https://raw.githubusercontent.com/MichaelJorky/Free-IPTV-M3U-Playlist/main/iptv-hongkong.m3u",
+              "https://peterhchina.github.io/iptv/CNTV-V4.m3u",
+              "https://raw.githubusercontent.com/zxmlxw520/5566/refs/heads/main/fhtv.txt",
+              "https://raw.githubusercontent.com/nianxinmj/nxpz/refs/heads/main/lib/live.txt",
+              "https://raw.githubusercontent.com/big-mouth-cn/tv/main/iptv-ok.m3u",
+              "https://live.264788.xyz/sub/02RvO5i5Zn1LSQUCr56kkUp2I9xa9A/txt",
+              "https://dsj-1312694395.cos.ap-guangzhou.myqcloud.com/dsj10.1.txt",
+              "https://iptv-org.github.io/iptv/countries/hk.m3u",
+              "https://iptv-org.github.io/iptv/countries/tw.m3u",
+              "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt",
+              "https://raw.githubusercontent.com/Guovin/iptv-api/gd/output/result.txt",
+              "https://raw.githubusercontent.com/fanmingming/live/main/tv.m3u",
+              "https://iptv-org.github.io/iptv/countries/cn.m3u",
+              "https://iptv-org.github.io/iptv/countries/mo.m3u",
+              "https://iptv-org.github.io/iptv/index.m3u"
+            ]
+          }
+          EOF
+
       - name: Run IPTV check
-        run: python IPTV-Apex-dzh.py --no-speed-check
+        run: python IPTV-Apex-dzh.py
         env:
           TZ: Asia/Shanghai
 

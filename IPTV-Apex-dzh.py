@@ -55,7 +55,7 @@ class Config:
     # 核心功能开关
     ENABLE_WEB_FETCH    = True   # 是否启用自动爬取新增网络直播源的功能（拉取的源质量太低，已禁用）
     ENABLE_WEB_CHECK    = True   # 是否启用拉取并检测预设网络源的功能（默认关闭）
-    ENABLE_LOCAL_CHECK  = True   # 是否启用读取并检测本地输入文件的功能
+    ENABLE_LOCAL_CHECK  = False   # 是否启用读取并检测本地输入文件的功能
     ENABLE_SPEED_CHECK  = True   # 是否启用下载速度检测（可在运行时通过 --no-speed-check 关闭）
     DEBUG_MODE          = False  # 调试模式开关
     AUTO_BACKUP         = True   # 自动备份开关（备份文件名含时间戳）
@@ -1108,7 +1108,12 @@ class StreamChecker:
                 latency = round(time.time() - start_time, 2)
                 return {
                     "status": "有效", "name": name, "url": url, "lat": latency,
-                    "overseas": overseas, "quality": 0, "speed": 0.0
+                    "overseas": overseas,
+                    "quality": max(
+                        StreamChecker._calc_quality_score(latency, 0.0),
+                        Config.MIN_QUALITY_SCORE
+                    ),
+                    "speed": 0.0
                 }
         except subprocess.TimeoutExpired:
             if proc:
