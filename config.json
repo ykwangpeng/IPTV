@@ -3,7 +3,7 @@
   "ENABLE_WEB_FETCH": true,
   "ENABLE_LOCAL_CHECK": true,
   "ENABLE_SPEED_CHECK": false,
-  "ENABLE_CACHE": true,
+  "ENABLE_CACHE": false,
   "MAX_WORKERS": 120,
   "FETCH_WORKERS": 20,
   "TIMEOUT_CN": 15,
