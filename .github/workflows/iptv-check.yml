@@ -1,4 +1,4 @@
-﻿name: IPTV Auto Check
+name: IPTV Auto Check
 on:
   schedule:
     - cron: '0 18 */2 * *'
@@ -51,31 +51,10 @@ jobs:
             echo "count=0" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Write Stage1 config (local only)
+      - name: Write Stage1 config
         run: |
           cat > config.json << 'EOF'
-          {
-            "ENABLE_WEB_CHECK": false,
-            "ENABLE_WEB_FETCH": false,
-            "ENABLE_LOCAL_CHECK": true,
-            "ENABLE_SPEED_CHECK": true,
-            "ENABLE_CACHE": true,
-            "MAX_WORKERS": 80,
-            "TIMEOUT_CN": 10,
-            "TIMEOUT_OVERSEAS": 20,
-            "RETRY_COUNT": 2,
-            "MAX_LINKS_PER_NAME": 3,
-            "FILTER_PRIVATE_IP": true,
-            "ENABLE_QUALITY_FILTER": true,
-            "MIN_QUALITY_SCORE": 15,
-            "MIN_SPEED_MBPS": 0.5,
-            "ENABLE_IPV6_OPTIMIZE": true,
-            "ENABLE_RESOLUTION_FILTER": true,
-            "MIN_WIDTH": 640,
-            "MIN_HEIGHT": 480,
-            "MAX_NEW_PLAYLISTS": 0,
-            "PLAYLIST_QUALITY_SCORE": true
-          }
+          {"ENABLE_WEB_CHECK": false, "ENABLE_WEB_FETCH": false, "ENABLE_LOCAL_CHECK": true, "ENABLE_SPEED_CHECK": true, "ENABLE_CACHE": true, "MAX_WORKERS": 80, "TIMEOUT_CN": 10, "TIMEOUT_OVERSEAS": 20, "RETRY_COUNT": 2, "MAX_LINKS_PER_NAME": 3, "FILTER_PRIVATE_IP": true, "ENABLE_QUALITY_FILTER": true, "MIN_QUALITY_SCORE": 15, "MIN_SPEED_MBPS": 0.5, "ENABLE_IPV6_OPTIMIZE": true, "ENABLE_RESOLUTION_FILTER": true, "MIN_WIDTH": 640, "MIN_HEIGHT": 480, "MAX_NEW_PLAYLISTS": 0, "PLAYLIST_QUALITY_SCORE": true}
           EOF
 
       - name: Run Stage1
@@ -86,39 +65,11 @@ jobs:
           echo "stage1_count=$STAGE1_COUNT" >> "$GITHUB_OUTPUT"
           echo "Stage1 result: $STAGE1_COUNT sources"
 
-      - name: Write Stage2 config (preset sources)
+      - name: Write Stage2 config
         if: ${{ fromJSON(steps.stage1.outputs.stage1_count) < 800 }}
         run: |
           cat > config.json << 'EOF'
-          {
-            "ENABLE_WEB_CHECK": true,
-            "ENABLE_WEB_FETCH": true,
-            "ENABLE_LOCAL_CHECK": true,
-            "ENABLE_SPEED_CHECK": true,
-            "ENABLE_CACHE": true,
-            "MAX_WORKERS": 100,
-            "TIMEOUT_CN": 10,
-            "TIMEOUT_OVERSEAS": 20,
-            "RETRY_COUNT": 2,
-            "MAX_LINKS_PER_NAME": 3,
-            "FILTER_PRIVATE_IP": true,
-            "ENABLE_QUALITY_FILTER": true,
-            "MIN_QUALITY_SCORE": 12,
-            "MIN_SPEED_MBPS": 0.5,
-            "ENABLE_IPV6_OPTIMIZE": true,
-            "ENABLE_RESOLUTION_FILTER": true,
-            "MIN_WIDTH": 640,
-            "MIN_HEIGHT": 480,
-            "MAX_NEW_PLAYLISTS": 50,
-            "PLAYLIST_QUALITY_SCORE": true,
-            "web_sources": [
-              "https://iptv-org.github.io/iptv/index.m3u",
-              "https://iptv-org.github.io/iptv/countries/cn.m3u",
-              "https://iptv-org.github.io/iptv/countries/tw.m3u",
-              "https://iptv-org.github.io/iptv/countries/hk.m3u",
-              "https://raw.githubusercontent.com/fanmingming/live/main/tv.m3u"
-            ]
-          }
+          {"ENABLE_WEB_CHECK": true, "ENABLE_WEB_FETCH": true, "ENABLE_LOCAL_CHECK": true, "ENABLE_SPEED_CHECK": true, "ENABLE_CACHE": true, "MAX_WORKERS": 100, "TIMEOUT_CN": 10, "TIMEOUT_OVERSEAS": 20, "RETRY_COUNT": 2, "MAX_LINKS_PER_NAME": 3, "FILTER_PRIVATE_IP": true, "ENABLE_QUALITY_FILTER": true, "MIN_QUALITY_SCORE": 12, "MIN_SPEED_MBPS": 0.5, "ENABLE_IPV6_OPTIMIZE": true, "ENABLE_RESOLUTION_FILTER": true, "MIN_WIDTH": 640, "MIN_HEIGHT": 480, "MAX_NEW_PLAYLISTS": 50, "PLAYLIST_QUALITY_SCORE": true, "web_sources": ["https://iptv-org.github.io/iptv/index.m3u", "https://iptv-org.github.io/iptv/countries/cn.m3u", "https://iptv-org.github.io/iptv/countries/tw.m3u", "https://iptv-org.github.io/iptv/countries/hk.m3u", "https://raw.githubusercontent.com/fanmingming/live/main/tv.m3u"]}
           EOF
 
       - name: Run Stage2
@@ -137,39 +88,11 @@ jobs:
           echo "stage2_count=${{ steps.stage1.outputs.stage1_count }}" >> "$GITHUB_OUTPUT"
           echo "Stage1 >= 800, skip Stage2"
 
-      - name: Write Stage3 config (async crawl)
+      - name: Write Stage3 config
         if: ${{ fromJSON(steps.stage2.outputs.stage2_count) < 800 }}
         run: |
           cat > config.json << 'EOF'
-          {
-            "ENABLE_WEB_CHECK": true,
-            "ENABLE_WEB_FETCH": true,
-            "ENABLE_LOCAL_CHECK": true,
-            "ENABLE_SPEED_CHECK": true,
-            "ENABLE_CACHE": true,
-            "MAX_WORKERS": 120,
-            "FETCH_WORKERS": 20,
-            "TIMEOUT_CN": 10,
-            "TIMEOUT_OVERSEAS": 20,
-            "RETRY_COUNT": 2,
-            "MAX_LINKS_PER_NAME": 3,
-            "FILTER_PRIVATE_IP": true,
-            "ENABLE_QUALITY_FILTER": true,
-            "MIN_QUALITY_SCORE": 10,
-            "MIN_SPEED_MBPS": 0.5,
-            "ENABLE_IPV6_OPTIMIZE": true,
-            "ENABLE_RESOLUTION_FILTER": true,
-            "MIN_WIDTH": 640,
-            "MIN_HEIGHT": 480,
-            "MAX_NEW_PLAYLISTS": 100,
-            "PLAYLIST_QUALITY_SCORE": true,
-            "web_sources": [
-              "https://iptv-org.github.io/iptv/index.m3u",
-              "https://iptv-org.github.io/iptv/countries/cn.m3u",
-              "https://iptv-org.github.io/iptv/countries/tw.m3u",
-              "https://live.hacks.tools/iptv/languages/zho.m3u"
-            ]
-          }
+          {"ENABLE_WEB_CHECK": true, "ENABLE_WEB_FETCH": true, "ENABLE_LOCAL_CHECK": true, "ENABLE_SPEED_CHECK": true, "ENABLE_CACHE": true, "MAX_WORKERS": 120, "FETCH_WORKERS": 20, "TIMEOUT_CN": 10, "TIMEOUT_OVERSEAS": 20, "RETRY_COUNT": 2, "MAX_LINKS_PER_NAME": 3, "FILTER_PRIVATE_IP": true, "ENABLE_QUALITY_FILTER": true, "MIN_QUALITY_SCORE": 10, "MIN_SPEED_MBPS": 0.5, "ENABLE_IPV6_OPTIMIZE": true, "ENABLE_RESOLUTION_FILTER": true, "MIN_WIDTH": 640, "MIN_HEIGHT": 480, "MAX_NEW_PLAYLISTS": 100, "PLAYLIST_QUALITY_SCORE": true, "web_sources": ["https://iptv-org.github.io/iptv/index.m3u", "https://iptv-org.github.io/iptv/countries/cn.m3u", "https://iptv-org.github.io/iptv/countries/tw.m3u", "https://live.hacks.tools/iptv/languages/zho.m3u"]}
           EOF
 
       - name: Run Stage3
@@ -199,43 +122,10 @@ jobs:
 
       - name: Stage4 skip
         if: ${{ fromJSON(steps.stage3.outputs.stage3_count) >= 800 }}
-        run: |
-          echo "stage4_count=${{ steps.stage3.outputs.stage3_count }}" >> "$GITHUB_OUTPUT"
-          echo "Stage3 >= 800, skip Stage4"
+        run: echo "stage4_count=${{ steps.stage3.outputs.stage3_count }}" >> "$GITHUB_OUTPUT"
 
-      - name: Post-process (dedup + Chinese priority)
-        run: |
-          cat > /tmp/post.py << 'ENDPY'
-import os
-if not os.path.exists('live_ok.txt'): 
-    print("No file")
-    exit(0)
-with open('live_ok.txt', 'r', encoding='utf-8') as f:
-    lines = [l.strip() for l in f if ',' in l.strip()]
-# Dedupe: max 3 sources per channel name
-channels = {}
-for line in lines:
-    parts = line.split(',', 1)
-    if len(parts) != 2: continue
-    name, url = parts
-    name = name.strip()
-    if name not in channels: channels[name] = []
-    if len(channels[name]) < 3: channels[name].append((name, url))
-# Chinese priority
-def chinese_priority(name):
-    cn_kw = ['CCTV', 'TVB', 'ATV', 'News', 'Sports', 'Kids', 'Movie', 'Drama',
-             'Beijing', 'Shanghai', 'Guangdong', 'Zhejiang', 'Jiangsu', 'Hunan',
-             'Taiwan', 'Hong Kong', 'Macau']
-    for kw in cn_kw:
-        if kw.lower() in name.lower(): return 0
-    return 1
-all_sources = [(chinese_priority(n), n, u) for n, urls in channels.items() for n, u in urls]
-all_sources.sort(key=lambda x: (x[0], x[1]))
-with open('live_ok.txt', 'w', encoding='utf-8') as f:
-    for _, n, u in all_sources[:2000]: f.write(f'{n},{u}\n')
-print(f'Post-process: {len(all_sources[:2000])} sources (Chinese: {sum(1 for x in all_sources[:2000] if x[0]==0)})')
-ENDPY
-          python3 /tmp/post.py
+      - name: Post-process
+        run: python scripts/post_process.py
 
       - name: Limit to 2000
         id: limit_check
@@ -249,20 +139,7 @@ ENDPY
           fi
 
       - name: Generate M3U
-        run: |
-          cat > /tmp/m3u.py << 'ENDPY'
-import os
-if os.path.exists('live_ok.txt'):
-    with open('live_ok.txt','r',encoding='utf-8') as f:
-        lines=[l.strip() for l in f if ',' in l]
-    with open('live_ok.m3u','w',encoding='utf-8') as f:
-        f.write('#EXTM3U\n\n')
-        for line in lines:
-            parts=line.split(',',1)
-            if len(parts)==2: f.write(f'#EXTINF:-1 tvg-name="{parts[0]}",{parts[0]}\n{parts[1]}\n')
-    print('M3U done')
-ENDPY
-          python3 /tmp/m3u.py
+        run: python scripts/generate_m3u.py
 
       - name: Commit and push
         if: success()
@@ -291,33 +168,7 @@ ENDPY
       - name: Sync to Gist
         env:
           GH_TOKEN: ${{ secrets.GIST_TOKEN }}
-        run: |
-          cat > /tmp/gist.py << 'ENDPY'
-import os, requests
-if os.path.exists('live_ok.txt'):
-    with open('live_ok.txt','r',encoding='utf-8') as f: c = f.read()
-    cnt = len([l for l in c.splitlines() if l.strip()])
-    r = requests.patch('https://api.github.com/gists/dc272a4f2e95ffbd41e7e31d27ef3d76',
-        headers={'Authorization': 'token ' + os.environ['GH_TOKEN'], 'Content-Type': 'application/json'},
-        json={'description': 'IPTV | {} sources'.format(cnt), 'files': {'IPTV.txt': {'content': c}}})
-    print('Gist: {} sources'.format(cnt) if r.status_code == 200 else 'Failed')
-ENDPY
-          python3 /tmp/gist.py
+        run: python scripts/sync_to_gist.py
 
       - name: Wait cache
         run: sleep 30
-
-      - name: Create Release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          cat > /tmp/release.py << 'ENDPY'
-import os, requests
-tag = 'v' + str(os.environ.get('GITHUB_RUN_ID', 'manual'))
-cnt = os.environ.get('FINAL_COUNT', '0')
-r = requests.post('https://api.github.com/repos/litywang/IPTV/releases',
-    headers={'Authorization': 'token ' + os.environ['GH_TOKEN'], 'Content-Type': 'application/json'},
-    json={'tag_name': tag, 'name': 'IPTV ' + tag, 'body': 'Auto | {} sources'.format(cnt), 'draft': False})
-print('Release:', tag)
-ENDPY
-          python3 /tmp/release.py
