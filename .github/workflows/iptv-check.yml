@@ -70,13 +70,13 @@ jobs:
       - name: Generate M3U
         run: python scripts/generate_m3u.py
 
-      - name: Limit to 2000 sources
+      - name: Limit to 2500 sources
         id: finalize
         run: |
           if [ -f live_ok.txt ]; then
             count=$(wc -l < live_ok.txt | tr -d ' ')
-            if [ "$count" -gt 2000 ]; then
-              head -n 2000 live_ok.txt > live_ok_temp.txt && mv live_ok_temp.txt live_ok.txt
+            if [ "$count" -gt 2500 ]; then
+              head -n 2500 live_ok.txt > live_ok_temp.txt && mv live_ok_temp.txt live_ok.txt
               python scripts/generate_m3u.py
             fi
             final=$(wc -l < live_ok.txt | tr -d ' ')

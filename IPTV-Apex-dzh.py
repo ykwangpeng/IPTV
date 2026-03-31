@@ -68,6 +68,9 @@ class Config:
     # 异步爬虫质量控制 
     MAX_NEW_PLAYLISTS      = 200           # 最多只拉取多少个新播放列表（强烈建议别超过500）
     PLAYLIST_QUALITY_SCORE = True         # 是否启用域名质量评分
+    SKIP_WEB_VALIDATE    = True          # 跳过预置源的 HTTP 验证（美国服务器境内源超时问题）
+    MAX_SOURCES_TO_CHECK = 15000         # 待检测源数量上限
+    MAX_OUTPUT_SOURCES   = 2500          # 最终输出源数量上限
 
     # 性能与超时配置
     MAX_WORKERS         = 120     # 直播源检测的最大并发线程数
@@ -1001,7 +1004,11 @@ class AsyncWebSourceCrawler:
                     return
                 async with semaphore:
                     try:
-                        if await self.quick_validate(source, timeout=2.0):
+                        # 跳过 HTTP 验证，直接加入待测列表（解决美国服务器境内源超时问题）
+                        if Config.SKIP_WEB_VALIDATE:
+                            valid_sources.add(source)
+                            self.all_extracted.add(source)
+                        elif await self.quick_validate(source, timeout=2.0):
                             valid_sources.add(source)
                             self.all_extracted.add(source)
                     except Exception:
@@ -1514,6 +1521,11 @@ class IPTVChecker:
             for urls in domain_lines.values():
                 lines_to_check.extend(urls[:Config.MAX_SOURCES_PER_DOMAIN])
 
+        # 源数量限制（解决输入量过大问题）
+        if Config.MAX_SOURCES_TO_CHECK > 0 and len(lines_to_check) > Config.MAX_SOURCES_TO_CHECK:
+            self.logger.info(f"⚠️ 待测源数量 {len(lines_to_check)} 超过上限 {Config.MAX_SOURCES_TO_CHECK}，截断")
+            lines_to_check = lines_to_check[:Config.MAX_SOURCES_TO_CHECK]
+
         total = len(lines_to_check)
         if total == 0:
             self.logger.warning("⚠️ 没有可检测的直播源，程序退出")
@@ -1645,10 +1657,16 @@ class IPTVChecker:
         output_path = Path(output_file)
         tmp_path    = output_path.with_suffix('.tmp')
         total_written = 0
+        output_limit = getattr(Config, 'MAX_OUTPUT_SOURCES', 0)  # 输出上限（0=不限制）
 
         try:
             with open(tmp_path, 'w', encoding='utf-8') as f:
                 for cat in Config.CATEGORY_ORDER:
+                    # 输出上限检查
+                    if output_limit > 0 and total_written >= output_limit:
+                        self.logger.info(f"⚠️ 已达输出上限 {output_limit} 条，停止写入")
+                        break
+                    
                     channels = cat_map.get(cat, [])
 
                     # Fix #5: 分组同时完成质量过滤（db版：低质量源进降级保底池）
@@ -1770,6 +1788,19 @@ class IPTVChecker:
         sorted_channels = sorted(channels, key=lambda x: x['quality'], reverse=True)[:max_links]
         for ch in sorted_channels:
             f.write(f"{ch['name']},{ch['url']}\n")
+
+    def _write_channel_with_limit(self, f, channels: List[Dict], max_links: int, current_count: int, limit: int) -> int:
+        """写入单个频道并返回新增数量，支持全局上限"""
+        if not channels or (limit > 0 and current_count >= limit):
+            return 0
+        sorted_channels = sorted(channels, key=lambda x: x['quality'], reverse=True)[:max_links]
+        written = 0
+        for ch in sorted_channels:
+            if limit > 0 and current_count + written >= limit:
+                break
+            f.write(f"{ch['name']},{ch['url']}\n")
+            written += 1
+        return written
 
 # ==================== 命令行入口 ====================
 def main():

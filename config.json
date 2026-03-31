@@ -41,5 +41,8 @@
     "https://iptv-org.github.io/iptv/index.m3u",
     "https://raw.githubusercontent.com/iptv-org/iptv/countries/cn.m3u",
     "https://live.hacks.tools/iptv/languages/zho.m3u"
-  ]
+  ],
+  "SKIP_WEB_VALIDATE": true,
+  "MAX_SOURCES_TO_CHECK": 15000,
+  "MAX_OUTPUT_SOURCES": 2500
 }
