@@ -47,7 +47,8 @@ jobs:
 
       - name: Stage 1: Local sources only
         id: stage1
-        run: python3 << 'PYEOF'
+        run: |
+          cat > /tmp/stage1.py << 'ENDPY'
 import json
 config = {
     "ENABLE_WEB_CHECK": False,
@@ -72,11 +73,8 @@ config = {
 with open('config.json', 'w') as f:
     json.dump(config, f, indent=2)
 print("Stage 1 config written")
-PYEOF
-
-      - name: Run Stage 1
-        run: |
-          echo "Running Stage 1: local sources only"
+ENDPY
+          python3 /tmp/stage1.py
           python IPTV-Apex-dzh.py 2>&1 | tee stage1.log
           STAGE1_COUNT=$(wc -l < live_ok.txt 2>/dev/null | tr -d ' ' || echo 0)
           echo "stage1_count=$STAGE1_COUNT" >> "$GITHUB_OUTPUT"
@@ -87,8 +85,7 @@ PYEOF
         run: |
           STAGE1=${{ steps.stage1.outputs.stage1_count }}
           if [ "$STAGE1" -lt 800 ]; then
-            echo "Running Stage 2: adding preset sources"
-            python3 << 'PYEOF'
+            cat > /tmp/stage2.py << 'ENDPY'
 import json
 config = {
     "ENABLE_WEB_CHECK": True,
@@ -122,7 +119,8 @@ config = {
 with open('config.json', 'w') as f:
     json.dump(config, f, indent=2)
 print("Stage 2 config written")
-PYEOF
+ENDPY
+            python3 /tmp/stage2.py
             python IPTV-Apex-dzh.py 2>&1 | tee stage2.log
             STAGE2_COUNT=$(wc -l < live_ok.txt 2>/dev/null | tr -d ' ' || echo 0)
             echo "stage2_count=$STAGE2_COUNT" >> "$GITHUB_OUTPUT"
@@ -136,8 +134,7 @@ PYEOF
         run: |
           STAGE2=${{ steps.stage2.outputs.stage2_count }}
           if [ "$STAGE2" -lt 800 ]; then
-            echo "Running Stage 3: async crawl"
-            python3 << 'PYEOF'
+            cat > /tmp/stage3.py << 'ENDPY'
 import json
 config = {
     "ENABLE_WEB_CHECK": True,
@@ -175,7 +172,8 @@ config = {
 with open('config.json', 'w') as f:
     json.dump(config, f, indent=2)
 print("Stage 3 config written")
-PYEOF
+ENDPY
+            python3 /tmp/stage3.py
             python IPTV-Apex-dzh.py --async-crawl 2>&1 | tee stage3.log
             STAGE3_COUNT=$(wc -l < live_ok.txt 2>/dev/null | tr -d ' ' || echo 0)
             echo "stage3_count=$STAGE3_COUNT" >> "$GITHUB_OUTPUT"
@@ -189,7 +187,6 @@ PYEOF
         run: |
           STAGE3=${{ steps.stage3.outputs.stage3_count }}
           if [ "$STAGE3" -lt 800 ]; then
-            echo "Running Stage 4: auto1000"
             python auto1000.py 2>&1 | tee stage4.log
             STAGE4_COUNT=$(wc -l < live_ok.txt 2>/dev/null | tr -d ' ' || echo 0)
             echo "stage4_count=$STAGE4_COUNT" >> "$GITHUB_OUTPUT"
@@ -199,16 +196,14 @@ PYEOF
           fi
 
       - name: Post-process: Chinese priority + dedup
-        run: python3 << 'PYEOF'
+        run: |
+          cat > /tmp/postprocess.py << 'ENDPY'
 import os
 if not os.path.exists('live_ok.txt'):
     print("No source file")
     exit(0)
-
 with open('live_ok.txt', 'r', encoding='utf-8') as f:
     lines = [l.strip() for l in f if ',' in l.strip()]
-
-# Dedupe: max 3 sources per channel
 channels = {}
 for line in lines:
     parts = line.split(',', 1)
@@ -220,33 +215,25 @@ for line in lines:
         channels[name] = []
     if len(channels[name]) < 3:
         channels[name].append((name, url))
-
-# Chinese priority
 def chinese_priority(name):
-    cn_kw = ['CCTV', 'TVB', 'ATV', 'News', 'Sports', 'Kids', 'Movie', 'Drama',
-             'Beijing', 'Shanghai', 'Guangdong', 'Zhejiang', 'Jiangsu', 'Hunan']
+    cn_kw = ['CCTV', 'TVB', 'ATV', 'News', 'Sports', 'Kids', 'Movie', 'Drama']
     for kw in cn_kw:
         if kw.lower() in name.lower():
             return 0
     return 1
-
 all_sources = []
 for name, urls in channels.items():
     for name2, url in urls:
         all_sources.append((chinese_priority(name2), name2, url))
-
 all_sources.sort(key=lambda x: (x[0], x[1]))
-
-# Limit to 2000
 MAX = 2000
 final = all_sources[:MAX]
-
 with open('live_ok.txt', 'w', encoding='utf-8') as f:
     for _, name, url in final:
         f.write(f"{name},{url}\n")
-
-print(f"Final: {len(final)} sources, Chinese: {sum(1 for x in final if x[0]==0)}")
-PYEOF
+print(f"Final: {len(final)} sources")
+ENDPY
+          python3 /tmp/postprocess.py
 
       - name: Limit to 2000
         id: limit_check
@@ -254,7 +241,6 @@ PYEOF
           MAX_SOURCES=2000
           if [ -f live_ok.txt ]; then
             count=$(wc -l < live_ok.txt | tr -d ' ')
-            echo "Current: $count sources"
             if [ "$count" -gt "$MAX_SOURCES" ]; then
               head -n $MAX_SOURCES live_ok.txt > live_ok_temp.txt
               mv live_ok_temp.txt live_ok.txt
@@ -265,7 +251,9 @@ PYEOF
           fi
 
       - name: Generate M3U
-        run: python3 << 'PYEOF'
+        run: |
+          if [ -f live_ok.txt ]; then
+            python3 << 'ENDPY'
 import os
 if os.path.exists('live_ok.txt'):
     with open('live_ok.txt','r',encoding='utf-8') as f:
@@ -277,8 +265,9 @@ if os.path.exists('live_ok.txt'):
             if len(parts)==2:
                 name,url=parts
                 f.write(f'#EXTINF:-1 tvg-name="{name}",{name}\n{url}\n')
-    print(f'M3U: {len(lines)} channels')
-PYEOF
+    print('M3U: {} channels'.format(len(lines)))
+ENDPY
+          fi
 
       - name: Commit and push
         if: success()
@@ -288,10 +277,8 @@ PYEOF
           git add live_ok.txt live_ok.m3u config*.json .iptv_stats.json .iptv_cache.json 2>/dev/null || true
           if ! git diff --staged --quiet; then
             count=$(wc -l < live_ok.txt 2>/dev/null | tr -d ' ' || echo 0)
-            git commit -m "chore: auto-update $(date +'%Y-%m-%d %H:%M') sources=${count}"
+            git commit -m "chore: auto-update sources=${count}"
             git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:master
-          else
-            echo "No changes"
           fi
 
   sync-to-gist:
@@ -308,29 +295,21 @@ PYEOF
       - name: Sync to Gist
         env:
           GH_TOKEN: ${{ secrets.GIST_TOKEN }}
-        run: python3 << 'PYEOF'
-import os
-import requests
-if os.path.exists('live_ok.txt'):
-    with open('live_ok.txt','r',encoding='utf-8') as f:
-        content = f.read()
-    cnt = len([l for l in content.splitlines() if l.strip()])
-    gist_id = 'dc272a4f2e95ffbd41e7e31d27ef3d76'
-    url = 'https://api.github.com/gists/' + gist_id
-    headers = {
-        'Authorization': 'token ' + os.environ['GH_TOKEN'],
-        'Content-Type': 'application/json'
-    }
-    payload = {
-        'description': 'IPTV | {} sources'.format(cnt),
-        'files': {'IPTV.txt': {'content': content}}
-    }
-    r = requests.patch(url, headers=headers, json=payload)
-    if r.status_code == 200:
-        print('Gist synced: {} sources'.format(cnt))
-    else:
-        print('Gist failed:', r.status_code, r.text[:200])
-PYEOF
+        run: |
+          if [ -f live_ok.txt ]; then
+            python3 << 'ENDPY'
+import os, requests
+with open('live_ok.txt','r',encoding='utf-8') as f:
+    content = f.read()
+cnt = len([l for l in content.splitlines() if l.strip()])
+gist_id = 'dc272a4f2e95ffbd41e7e31d27ef3d76'
+url = 'https://api.github.com/gists/' + gist_id
+headers = {'Authorization': 'token ' + os.environ['GH_TOKEN'], 'Content-Type': 'application/json'}
+payload = {'description': 'IPTV | {} sources'.format(cnt), 'files': {'IPTV.txt': {'content': content}}}
+r = requests.patch(url, headers=headers, json=payload)
+print('Gist: {} sources'.format(cnt) if r.status_code == 200 else 'Gist failed')
+ENDPY
+          fi
 
       - name: Wait cache
         run: sleep 30
@@ -338,16 +317,14 @@ PYEOF
       - name: Create Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python3 << 'PYEOF'
-import os
-import requests
-tag = "v" + os.environ.get('GITHUB_RUN_ID', 'manual')
+        run: python3 << 'ENDPY'
+import os, requests
+tag = "v" + str(os.environ.get('GITHUB_RUN_ID', 'manual'))
 repo = 'litywang/IPTV'
 cnt = os.environ.get('FINAL_COUNT', '0')
-body = 'Auto update | {} sources\n\nURL: https://raw.githubusercontent.com/{}/master/live_ok.txt'.format(cnt, repo)
 url = 'https://api.github.com/repos/' + repo + '/releases'
 headers = {'Authorization': 'token ' + os.environ['GH_TOKEN'], 'Content-Type': 'application/json'}
-payload = {'tag_name': tag, 'name': 'IPTV ' + tag, 'body': body, 'draft': False}
+payload = {'tag_name': tag, 'name': 'IPTV ' + tag, 'body': 'Auto | {} sources'.format(cnt), 'draft': False}
 r = requests.post(url, headers=headers, json=payload)
-print('Release:', tag, 'sources:', cnt)
-PYEOF
+print('Release:', tag)
+ENDPY
