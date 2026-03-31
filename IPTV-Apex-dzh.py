@@ -178,7 +178,7 @@ class Config:
 
     # 频道分类顺序（db版：增加4K專區、音樂頻道）
     CATEGORY_ORDER = [
-        "4K 專區", "新聞資訊", "央衛頻道", "衛視綜藝", "港澳台頻", "體育賽事",
+        "4K 專區", "新聞資訊", "央視頻道", "衛視綜藝", "港澳台頻", "體育賽事",
         "少兒動漫", "音樂頻道", "影視劇集", "其他頻道"
     ]
 
@@ -186,7 +186,7 @@ class Config:
     CATEGORY_RULES_COMPILED: Dict = {}
     CATEGORY_RULES = {
         "4K 專區": ["4K", "8K", "UHD", "ULTRAHD", "2160", "超高清", "HDR", "杜比视界"],
-        "央衛頻道": ["CCTV1", "CCTV2", "CCTV3", "CCTV4", "CCTV5", "CCTV6", "CCTV7",
+        "央視頻道": ["CCTV1", "CCTV2", "CCTV3", "CCTV4", "CCTV5", "CCTV6", "CCTV7",
                       "CCTV8", "CCTV9", "CCTV10", "CCTV11", "CCTV12", "CCTV14",
                       "CCTV15", "CCTV16", "CCTV17", "CCTV18", "CCTV4K", "CCTV8K",
                       "中央", "央视", "CETV", "中国教育", "兵团", "农林"],
@@ -1670,8 +1670,8 @@ class IPTVChecker:
                     f.write(f"{cat},#genre#\n")
                     total_written += total_channels_in_cat
 
-                    # 央衛頻道特殊排序
-                    if cat == "央衛頻道":
+                    # 央視頻道特殊排序
+                    if cat == "央視頻道":
                         # 第一梯队：CCTV1-17（含 CCTV5+）
                         cctv_1_to_17 = []
                         # 第二梯队：其他 CCTV 数字台（CCTV18+，非1-17）
