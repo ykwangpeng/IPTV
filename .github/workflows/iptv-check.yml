@@ -1,4 +1,4 @@
-name: IPTV Auto Check
+﻿name: IPTV Auto Check
 on:
   schedule:
     - cron: '0 18 */2 * *'
@@ -87,7 +87,7 @@ jobs:
           echo "Stage1 result: $STAGE1_COUNT sources"
 
       - name: Write Stage2 config (preset sources)
-        if: ${{ fromJson(steps.stage1.outputs.stage1_count) < 800 }}
+        if: ${{ fromJSON(steps.stage1.outputs.stage1_count) < 800 }}
         run: |
           cat > config.json << 'EOF'
           {
@@ -123,7 +123,7 @@ jobs:
 
       - name: Run Stage2
         id: stage2
-        if: ${{ fromJson(steps.stage1.outputs.stage1_count) < 800 }}
+        if: ${{ fromJSON(steps.stage1.outputs.stage1_count) < 800 }}
         run: |
           python IPTV-Apex-dzh.py 2>&1 | tee stage2.log
           STAGE2_COUNT=$(wc -l < live_ok.txt 2>/dev/null | tr -d ' ' || echo 0)
@@ -132,13 +132,13 @@ jobs:
 
       - name: Stage2 skip
         id: stage2_skip
-        if: ${{ fromJson(steps.stage1.outputs.stage1_count) >= 800 }}
+        if: ${{ fromJSON(steps.stage1.outputs.stage1_count) >= 800 }}
         run: |
           echo "stage2_count=${{ steps.stage1.outputs.stage1_count }}" >> "$GITHUB_OUTPUT"
           echo "Stage1 >= 800, skip Stage2"
 
       - name: Write Stage3 config (async crawl)
-        if: ${{ fromJson(steps.stage2.outputs.stage2_count) < 800 }}
+        if: ${{ fromJSON(steps.stage2.outputs.stage2_count) < 800 }}
         run: |
           cat > config.json << 'EOF'
           {
@@ -174,7 +174,7 @@ jobs:
 
       - name: Run Stage3
         id: stage3
-        if: ${{ fromJson(steps.stage2.outputs.stage2_count) < 800 }}
+        if: ${{ fromJSON(steps.stage2.outputs.stage2_count) < 800 }}
         run: |
           python IPTV-Apex-dzh.py --async-crawl 2>&1 | tee stage3.log
           STAGE3_COUNT=$(wc -l < live_ok.txt 2>/dev/null | tr -d ' ' || echo 0)
@@ -183,14 +183,14 @@ jobs:
 
       - name: Stage3 skip
         id: stage3_skip
-        if: ${{ fromJson(steps.stage2.outputs.stage2_count) >= 800 }}
+        if: ${{ fromJSON(steps.stage2.outputs.stage2_count) >= 800 }}
         run: |
           echo "stage3_count=${{ steps.stage2.outputs.stage2_count }}" >> "$GITHUB_OUTPUT"
           echo "Stage2 >= 800, skip Stage3"
 
       - name: Run Stage4
         id: stage4
-        if: ${{ fromJson(steps.stage3.outputs.stage3_count) < 800 }}
+        if: ${{ fromJSON(steps.stage3.outputs.stage3_count) < 800 }}
         run: |
           python auto1000.py 2>&1 | tee stage4.log
           STAGE4_COUNT=$(wc -l < live_ok.txt 2>/dev/null | tr -d ' ' || echo 0)
@@ -198,7 +198,7 @@ jobs:
           echo "Stage4 result: $STAGE4_COUNT sources"
 
       - name: Stage4 skip
-        if: ${{ fromJson(steps.stage3.outputs.stage3_count) >= 800 }}
+        if: ${{ fromJSON(steps.stage3.outputs.stage3_count) >= 800 }}
         run: |
           echo "stage4_count=${{ steps.stage3.outputs.stage3_count }}" >> "$GITHUB_OUTPUT"
           echo "Stage3 >= 800, skip Stage4"
