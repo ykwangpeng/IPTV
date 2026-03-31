@@ -1,20 +1,40 @@
 #EXTM3U
 
-#EXTINF:-1 tvg-name="TVB明珠",TVB明珠
-http://mytv.cdn.loc.cc/o12.php?id=mzt\r
-#EXTINF:-1 tvg-name="TVB翡翠",TVB翡翠
-http://mytv.cdn.loc.cc/o12.php?id=fct\r
-#EXTINF:-1 tvg-name="AXN",AXN
-http://tl.061833.xyz/tl/axn
-#EXTINF:-1 tvg-name="KIX韩综",KIX韩综
-http://tl.061833.xyz/tl/kix
-#EXTINF:-1 tvg-name="ROCK娱乐",ROCK娱乐
-http://tl.061833.xyz/tl/rockaction
-#EXTINF:-1 tvg-name="国家地理",国家地理
-http://tl.061833.xyz/tl/lovenaturehd
-#EXTINF:-1 tvg-name="无线粤片",无线粤片
-http://tl.061833.xyz/tl/null-10
-#EXTINF:-1 tvg-name="无线综合",无线综合
-http://tl.061833.xyz/tl/mytvsuperfree
+#EXTINF:-1 tvg-name="CCTV1",CCTV1
+http://223.105.252.60/PLTV/4/224/3221228581/index.m3u8?servicetype=1
+#EXTINF:-1 tvg-name="CCTV164K",CCTV164K
+http://223.105.252.59/PLTV/4/224/3221228314/index.m3u8?servicetype=1
+#EXTINF:-1 tvg-name="CCTV4K4K",CCTV4K4K
+http://223.105.252.60/PLTV/4/224/3221228228/index.m3u8?servicetype=1
+#EXTINF:-1 tvg-name="CCTV6",CCTV6
+http://27.41.245.32:801/hls/6/index.m3u8
+#EXTINF:-1 tvg-name="CCTV8",CCTV8
+http://223.105.252.57/PLTV/3/224/3221228165/index.m3u8?servicetype=1
+#EXTINF:-1 tvg-name="4K 專區",4K 專區
+#genre#
+#EXTINF:-1 tvg-name="CHC家庭影院",CHC家庭影院
+http://27.41.245.32:801/hls/905/index.m3u8
+#EXTINF:-1 tvg-name="CHC家庭影院",CHC家庭影院
+http://148.135.93.213:81/live.php?id=CHC家庭影院
+#EXTINF:-1 tvg-name="CHC影迷电影",CHC影迷电影
+http://148.135.93.213:81/live.php?id=CHC影迷电影
+#EXTINF:-1 tvg-name="NOW体育",NOW体育
+http://109.61.81.35:443/767/mpegts?token=1d8c18a3d377f5418d2501aa54082b60
+#EXTINF:-1 tvg-name="中视",中视
+http://114.34.191.36:8502/.m3u8
+#EXTINF:-1 tvg-name="凤凰电影",凤凰电影
+http://122.224.58.42:85/tsfile/live/1022_1.m3u8?key=txiptv&playlive=1&authid=0
+#EXTINF:-1 tvg-name="凤凰电影",凤凰电影
+https://tv.bfsu.edu.cn/hls/fhdy.m3u8
+#EXTINF:-1 tvg-name="台视",台视
+http://114.34.191.36:8503/.m3u8
+#EXTINF:-1 tvg-name="央視頻道",央視頻道
+#genre#
+#EXTINF:-1 tvg-name="影視劇集",影視劇集
+#genre#
+#EXTINF:-1 tvg-name="浙江卫视4K",浙江卫视4K
+https://migu.188766.xyz/?migutoken=3c3cfb5d86d8b3d7a761f44948c43079&id=%E6%B5%99%E6%B1%9F%E5%8D%AB%E8%A7%864K&pp=1
 #EXTINF:-1 tvg-name="港澳台頻",港澳台頻
 #genre#
+#EXTINF:-1 tvg-name="湖南卫视4K",湖南卫视4K
+https://migu.188766.xyz/?migutoken=c710d282c030c9c3eb98ae9c6387fdcf&id=%E6%B9%96%E5%8D%97%E5%8D%AB%E8%A7%864K&pp=1
