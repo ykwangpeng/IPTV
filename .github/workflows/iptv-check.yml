@@ -56,34 +56,6 @@ jobs:
           key: iptv-cache-${{ github.run_number }}
           restore-keys: iptv-cache-
 
-      - name: Create optimized config
-        run: |
-          cat > config.json << 'EOF'
-          {
-            "ENABLE_WEB_CHECK": true,
-            "ENABLE_WEB_FETCH": false,
-            "ENABLE_LOCAL_CHECK": true,
-            "ENABLE_SPEED_CHECK": true,
-            "ENABLE_CACHE": true,
-            "MAX_WORKERS": 100,
-            "TIMEOUT_CN": 8,
-            "TIMEOUT_OVERSEAS": 15,
-            "MAX_LINKS_PER_NAME": 3,
-            "ENABLE_QUALITY_FILTER": true,
-            "MIN_QUALITY_SCORE": 10,
-            "MIN_SPEED_MBPS": 0.3,
-            "ENABLE_IPV6_OPTIMIZE": true,
-            "web_sources": [
-              "https://iptv-org.github.io/iptv/index.m3u",
-              "https://iptv-org.github.io/iptv/countries/cn.m3u",
-              "https://iptv-org.github.io/iptv/countries/tw.m3u",
-              "https://iptv-org.github.io/iptv/countries/hk.m3u",
-              "https://raw.githubusercontent.com/fanmingming/live/main/tv.m3u",
-              "https://raw.githubusercontent.com/Guovin/iptv-api/gd/output/result.txt"
-            ]
-          }
-          EOF
-
       - name: Run IPTV check
         id: check
         run: |
