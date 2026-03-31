@@ -1,4 +1,5 @@
 name: IPTV Auto Check
+
 on:
   schedule:
     - cron: '0 18 */2 * *'
@@ -6,153 +7,128 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'paste.txt'
+      - 'config.json'
+
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   iptv-check:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     outputs:
-      final_count: ${{ steps.limit_check.outputs.final_count }}
+      final_count: ${{ steps.finalize.outputs.count }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          lfs: false
-          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
-
-      - name: Cache pip packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-iptv-v1
-          restore-keys: |
-            ${{ runner.os }}-pip-
+          python-version: '3.11'
+          cache: 'pip'
 
       - name: Install dependencies
         run: pip install requests httpx zhconv tqdm m3u8
 
       - name: Install FFmpeg
-        run: sudo apt-get update -qq && sudo apt-get install -y ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
 
-      - name: Pre-check existing sources
-        id: pre_check
-        run: |
-          if [ -f live_ok.txt ]; then
-            count=$(wc -l < live_ok.txt | tr -d ' ')
-            echo "count=$count" >> "$GITHUB_OUTPUT"
-          else
-            echo "count=0" >> "$GITHUB_OUTPUT"
-          fi
+      - name: Cache IPTV results
+        uses: actions/cache@v4
+        with:
+          path: |
+            .iptv_cache.json
+            .iptv_stats.json
+          key: iptv-cache-${{ github.run_number }}
+          restore-keys: iptv-cache-
 
-      - name: Write Stage1 config
-        run: |
-          cat > config.json << 'EOF'
-          {"ENABLE_WEB_CHECK": false, "ENABLE_WEB_FETCH": false, "ENABLE_LOCAL_CHECK": true, "ENABLE_SPEED_CHECK": true, "ENABLE_CACHE": true, "MAX_WORKERS": 80, "TIMEOUT_CN": 10, "TIMEOUT_OVERSEAS": 20, "RETRY_COUNT": 2, "MAX_LINKS_PER_NAME": 3, "FILTER_PRIVATE_IP": true, "ENABLE_QUALITY_FILTER": true, "MIN_QUALITY_SCORE": 15, "MIN_SPEED_MBPS": 0.5, "ENABLE_IPV6_OPTIMIZE": true, "ENABLE_RESOLUTION_FILTER": true, "MIN_WIDTH": 640, "MIN_HEIGHT": 480, "MAX_NEW_PLAYLISTS": 0, "PLAYLIST_QUALITY_SCORE": true}
-          EOF
-
-      - name: Run Stage1
-        id: stage1
-        run: |
-          python IPTV-Apex-dzh.py 2>&1 | tee stage1.log
-          STAGE1_COUNT=$(wc -l < live_ok.txt 2>/dev/null | tr -d ' ' || echo 0)
-          echo "stage1_count=$STAGE1_COUNT" >> "$GITHUB_OUTPUT"
-          echo "Stage1 result: $STAGE1_COUNT sources"
-
-      - name: Write Stage2 config
-        if: ${{ fromJSON(steps.stage1.outputs.stage1_count) < 800 }}
+      - name: Create optimized config
         run: |
           cat > config.json << 'EOF'
-          {"ENABLE_WEB_CHECK": true, "ENABLE_WEB_FETCH": true, "ENABLE_LOCAL_CHECK": true, "ENABLE_SPEED_CHECK": true, "ENABLE_CACHE": true, "MAX_WORKERS": 100, "TIMEOUT_CN": 10, "TIMEOUT_OVERSEAS": 20, "RETRY_COUNT": 2, "MAX_LINKS_PER_NAME": 3, "FILTER_PRIVATE_IP": true, "ENABLE_QUALITY_FILTER": true, "MIN_QUALITY_SCORE": 12, "MIN_SPEED_MBPS": 0.5, "ENABLE_IPV6_OPTIMIZE": true, "ENABLE_RESOLUTION_FILTER": true, "MIN_WIDTH": 640, "MIN_HEIGHT": 480, "MAX_NEW_PLAYLISTS": 50, "PLAYLIST_QUALITY_SCORE": true, "web_sources": ["https://iptv-org.github.io/iptv/index.m3u", "https://iptv-org.github.io/iptv/countries/cn.m3u", "https://iptv-org.github.io/iptv/countries/tw.m3u", "https://iptv-org.github.io/iptv/countries/hk.m3u", "https://raw.githubusercontent.com/fanmingming/live/main/tv.m3u"]}
+          {
+            "ENABLE_WEB_CHECK": true,
+            "ENABLE_WEB_FETCH": false,
+            "ENABLE_LOCAL_CHECK": true,
+            "ENABLE_SPEED_CHECK": true,
+            "ENABLE_CACHE": true,
+            "MAX_WORKERS": 100,
+            "TIMEOUT_CN": 8,
+            "TIMEOUT_OVERSEAS": 15,
+            "MAX_LINKS_PER_NAME": 3,
+            "ENABLE_QUALITY_FILTER": true,
+            "MIN_QUALITY_SCORE": 10,
+            "MIN_SPEED_MBPS": 0.3,
+            "ENABLE_IPV6_OPTIMIZE": true,
+            "web_sources": [
+              "https://iptv-org.github.io/iptv/index.m3u",
+              "https://iptv-org.github.io/iptv/countries/cn.m3u",
+              "https://iptv-org.github.io/iptv/countries/tw.m3u",
+              "https://iptv-org.github.io/iptv/countries/hk.m3u",
+              "https://raw.githubusercontent.com/fanmingming/live/main/tv.m3u",
+              "https://raw.githubusercontent.com/Guovin/iptv-api/gd/output/result.txt"
+            ]
+          }
           EOF
 
-      - name: Run Stage2
-        id: stage2
-        if: ${{ fromJSON(steps.stage1.outputs.stage1_count) < 800 }}
+      - name: Run IPTV check
+        id: check
         run: |
-          python IPTV-Apex-dzh.py 2>&1 | tee stage2.log
-          STAGE2_COUNT=$(wc -l < live_ok.txt 2>/dev/null | tr -d ' ' || echo 0)
-          echo "stage2_count=$STAGE2_COUNT" >> "$GITHUB_OUTPUT"
-          echo "Stage2 result: $STAGE2_COUNT sources"
-
-      - name: Stage2 skip
-        id: stage2_skip
-        if: ${{ fromJSON(steps.stage1.outputs.stage1_count) >= 800 }}
-        run: |
-          echo "stage2_count=${{ steps.stage1.outputs.stage1_count }}" >> "$GITHUB_OUTPUT"
-          echo "Stage1 >= 800, skip Stage2"
-
-      - name: Write Stage3 config
-        if: ${{ fromJSON(steps.stage2.outputs.stage2_count) < 800 }}
-        run: |
-          cat > config.json << 'EOF'
-          {"ENABLE_WEB_CHECK": true, "ENABLE_WEB_FETCH": true, "ENABLE_LOCAL_CHECK": true, "ENABLE_SPEED_CHECK": true, "ENABLE_CACHE": true, "MAX_WORKERS": 120, "FETCH_WORKERS": 20, "TIMEOUT_CN": 10, "TIMEOUT_OVERSEAS": 20, "RETRY_COUNT": 2, "MAX_LINKS_PER_NAME": 3, "FILTER_PRIVATE_IP": true, "ENABLE_QUALITY_FILTER": true, "MIN_QUALITY_SCORE": 10, "MIN_SPEED_MBPS": 0.5, "ENABLE_IPV6_OPTIMIZE": true, "ENABLE_RESOLUTION_FILTER": true, "MIN_WIDTH": 640, "MIN_HEIGHT": 480, "MAX_NEW_PLAYLISTS": 100, "PLAYLIST_QUALITY_SCORE": true, "web_sources": ["https://iptv-org.github.io/iptv/index.m3u", "https://iptv-org.github.io/iptv/countries/cn.m3u", "https://iptv-org.github.io/iptv/countries/tw.m3u", "https://live.hacks.tools/iptv/languages/zho.m3u"]}
-          EOF
-
-      - name: Run Stage3
-        id: stage3
-        if: ${{ fromJSON(steps.stage2.outputs.stage2_count) < 800 }}
-        run: |
-          python IPTV-Apex-dzh.py --async-crawl 2>&1 | tee stage3.log
-          STAGE3_COUNT=$(wc -l < live_ok.txt 2>/dev/null | tr -d ' ' || echo 0)
-          echo "stage3_count=$STAGE3_COUNT" >> "$GITHUB_OUTPUT"
-          echo "Stage3 result: $STAGE3_COUNT sources"
-
-      - name: Stage3 skip
-        id: stage3_skip
-        if: ${{ fromJSON(steps.stage2.outputs.stage2_count) >= 800 }}
-        run: |
-          echo "stage3_count=${{ steps.stage2.outputs.stage2_count }}" >> "$GITHUB_OUTPUT"
-          echo "Stage2 >= 800, skip Stage3"
-
-      - name: Run Stage4
-        id: stage4
-        if: ${{ fromJSON(steps.stage3.outputs.stage3_count) < 800 }}
-        run: |
-          python auto1000.py 2>&1 | tee stage4.log
-          STAGE4_COUNT=$(wc -l < live_ok.txt 2>/dev/null | tr -d ' ' || echo 0)
-          echo "stage4_count=$STAGE4_COUNT" >> "$GITHUB_OUTPUT"
-          echo "Stage4 result: $STAGE4_COUNT sources"
-
-      - name: Stage4 skip
-        if: ${{ fromJSON(steps.stage3.outputs.stage3_count) >= 800 }}
-        run: echo "stage4_count=${{ steps.stage3.outputs.stage3_count }}" >> "$GITHUB_OUTPUT"
+          python IPTV-Apex-dzh.py 2>&1 | tee check.log
+          COUNT=$(wc -l < live_ok.txt 2>/dev/null | tr -d ' ' || echo 0)
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+          echo "✅ 检测完成：$COUNT 条有效源"
 
       - name: Post-process
         run: python scripts/post_process.py
 
-      - name: Limit to 2000
-        id: limit_check
+      - name: Generate M3U
+        run: python scripts/generate_m3u.py
+
+      - name: Limit to 2000 sources
+        id: finalize
         run: |
           if [ -f live_ok.txt ]; then
             count=$(wc -l < live_ok.txt | tr -d ' ')
-            if [ "$count" -gt 2000 ]; then head -n 2000 live_ok.txt > live_ok_temp.txt && mv live_ok_temp.txt live_ok.txt; fi
-            echo "final_count=$(wc -l < live_ok.txt | tr -d ' ')" >> "$GITHUB_OUTPUT"
+            if [ "$count" -gt 2000 ]; then
+              head -n 2000 live_ok.txt > live_ok_temp.txt && mv live_ok_temp.txt live_ok.txt
+              python scripts/generate_m3u.py
+            fi
+            final=$(wc -l < live_ok.txt | tr -d ' ')
+            echo "count=$final" >> "$GITHUB_OUTPUT"
+            echo "📊 最终数量：$final 条"
           else
-            echo "final_count=0" >> "$GITHUB_OUTPUT"
+            echo "count=0" >> "$GITHUB_OUTPUT"
           fi
-
-      - name: Generate M3U
-        run: python scripts/generate_m3u.py
 
       - name: Commit and push
         if: success()
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add live_ok.txt live_ok.m3u config.json .iptv_stats.json .iptv_cache.json 2>/dev/null || true
+          git add live_ok.txt live_ok.m3u .iptv_cache.json .iptv_stats.json 2>/dev/null || true
           if ! git diff --staged --quiet; then
             count=$(wc -l < live_ok.txt 2>/dev/null | tr -d ' ' || echo 0)
             git commit -m "chore: auto-update sources=${count}"
-            git pull --rebase https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git master || true
-            git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:master
+            git pull --rebase origin master || true
+            git push origin master
           fi
+
+      - name: Create summary
+        run: |
+          echo "## 📊 IPTV 检测报告" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| 指标 | 数值 |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 有效源数量 | $(wc -l < live_ok.txt 2>/dev/null | tr -d ' ') |" >> $GITHUB_STEP_SUMMARY
+          echo "| 运行时间 | $(date -u '+%Y-%m-%d %H:%M UTC') |" >> $GITHUB_STEP_SUMMARY
+          echo "| 触发方式 | ${{ github.event_name }} |" >> $GITHUB_STEP_SUMMARY
 
   sync-to-gist:
     needs: iptv-check
@@ -161,14 +137,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0
 
       - name: Sync to Gist
         env:
           GH_TOKEN: ${{ secrets.GIST_TOKEN }}
         run: python scripts/sync_to_gist.py
-
-      - name: Wait cache
-        run: sleep 30
