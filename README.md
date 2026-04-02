@@ -27,10 +27,10 @@ https://raw.githubusercontent.com/litywang/IPTV/master/live_ok.m3u
 
 | 指标 | 数据 |
 |------|------|
-| 可用源总数 | **1137+** |
-| 频道分类 | 10+ 大类 |
+| 可用源总数 | **1782+** |
+| 频道分类 | 10 大类 |
 | 数据格式 | `.txt` / `.m3u` |
-| 更新方式 | GitHub Actions 自动更新 |
+| 更新方式 | GitHub Actions 自动更新（每日） |
 
 ---
 
@@ -85,7 +85,7 @@ python IPTV-Apex-dzh.py --proxy http://127.0.0.1:7890
 |------|--------|------|
 | `-i, --input` | paste.txt | 输入文件路径 |
 | `-o, --output` | live_ok.txt | 输出文件路径 |
-| `-w, --workers` | 80 | 并发检测线程数 |
+| `-w, --workers` | 120 | 并发检测线程数 |
 | `-t, --timeout` | 15 | 境内源超时（秒） |
 | `--proxy` | 无 | 代理地址 |
 | `--no-speed-check` | 关闭 | 关闭速度检测（提速） |
@@ -101,23 +101,34 @@ python IPTV-Apex-dzh.py --proxy http://127.0.0.1:7890
 ```json
 {
   "ENABLE_WEB_CHECK": true,
+  "ENABLE_WEB_FETCH": true,
   "ENABLE_SPEED_CHECK": false,
-  "ENABLE_CACHE": true,
-  "MAX_WORKERS": 80,
-  "TIMEOUT_CN": 10,
+  "ENABLE_CACHE": false,
+  "SKIP_WEB_VALIDATE": true,
+  "MAX_SOURCES_TO_CHECK": 15000,
+  "MAX_OUTPUT_SOURCES": 2500,
+  "MAX_WORKERS": 120,
+  "TIMEOUT_CN": 15,
+  "TIMEOUT_OVERSEAS": 30,
+  "RETRY_COUNT": 2,
   "MIN_QUALITY_SCORE": 5,
   "web_sources": [
     "https://iptv-org.github.io/iptv/index.m3u",
     "https://iptv-org.github.io/iptv/countries/cn.m3u",
-    "https://iptv-org.github.io/iptv/countries/tw.m3u",
-    "https://iptv-org.github.io/iptv/countries/hk.m3u",
-    "https://raw.githubusercontent.com/hujingguang/ChinaIPTV/main/TaiWan.m3u8",
-    "https://raw.githubusercontent.com/hujingguang/ChinaIPTV/main/HongKong.m3u8",
-    "https://raw.githubusercontent.com/Guovin/iptv-api/gd/output/result.txt",
-    "https://raw.githubusercontent.com/fanmingming/live/main/tv.m3u"
+    "https://raw.githubusercontent.com/fanmingming/live/main/tv.m3u",
+    "https://raw.githubusercontent.com/Guovin/iptv-api/gd/output/result.txt"
   ]
 }
 ```
+
+### 关键配置说明
+
+| 配置项 | 默认值 | 说明 |
+|--------|--------|------|
+| `SKIP_WEB_VALIDATE` | `true` | 跳过预置源 HTTP 验证（解决美国服务器境内源超时） |
+| `MAX_SOURCES_TO_CHECK` | `15000` | 待检测源数量上限 |
+| `MAX_OUTPUT_SOURCES` | `2500` | 最终输出源数量上限 |
+| `ENABLE_CACHE` | `false` | URL 去重缓存（关闭以检测所有源） |
 
 ---
 
