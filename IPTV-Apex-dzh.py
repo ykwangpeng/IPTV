@@ -70,7 +70,7 @@ class Config:
     PLAYLIST_QUALITY_SCORE = True         # 是否启用域名质量评分
     SKIP_WEB_VALIDATE    = True          # 跳过预置源的 HTTP 验证（美国服务器境内源超时问题）
     MAX_SOURCES_TO_CHECK = 15000         # 待检测源数量上限
-    MAX_OUTPUT_SOURCES   = 2500          # 最终输出源数量上限
+    MAX_OUTPUT_SOURCES   = 2000          # 最终输出源数量上限
 
     # 性能与超时配置
     MAX_WORKERS         = 120     # 直播源检测的最大并发线程数
