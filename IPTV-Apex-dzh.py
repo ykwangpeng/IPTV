@@ -79,7 +79,7 @@ class Config:
     TIMEOUT_OVERSEAS    = 15     # 境外直播源检测超时时间（秒）
     RETRY_COUNT         = 1      # 网络请求重试次数
     REQUEST_JITTER      = False  # 请求抖动开关
-    MAX_LINKS_PER_NAME  = 3      # 每个频道保留的最大有效链接数
+    MAX_LINKS_PER_NAME  = 2      # 每个频道保留的最大有效链接数
     MAX_SOURCES_PER_DOMAIN = 0   # 每个域名最多保留的源数量（0=不限制）
 
     # P0 优化 #3：ffprobe 参数优化
@@ -1207,8 +1207,12 @@ class StreamChecker:
         cmd.append(url)
 
         proc = None
+        # 清理代理环境变量，防止 ffprobe 子进程走代理影响测活结果
+        env = {k: v for k, v in os.environ.items()
+               if k.upper() not in ('HTTP_PROXY', 'HTTPS_PROXY', 'http_proxy', 'https_proxy', 'ALL_PROXY', 'all_proxy')}
         try:
-            proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+            proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                   shell=False, env=env)
             stdout, stderr = proc.communicate(timeout=timeout + Config.FFPROBE_TIMEOUT_BUFFER)
             stdout_text = stdout.decode('utf-8', errors='ignore').lower()
             stderr_text = stderr.decode('utf-8', errors='ignore').lower()
@@ -1301,7 +1305,8 @@ class StreamChecker:
         try:
             start_time = time.time()
             resp = requests.get(url, headers=headers, proxies=proxies,
-                              stream=True, timeout=Config.TIMEOUT_CN + 5)
+                              stream=True, timeout=Config.TIMEOUT_CN + 5,
+                              trust_env=False)
             total = 0
             for chunk in resp.iter_content(chunk_size=4096):
                 if chunk:
