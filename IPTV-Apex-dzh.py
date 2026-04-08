@@ -13,7 +13,7 @@ IPTV-Apex-dzh.py - 聚合优化版
 8. 进度条优化（简洁适配）
 """
 
-import sys, re, time, json, random, argparse, warnings, subprocess, asyncio, logging
+import sys, re, time, json, random, argparse, warnings, subprocess, asyncio, logging, os
 from pathlib import Path
 from typing import Dict, List, Set, Optional, Any, Tuple
 from functools import lru_cache, wraps
@@ -1546,7 +1546,8 @@ class IPTVChecker:
              tqdm(total=total, desc="检测", unit="条", ncols=70,
                   bar_format='{l_bar}{bar}| {n}/{total} [{percentage:.0f}%] [{elapsed}<{remaining}, {rate_fmt}]') as pbar:
             # 绑定 future 与对应的 ln，修复 NameError
-            future_to_ln = {executor.submit(self.checker.check, ln, Config.PROXY): ln for ln in lines_to_check}
+            # 频道测活直连不过代理（Config.PROXY 仅用于 WebSourceFetcher 拉取源）
+            future_to_ln = {executor.submit(self.checker.check, ln, None): ln for ln in lines_to_check}
             done_count = 0
             for future in as_completed(future_to_ln):
                 ln = future_to_ln[future]  # 取出当前任务对应的源行
@@ -1589,7 +1590,7 @@ class IPTVChecker:
             speed_filtered = 0
             for cat, channel_data in tqdm(valid_sources_with_cat, desc="测速", unit="条", ncols=60,
                                      bar_format='{l_bar}{bar}| {n}/{total} [{percentage:.0f}%]'):
-                speed = self.checker.check_speed(channel_data['url'], Config.PROXY)
+                speed = self.checker.check_speed(channel_data['url'], None)
                 if speed < Config.MIN_SPEED_MBPS:
                     # 速度太慢，从原分类列表中移除
                     if channel_data in cat_map[cat]:
@@ -1857,6 +1858,13 @@ def main():
 
     if args.no_resolution_filter:
         Config.ENABLE_RESOLUTION_FILTER = False
+
+    # 代理配置（如果有的话）
+    if args.proxy:
+        Config.PROXY = args.proxy
+    else:
+        # 从环境变量读取代理（run_iptv.bat 中设置的 HTTP_PROXY/HTTPS_PROXY）
+        Config.PROXY = os.environ.get('HTTPS_PROXY') or os.environ.get('HTTP_PROXY') or None
 
     print(f"{'='*60}")
     print("IPTV-Apex-dzh 聚合版")
