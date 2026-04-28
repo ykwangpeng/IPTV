@@ -1,0 +1,14 @@
+缓存条目数: 16000
+
+前5个缓存条目:
+  1. http://8.138.7.223/tv/hxws.m3u8... -> cached=1777258787.8390267
+  2. http://8.138.7.223/tv/mgtv.php?id=287... -> cached=1777258787.8665745
+  3. http://8.138.7.223/tv/mgtv.php?id=221... -> cached=1777258787.8669984
+  4. http://8.138.7.223/tv/cwjd.php\r... -> cached=1777258787.8942435
+  5. http://8.138.7.223/tv/1905.php?id=LIVE8J4LTCXPI7QJ... -> cached=1777258787.908214
+
+检查 paste.txt 的前10个URL是否在缓存中:
+Traceback (most recent call last):
+  File "C:\tools\IPTV\_check_cache.py", line 46, in <module>
+    print(f"  {name[:20]}: {'在缓存中' if in_cache else '不在缓存中'}")
+UnicodeEncodeError: 'gbk' codec can't encode character '\U0001f1ff' in position 2: illegal multibyte sequence

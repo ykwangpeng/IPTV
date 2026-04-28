@@ -1,0 +1,31 @@
+Pass rate: 27/30 = 90%
+OK    [200] CGTNä¿è¯­
+OK    [404] TV Tokyo (Primehome)
+OK    [403] ç¬çé£äº
+FAIL  [HTTPSConnectionPool(host='mgtv.ottiptv.c] 抗战经典影片
+OK    [200] 敦化一套
+OK    [200] â¤ï¸æµæ±å«è§4K
+OK    [200] å¹¿ä¸å°å¿
+OK    [200] 登封综合
+OK    [404] Fuji TV Next (Primehome)
+OK    [200] EBS+2
+OK    [200] å¹¿ä¸æ±å°¾
+OK    [200] å®å¾½é»å±±é»äºå§äºå³°
+OK    [403] ðåäº¬å«è§4K
+OK    [200] æ¯æ¥ç»æµ
+OK    [200] å¤©æ´¥æèº
+OK    [404] Disney Channel (Primehome)
+OK    [200] 广东珠江
+OK    [404] æµ·åå°å¿
+OK    [200] å¤©æ´¥å½±è§
+OK    [200] ðæ·±å³å«è§
+OK    [200] 黄花城水长城02
+OK    [404] JSport 1 (Primehome)
+OK    [403] ä¸­å½ä¹å£°
+FAIL  [HTTPConnectionPool(host='127.0.0.1', por] ä¸­å½æè²1
+OK    [405] 宾阳综合
+OK    [200] TV Asahi
+OK    [200] å¹¿ä¸ç»æµç§æ
+OK    [200] æµæ±å°å¿é¢é
+FAIL  [HTTPSConnectionPool(host='live.ottiptv.c] 新疆卫视
+OK    [404] ç¬¬03é
