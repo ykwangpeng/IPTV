@@ -55,16 +55,20 @@ class StreamChecker:
         return any(kw.upper() in name_upper for kw in Config.OVERSEAS_KEYWORDS)
 
     def _check_with_http(self, url: str, timeout: int, proxy: Optional[str] = None) -> Optional[Dict]:
-        """HTTP 流检测"""
+        """HTTP 流检测，支持 IPv6 和重定向"""
         try:
             headers = {
                 'User-Agent': random.choice(Config.UA_POOL),
-                'Range': 'bytes=0-32767'
+                'Range': 'bytes=0-32767',
+                'Accept': '*/*',
+                'Connection': 'keep-alive',
             }
             proxies = {'http': proxy, 'https': proxy} if proxy else None
 
             resp = self.session.get(url, headers=headers, timeout=timeout,
-                                   stream=True, verify=False, proxies=proxies)
+                                   stream=True, verify=False, proxies=proxies,
+                                   allow_redirects=True)
+            # 301/302 跟随后检查最终状态
             if resp.status_code not in (200, 206):
                 return None
 
@@ -74,15 +78,15 @@ class StreamChecker:
                 if len(content) >= 32768:
                     break
 
-            if len(content) < 1024:
+            if len(content) < 512:
                 return None
 
             # 检查内容类型
             content_type = resp.headers.get('Content-Type', '').lower()
-            if 'html' in content_type:
+            if 'html' in content_type and not content.startswith(b'#EXTM3U'):
                 return None
 
-            # 简单验证是否为媒体流
+            # 验证是否为媒体流
             if self._is_media_content(content):
                 quality = self._estimate_quality(content, resp.headers)
                 return {

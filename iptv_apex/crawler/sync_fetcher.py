@@ -5,6 +5,7 @@
 """
 
 import random
+import re
 from typing import List, Optional
 
 import requests
@@ -23,24 +24,47 @@ class WebSourceFetcher:
         })
 
     def fetch(self, url: str, proxy: Optional[str] = None, timeout: int = 15) -> List[str]:
-        """拉取并解析源列表"""
+        """拉取并解析源列表，支持 txt/m3u/m3u8 格式"""
         try:
             proxies = {'http': proxy, 'https': proxy} if proxy else None
-            resp = self.session.get(url, proxies=proxes, timeout=timeout, verify=False)
+            resp = self.session.get(url, proxies=proxies, timeout=timeout, verify=False,
+                                    headers={'Accept': '*/*', 'User-Agent': random.choice(Config.UA_POOL)})
             resp.raise_for_status()
-            
+
             content = resp.text
             lines = []
+            current_name = None
+
             for line in content.splitlines():
                 line = line.strip()
-                if not line or line.startswith('#'):
+                if not line:
                     continue
-                if ',' in line:
-                    lines.append(line)
+
+                # M3U 格式解析
+                if line.startswith('#EXTINF:'):
+                    # 提取频道名
+                    if 'group-title=' in line:
+                        # 从 group-title 和频道名提取
+                        match = re.search(r',([^,]+)$', line)
+                        if match:
+                            current_name = match.group(1).strip()
+                    else:
+                        match = re.search(r',([^,]+)$', line)
+                        if match:
+                            current_name = match.group(1).strip()
+                elif line.startswith('#'):
+                    continue
                 elif line.startswith(('http://', 'https://')):
-                    # M3U格式：提取URL，频道名用域名
-                    domain = urlparse(line).netloc
-                    lines.append(f"{domain},{line}")
+                    # M3U URL 行
+                    name = current_name or urlparse(line).netloc
+                    lines.append(f"{name},{line}")
+                    current_name = None
+                elif ',' in line and not line.endswith(',#genre#'):
+                    # TXT 格式: 名称,URL
+                    parts = line.split(',', 1)
+                    if len(parts) == 2 and parts[1].strip().startswith('http'):
+                        lines.append(line)
+
             return lines
         except Exception:
             return []

@@ -9,7 +9,7 @@ import asyncio
 import random
 import re
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Set
 from urllib.parse import urlparse
 
 import httpx
@@ -57,21 +57,26 @@ class AsyncWebSourceCrawler:
             await self.session.aclose()
 
     async def quick_validate(self, url: str, timeout: float = 10.0) -> bool:
-        """HEAD 失败自动降级 GET"""
+        """HEAD 失败自动降级 GET，支持 IPv6 和重定向"""
         headers = {
             'User-Agent': random.choice(Config.UA_POOL),
             'Range': 'bytes=0-511',
-            'Referer': f"{urlparse(url).scheme}://{urlparse(url).netloc}"
+            'Referer': f"{urlparse(url).scheme}://{urlparse(url).netloc}",
+            'Accept': '*/*',
+            'Connection': 'keep-alive',
         }
         try:
+            # 先尝试 HEAD
             resp = await self.session.head(url, headers=headers, timeout=timeout, follow_redirects=True)
-            if resp.status_code in (200, 206, 301, 302, 304):
+            if resp.status_code in (200, 206):
                 return True
-            async with self.session.stream('GET', url, headers=headers, timeout=timeout) as resp:
-                if resp.status_code in (200, 206) and resp.num_bytes_downloaded >= 16:
-                    text = (await resp.aread()).decode('utf-8', errors='ignore')[:200].strip()
-                    if text.startswith('#EXTM3U') or 'm3u' in text.lower():
-                        return True
+            # 301/302/304/405 降级 GET
+            if resp.status_code in (301, 302, 304, 405, 403):
+                async with self.session.stream('GET', url, headers=headers, timeout=timeout, follow_redirects=True) as resp:
+                    if resp.status_code in (200, 206) and resp.num_bytes_downloaded >= 16:
+                        text = (await resp.aread()).decode('utf-8', errors='ignore')[:200].strip()
+                        if text.startswith('#EXTM3U') or 'm3u' in text.lower() or 'http' in text.lower():
+                            return True
             return False
         except Exception:
             return False
@@ -105,31 +110,54 @@ class AsyncWebSourceCrawler:
         return any(ext in lower for ext in AsyncWebSourceCrawler.PLAYLIST_EXT)
 
     async def extract_sources_from_content(self, url: str, depth: int = 0) -> Set[str]:
-        """从页面内容中提取直播源"""
+        """从页面内容中提取直播源，支持 txt/m3u/m3u8 格式"""
         if depth > 1:
             return set()
         try:
             headers = {
                 'User-Agent': random.choice(Config.UA_POOL),
-                'Referer': f"{urlparse(url).scheme}://{urlparse(url).netloc}"
+                'Referer': f"{urlparse(url).scheme}://{urlparse(url).netloc}",
+                'Accept': '*/*',
             }
-            resp = await self.session.get(url, headers=headers, timeout=10.0)
+            resp = await self.session.get(url, headers=headers, timeout=15.0, follow_redirects=True)
             if resp.status_code != 200:
                 return set()
 
             text = resp.text
             stripped = text.strip()[:500].lower()
-            if (
-                len(text) < 50
-                or '<!doctype html' in stripped
-                or '<html' in stripped
-                or '{"code"' in stripped
-            ):
-                return set()
 
+            # 检查是否是有效的播放列表内容
+            is_playlist_content = (
+                text.startswith('#EXTM3U') or
+                '#EXTM3U' in text[:1000] or
+                (',#genre#' in text[:2000]) or
+                (len(text) > 100 and any(line.startswith('http') for line in text.splitlines()[:20]))
+            )
+
+            if not is_playlist_content:
+                if (
+                    len(text) < 50
+                    or '<!doctype html' in stripped
+                    or '<html' in stripped
+                    or '{"code"' in stripped
+                    or '<script' in stripped
+                ):
+                    return set()
+
+            # 提取 URL
             all_matches: Set[str] = set()
             for pattern in self.URL_PATTERNS:
                 all_matches.update(re.findall(pattern, text, re.IGNORECASE))
+
+            # 同时从 txt/m3u 格式中提取频道行
+            lines = text.splitlines()
+            for line in lines:
+                line = line.strip()
+                if line.startswith(('http://', 'https://')) and ',' in line:
+                    # txt 格式: 名称,URL
+                    all_matches.add(line.split(',', 1)[1].strip())
+                elif line.startswith(('http://', 'https://')) and '.m3u' in line.lower():
+                    all_matches.add(line)
 
             valid_sources: Set[str] = set()
             semaphore = asyncio.Semaphore(30)
@@ -137,7 +165,7 @@ class AsyncWebSourceCrawler:
             async def validate_and_add(source: str):
                 if len(source) < 15 or len(source) > 500:
                     return
-                if any(x in source.lower() for x in ['javascript:', 'data:', 'about:', 'void(']):
+                if any(x in source.lower() for x in ['javascript:', 'data:', 'about:', 'void(', '<']):
                     return
                 if source in self.all_extracted:
                     return
@@ -146,19 +174,21 @@ class AsyncWebSourceCrawler:
                         if Config.SKIP_WEB_VALIDATE:
                             valid_sources.add(source)
                             self.all_extracted.add(source)
-                        elif await self.quick_validate(source, timeout=2.0):
+                        elif await self.quick_validate(source, timeout=3.0):
                             valid_sources.add(source)
                             self.all_extracted.add(source)
                     except Exception:
                         pass
 
             batch_size = 50
-            for i in range(0, len(all_matches), batch_size):
+            matches_list = list(all_matches)
+            for i in range(0, len(matches_list), batch_size):
                 await asyncio.gather(
-                    *[validate_and_add(s) for s in list(all_matches)[i:i+batch_size]],
+                    *[validate_and_add(s) for s in matches_list[i:i+batch_size]],
                     return_exceptions=True
                 )
 
+            # 递归提取子播放列表
             if depth < 1 and valid_sources:
                 for src in list(valid_sources)[:10]:
                     if src.endswith(('.m3u', '.m3u8', '.txt')):
@@ -171,12 +201,41 @@ class AsyncWebSourceCrawler:
             return set()
 
     async def crawl_single_source_with_name(self, url: str, semaphore: asyncio.Semaphore) -> Dict[str, str]:
-        """爬取并返回 {子url: 域名} 映射"""
+        """爬取并返回 {子url: 域名} 映射，支持直接解析播放列表内容"""
         async with semaphore:
             try:
                 parsed_url = urlparse(url)
                 base_domain = parsed_url.netloc.split(':')[0]
-                if not await self.quick_validate(url, timeout=3.0):
+
+                # 尝试直接获取内容解析
+                headers = {
+                    'User-Agent': random.choice(Config.UA_POOL),
+                    'Accept': '*/*',
+                    'Referer': f"{parsed_url.scheme}://{parsed_url.netloc}",
+                }
+                try:
+                    resp = await self.session.get(url, headers=headers, timeout=15.0, follow_redirects=True)
+                    if resp.status_code == 200:
+                        text = resp.text
+                        # 如果是 txt 格式（名称,URL），直接提取频道行
+                        if ',#genre#' in text or any(',' in line and line.startswith('http') == False for line in text.splitlines()[:10]):
+                            result = {}
+                            for line in text.splitlines():
+                                line = line.strip()
+                                if not line or line.startswith('#'):
+                                    continue
+                                if ',' in line:
+                                    parts = line.split(',', 1)
+                                    if len(parts) == 2 and parts[1].strip().startswith('http'):
+                                        result[line] = base_domain
+                                        self.all_extracted.add(parts[1].strip())
+                            if result:
+                                return result
+                except Exception:
+                    pass
+
+                # 回退到原有验证+提取逻辑
+                if not await self.quick_validate(url, timeout=5.0):
                     return {}
                 extracted = await self.extract_sources_from_content(url)
                 if not extracted:

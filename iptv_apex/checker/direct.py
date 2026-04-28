@@ -16,15 +16,24 @@ from ..config import Config
 class DirectChecker:
     """直连可用性验证"""
 
-    # 已知可靠CDN域名关键词
+    # 已知可靠CDN域名关键词（中国大陆可直连）
     KNOWN_DIRECT = {
+        # 运营商 CDN
         'live.264788', 'goodiptv', '163189', 'jdshipin',
         'tencentplay', 'bp-resource', 'bestv', 'amucn',
         'xryo', 'migu', 'dsj', 'ottiptv', 'iill',
-        'aktv', '061833', '888', 'ott.mobai', 'mobai',
+        'aktv', 'ott.mobai', 'mobai',
+        # 云厂商 CDN
         'cdn8.', 'cdn6.', 'cdn12.', 'cdn.', 'cos.',
-        'tencent.', 'aliyun', 'alicdn', 'ali-cdn',
-        'speedws',
+        'tencent.', 'aliyun', 'alicdn', 'ali-cdn', 'aliyuncs',
+        'qcloud', 'myqcloud', 'tencentyun',
+        'speedws', 'bdstatic', 'bcebos',
+        # 运营商 IPTV
+        'chinamobile', 'unicom', 'chinanet', 'telecom',
+        'otttv', 'bj.chinamobile', 'sn.chinamobile',
+        'dbiptv', 'yinhe', 'hwltm', 'zteres',
+        # 其他国内 CDN
+        'jsdelivr', 'bootcdn', 'staticfile',
     }
 
     def __init__(self):
@@ -34,18 +43,30 @@ class DirectChecker:
         })
 
     def is_known_direct(self, url: str) -> bool:
-        """检查是否为已知可靠CDN"""
+        """检查是否为已知可靠CDN（支持 IPv6 地址）"""
         try:
             netloc = url.split('://', 1)[-1].split('?')[0].split('/')[0].lower()
+            # IPv6 地址格式 [2409:8087:...]
+            if netloc.startswith('['):
+                # 国内运营商 IPv6 地址段
+                ipv6_cn_prefixes = [
+                    '2409:8087',  # 中国移动
+                    '2408:8000',  # 中国联通
+                    '240e:600',   # 中国电信
+                    '240e:900',   # 中国电信
+                ]
+                for prefix in ipv6_cn_prefixes:
+                    if netloc.startswith('[' + prefix):
+                        return True
             for k in self.KNOWN_DIRECT:
-                if netloc == k or netloc.endswith('.' + k):
+                if netloc == k or netloc.endswith('.' + k) or ('.' + k) in netloc:
                     return True
         except Exception:
             pass
         return False
 
     def check_one(self, channel: Dict) -> bool:
-        """单条直连检测（不用代理）"""
+        """单条直连检测（不用代理），支持 IPv6"""
         url = channel.get('url', '')
         if not url:
             return False
@@ -54,24 +75,35 @@ class DirectChecker:
         if url.startswith(('udp://', 'rtp://', 'srt://')):
             return True
 
-        # 已知CDN直接通过
+        # 已知CDN直接通过（含 IPv6 国内运营商地址）
         if self.is_known_direct(url):
+            return True
+
+        # IPv6 地址直接通过（国内运营商）
+        if '[2409:8087' in url or '[2408:8000' in url or '[240e:' in url:
             return True
 
         # 直连检测（不用代理）
         no_proxy = {'http': None, 'https': None}
         try:
-            r = self.session.head(url, timeout=4, verify=False,
-                                 allow_redirects=True, proxies=no_proxy)
+            headers = {
+                'User-Agent': 'VLC/3.0.18 LibVLC/3.0.18',
+                'Range': 'bytes=0-511',
+                'Accept': '*/*',
+            }
+            r = self.session.head(url, timeout=5, verify=False,
+                                 allow_redirects=True, proxies=no_proxy,
+                                 headers=headers)
             if r.status_code in (200, 206):
                 return True
-            if r.status_code >= 400:
-                r2 = self.session.get(url, timeout=4, verify=False,
+            # 301/302/304/405 降级 GET
+            if r.status_code in (301, 302, 304, 405, 403):
+                r2 = self.session.get(url, timeout=5, verify=False,
                                       stream=True, proxies=no_proxy,
-                                      headers={'Range': 'bytes=0-511'})
+                                      headers=headers, allow_redirects=True)
                 if r2.status_code in (200, 206):
                     content = r2.content[:200].decode('utf-8', errors='ignore')
-                    if '#extm3u' in content.lower() or 'stream' in content.lower():
+                    if '#extm3u' in content.lower() or 'stream' in content.lower() or 'http' in content.lower():
                         return True
                 return False
             return r.status_code < 500
