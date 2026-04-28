@@ -22,6 +22,8 @@ class StreamChecker:
         self.session.headers.update({
             'User-Agent': 'VLC/3.0.18 LibVLC/3.0.18'
         })
+        # 禁用系统代理检测（Windows 注册表可能配置了代理）
+        self.session.trust_env = False
 
     def check(self, line: str, proxy: Optional[str] = None) -> Optional[Dict]:
         """检测单条直播源，返回结果字典或 None"""
@@ -63,10 +65,11 @@ class StreamChecker:
                 'Accept': '*/*',
                 'Connection': 'keep-alive',
             }
-            proxies = {'http': proxy, 'https': proxy} if proxy else None
+            # 测活阶段禁用代理（SOUL.md 策略：测活不能用代理）
+            # trust_env=False 已在 __init__ 中设置，彻底禁用系统代理
 
             resp = self.session.get(url, headers=headers, timeout=timeout,
-                                   stream=True, verify=False, proxies=proxies,
+                                   stream=True, verify=False,
                                    allow_redirects=True)
             # 301/302 跟随后检查最终状态
             if resp.status_code not in (200, 206):
