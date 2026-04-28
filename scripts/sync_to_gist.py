@@ -158,6 +158,10 @@ else:
         # Gist ID 从环境变量读取，或使用默认值
         gist_id = os.environ.get('GIST_ID', '')
         import urllib.request
+        # 禁用代理，避免本地代理服务未运行时同步失败
+        proxy_handler = urllib.request.ProxyHandler({})
+        opener = urllib.request.build_opener(proxy_handler)
+        urllib.request.install_opener(opener)
         payload = json.dumps({
             'description': 'IPTV | ' + str(cnt) + ' sources | ' + ts,
             'files': {'IPTV.txt': {'content': content}}
