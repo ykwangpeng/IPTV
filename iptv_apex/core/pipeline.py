@@ -293,8 +293,32 @@ class IPTVChecker:
                     if cat not in cat_grouped:
                         continue
                     grouped = cat_grouped[cat]
-                    ordered_keys = sorted(grouped.keys(),
-                        key=lambda n: max(ch['quality'] for ch in grouped[n]), reverse=True)
+                    
+                    # 判断是否为CCTV组（央視頻道）
+                    is_cctv_cat = '央視' in cat or '央视' in cat
+                    
+                    if is_cctv_cat:
+                        # CCTV组：按固定顺序排列
+                        def cctv_sort_key(name):
+                            # 提取CCTV编号
+                            import re
+                            m = re.match(r'CCTV-?(\d+)(\+?)', name, re.IGNORECASE)
+                            if m:
+                                num = int(m.group(1))
+                                plus = 1 if m.group(2) else 0
+                                # CCTV1-CCTV17 排在前面，CCTV5+ 紧跟CCTV5
+                                if num == 5 and plus:
+                                    return (5, 1)  # CCTV5+ 紧跟 CCTV5
+                                return (num, 0)
+                            # 非CCTV频道排在最后，按评分排序
+                            return (999, -max(ch['quality'] for ch in grouped[name]))
+                        
+                        ordered_keys = sorted(grouped.keys(), key=cctv_sort_key)
+                    else:
+                        # 其他组：按评分从高到低排序
+                        ordered_keys = sorted(grouped.keys(),
+                            key=lambda n: max(ch['quality'] for ch in grouped[n]), reverse=True)
+                    
                     cat_count = 0
                     _wrote_genre = False
                     for name in ordered_keys:
