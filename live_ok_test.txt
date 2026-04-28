@@ -1,6 +1,0 @@
-港澳台頻,#genre#
-香港卫视,http://anren.live/HK/BSJDUFpB.m3u8
-衛視綜藝,#genre#
-山西卫视,http://119.39.9.8:9901/tsfile/live/0118_1.m3u8
-新聞資訊,#genre#
-平遥新闻综合,https://tntgjhjb.live.sxmty.com/live/hls/3a4585ac11ec4e1bb07b419101b370c3/baf63e2b313440c2a25d7859f9b73b05-1.m3u8?zshanxd
