@@ -1,13 +1,85 @@
 #EXTM3U
 
 #EXTGRP:其他頻
-#EXTINF:-1 group-title="其他頻",2024川渝春节联欢晚会
-https://top.1080pzy.co/202402/10/jBTNQuWPgZ3/video/index.m3u8
-#EXTINF:-1 group-title="其他頻",2024浙江卫视跨年晚会
-https://top.1080pzy.co/202401/01/CukCTWW1HW3/video/index.m3u8
+#EXTINF:-1 group-title="其他頻",cctv10
+https://live.ottiptv.cc/mcp/cctv10.m3u8?userid=5559462299&sign=c47bc807c86c69bb6450fd5948ea8af8515df02e7e499737f9814cbcb0bef1ab9648daab88d51ed0d433b7f3606ed281ee3548cb9971e03816305a8dfd95f179ec10e6cf80c9fdbc7210b19b5fb3&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",cctv13
+https://live.ottiptv.cc/mcp/cctv13.m3u8?userid=5559462299&sign=b62687f3ea766ba32fa28b48af9e4c0bb49825774912300abfeec948992c9a00fcda6012ea7ab86993ea0a92b80b8d4e662fda35a6f89af7edf399ae6640afd64c40bdfd715324c5931a9e564173&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",cctv16
+https://live.ottiptv.cc/mcp/cctv16.m3u8?userid=5559462299&sign=4a3b125b3137610d468b8c276f9cc9743529a9419123005397ff18461849af5875734117b9234d4deaa7a27c638ed04968dfa69a71a3eca02435f86a9a2137b1689e618fd33b5d5b90ec36dae82e&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",cgtndocumentary
+https://live.ottiptv.cc/mcp/cgtndoc.m3u8?userid=5559462299&sign=f06e8926cf10751a57b00a63e59c1e913b84b24f7096ce747759e976f399ce8c0c407168625e2c8cb18fe2ffc3f04f66ad620ddd4ffbea7a5f96375872f6b745e57c6d691e8b5ecdde2c16c4868ab3&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",第一剧场
+https://live.ottiptv.cc/mcp/dyjc.m3u8?userid=5559462299&sign=fb15a1aa4902fc528844b29f54d1df67c2b560a474f7d88f9b129c74998938b42e7524d1d49c663afcc814db1f6082e3dbbb5a818a3550ab1b0da771625642d9c1d1893fc886f8aa3d620f4e&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",cctv8
+https://live.ottiptv.cc/mcp/cctv8.m3u8?userid=5559462299&sign=8f4d5847ed6a473c6ac1ccbee1b746df836d4aa7cdb2c2847226d9d9935334721901cd8d73696c540c681e008632c5e67306cee5bfae43c6204e5810a35906041f53fc416732776299e3191798&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",cctv8k
+https://live.ottiptv.cc/mcp/cctv8k.m3u8?userid=5559462299&sign=108dfed2ebef74c79a972c13fe44e6a0cac6c5b22c220110cd7aeeaf761673ceb699497a914116e937dce0d0c8f84c3b3e50b9c81250ca2b747b999106431a97ea86ff464ee7b737a9f7bbc7521b&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",cctv15
+https://live.ottiptv.cc/mcp/cctv15.m3u8?userid=5559462299&sign=9ddc821d117a79ac2f20093652951e0b3a450369f75a52f7567c8e81b0ab19fb05fa135c307ea7a59ce01f205a5be4c16ec3f0bc6f4549963c32cdec28e3bd3a0252cded7805524209e8a99e9153&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",cctv5
+https://live.ottiptv.cc/mcp/cctv5.m3u8?userid=5559462299&sign=a3c86c38026e85b418f865c53017a8780853c290b3e977969d6f85e969571ec480764157d717d0266258e72b1ce27144c51d3a080bf41d92946b31d0394d35b8190785a74d1a9226594d9f1902&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",湖南卫视
+https://live.ottiptv.cc/mcp/hunan.m3u8?userid=5559462299&sign=a0c3316811983082e3106a2e5aac3e909cbd4119001ba141ddef056288c146545d8e93b1131221290c6c78e084eff085d2145307c523a43ed136084b95a0f5e4a08c7d0689e137e77b48df02e5&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",河北卫视
+https://live.ottiptv.cc/mcp/hebei.m3u8?userid=5559462299&sign=b2733d711e3f45ea8d7cc9c10c13e5c89ef0d14ab4aa57b3d5ae341c48b3953cd1a03c8f27dc68ee5435de858c9936a7a17962ac06d3e6fe9171beeca030e3e6f610adbe3a90662910ceefbade&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",CGTNEN
+https://live.ottiptv.cc/mcp/cgtn.m3u8?userid=5559462299&sign=b503d149ce869782a48654d25f788e00b9927e8d021107224b8384365823880fd0a23492d3cf2fe5909b78ed92c621b2c9cbd6454a1353263be7ba6b5340c465201e0797da6ee2fbee71a9ec&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",cgtnru
+https://live.ottiptv.cc/mcp/cgtnru.m3u8?userid=5559462299&sign=b587acd0a5dd7f84801c201792028db4b1af89aff7eed960b3fef7792bde0734bf12e753044be4050620eb8a576b927811bbcf2ba9355fc336e37a51ae6358822c79f083a1c4b8b0a8a8ecf669e9&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",浙江卫视
+https://live.ottiptv.cc/mcp/zhejiang.m3u8?userid=5559462299&sign=d117d9e03a647f0d237ee5d9d330eb6214b1c9cdb694579687bb862a0f39f845dd5a57a6f57a6aacd00c57285d490ddb37b8397f05f3c20ba49a1b8474fc5e3f4791a95db4ea45dcd4bd7491065a4689&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",深圳卫视
+https://live.ottiptv.cc/mcp/shenzheng.m3u8?userid=5559462299&sign=a8f629d5d28c46f22e06f6cb030d35259bd0846e0598791738bf557204bd9138a1a3fc2c41190ed6e6717f586c75d6bb4c41c8db9426eae0fcb0e98f93e002d9b5101526755b954e3383d12b51e6c21237&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",重庆卫视
+https://live.ottiptv.cc/mcp/chongqing.m3u8?userid=5559462299&sign=086b7f4fd6a2c70f1d1e1b520479d867e38e95b7256bd4b24705bd7f546d34e28b1dd28ea7326b4fb8492f77618ee8a462e74f87e48bab3908e34a79d48a43cb5dfaf22b0221cf5341cbf701f19d0f3ea2&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",吉林卫视
+https://live.ottiptv.cc/mcp/jiling.m3u8?userid=5559462299&sign=6c3cbf901c906b7fedbe0ef09be88f8a77fd671d27a212241a79e8f2bb3acfbcccb3ad56e41b2d53c12752e431db73d32c8610efd92e836439d680a278dbc9fa1ad44b81bce53db95d4775c243a9&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",山西卫视
+https://live.ottiptv.cc/mcp/shanxi.m3u8?userid=5559462299&sign=027f1f6eb9026ce51494d7a4eb34af6351f591b27e5966d44426a27eb42f0761b9a59f9ae7a434e1318527d2dc311d342496601b6750de0186fdb91157467ce26d3fbb30e14b64162c894dde4297&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",甘肃卫视
+https://live.ottiptv.cc/mcp/gansu.m3u8?userid=5559462299&sign=4b5a52649c79f437acc84504d8dc40b733d67ee4e3ed5b33dc36befd5a27ea92e44bc666035e760e87c2cfdf70f47d44388385e15d2ae145da58b849c7eb0cae52b8063d121f1645f37e1b27df&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",宁夏卫视
+https://live.ottiptv.cc/mcp/ningxia.m3u8?userid=5559462299&sign=5e268c3ab7ddaf5847bb97c1a03ca23a119315c05a8289fee9ec825ec791dc0d5c15459cc02245782b93256f032e8b003dd07066642848544273bc490115909219327b0fd00e7938c3eb3f4d692d30&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",云南卫视
+https://live.ottiptv.cc/mcp/yunnan.m3u8?userid=5559462299&sign=42ee1c1eb497b0d791e5f746784996f014fe30d50c5ea7d70208df8236f3ca11c8b91b1882fa03c463c310e68517edef11cea8819b7bfa40ae99e78de054e1a1a0e4f9a84532c764a0d1d767e174&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",兵团卫视
+https://live.ottiptv.cc/mcp/bintuan.m3u8?userid=5559462299&sign=1f5314e234017416285d99ac6e022a0df08b59010641ad0b5c7339ceb47374dd8f46c646d2764de97011354e9c8ed9a6345f84cd2755e60901db7aa65f6f7fa15f0148773dac29d19ee36c025664d2&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",国学频道
+https://live.ottiptv.cc/mcp/guoxue.m3u8?userid=5559462299&sign=ab4b8519ba08b6529dff85bd67c9066f3f6a876ac3007aa60f59ca8d1aca9a2e1da1c993dc4499b449921f1725a0204a47d17ca3a6022b7a1b26814f21a893c888a76d0d2613abe3f9c6c9e98979&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",河南卫视
+https://live.ottiptv.cc/mcp/henan.m3u8?userid=5559462299&sign=f3cd24bf0bb8b81b0f0c655968709e9b0c296992ceeedb5d6dbe51158273cdb9e088eba434d7a1e307b2a4adce1fe60c0856a71a853a492e52a8fda8d43d78cab3b1d1f621f33cdcf9afea1910&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",CCTV+ 1 (600p) [Not 24/7]
+https://cd-live-stream.news.cctvplus.com/live/smil:CHANNEL1.smil/playlist.m3u8
+#EXTINF:-1 group-title="其他頻",CCTV+ 2 (600p) [Not 24/7]
+https://cd-live-stream.news.cctvplus.com/live/smil:CHANNEL2.smil/playlist.m3u8
+#EXTINF:-1 group-title="其他頻",白城新闻综合 [Geo-blocked]
+https://stream2.jlntv.cn/baicheng1/sd/live.m3u8
+#EXTINF:-1 group-title="其他頻",鹤壁新闻综合 (480p) [Not 24/7]
+http://pili-live-hls.hebitv.com/hebi/hebi.m3u8
+#EXTINF:-1 group-title="其他頻",2024粤港澳大湾区春节晚会
+https://top.1080pzy.co/202402/11/8VQCAA76NZ3/video/index.m3u8
 #EXTINF:-1 group-title="其他頻",2024江苏卫视龙年春节联欢晚会
 https://top.1080pzy.co/202402/11/h1veKVuUdX3/video/index.m3u8
-#EXTINF:-1 group-title="其他頻",ä¸­åé»å½±é »é(åç¾)
-https://a3f1b2.kylintv.tv/live/chinamovie_iphone.m3u8
+#EXTINF:-1 group-title="其他頻",2024浙江卫视跨年晚会
+https://top.1080pzy.co/202401/01/CukCTWW1HW3/video/index.m3u8
+#EXTINF:-1 group-title="其他頻",2024江苏卫视跨年演唱会
+https://top.1080pzy.co/202401/01/uJzQMkFBLb3/video/index.m3u8
+#EXTINF:-1 group-title="其他頻",广东卫视
+https://live.ottiptv.cc/mcp/guangdong.m3u8?userid=5559462299&sign=896ec4c8196ab1a65688e67f2faa04d98f480bf6d7deefcd8a76c988a6b2327ea48103910a83783720aeb24f89fc0b0164a47f727154e5d22a950763a37c35932e51a3d2fa20d9f7ffe87e0923345bbb9a&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",cgtnfrench
+https://live.ottiptv.cc/mcp/cgtnfr.m3u8?userid=5559462299&sign=e15de885ef63bff08a6577867801b65969968bac28f4ce880ed42897b4f6a5d237a8c0d78de989eeaf4d1fdf3240ef464450abe08f0df3e0d2455da368fcad7208e238e18fd414d218004d7ab989&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",陕西卫视
+https://live.ottiptv.cc/mcp/shanxiws.m3u8?userid=5559462299&sign=c73b7ccf3ea7e979993fd247edd6f0f15efd542392e9c3f24d132be2713e79686bd5e8c0e51c3ed76c7a8c92206e9e456a6b8154dcac4617cd645189518b26b030880db005158ec900ab76c6e3cbbb23&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
+#EXTINF:-1 group-title="其他頻",ABN China (720p)
+https://mediaserver.abnvideos.com/streams/abnchina.m3u8
+#EXTINF:-1 group-title="其他頻",CCTV-4 America (1080p)
+https://global.cgtn.cicc.media.caton.cloud/master/cgtn-america.m3u8
+#EXTINF:-1 group-title="其他頻",CCTV-4 Europe
+https://dash2.antik.sk/live/test_cctv_tizen/playlist.m3u8
+#EXTINF:-1 group-title="其他頻",KIX
+https://liveh34.vtvprime.vn/hls/KIX/04.m3u8
+#EXTINF:-1 group-title="其他頻",cctv14
+https://live.ottiptv.cc/mcp/cctv14.m3u8?userid=5559462299&sign=fb6058119644f9d969b22a5986241787ba8a46d712d719ff5348359076868a2067ce007e96f25cce8273313fe9a20b99146407c407a6ae0167237b10f2fb6a3a804d1e8e0b119e307b3e861e7a83&auth_token=1b99577efa5a3442ca4c7820d6e0b4e8
 #EXTINF:-1 group-title="其他頻",éé¹°å¡é
 https://a3f1b2.kylintv.tv/live/jykt_iphone.m3u8
