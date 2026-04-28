@@ -83,10 +83,13 @@ total_china_proxy = sum(china_proxy_count.values())
 total_overseas = sum(overseas_count.values())
 total_other = sum(other_count.values())
 
+total_all = total_china_ok + total_china_proxy + total_overseas + total_other
+denom = max(total_all, 1)
+
 print(f"=== 来源分类统计 ===")
-print(f"国内直连: {total_china_ok} ({total_china_ok*100//1782}%)")
-print(f"国内IP商业源: {total_china_proxy} ({total_china_proxy*100//1782}%)")
-print(f"海外/未知: {total_overseas} ({total_overseas*100//1782}%)")
+print(f"国内直连: {total_china_ok} ({total_china_ok*100//denom}%)")
+print(f"国内IP商业源: {total_china_proxy} ({total_china_proxy*100//denom}%)")
+print(f"海外/未知: {total_overseas} ({total_overseas*100//denom}%)")
 print()
 
 print(f"=== 国内直连源 TOP 20 ===")
