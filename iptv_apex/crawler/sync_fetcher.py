@@ -22,6 +22,7 @@ class WebSourceFetcher:
         self.session.headers.update({
             'User-Agent': random.choice(Config.UA_POOL)
         })
+        self.session.trust_env = False
 
     def fetch(self, url: str, proxy: Optional[str] = None, timeout: int = 15) -> List[str]:
         """拉取并解析源列表，支持 txt/m3u/m3u8 格式"""
