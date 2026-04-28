@@ -16,6 +16,13 @@ from ..config import Config
 class DirectChecker:
     """直连可用性验证"""
 
+    def __init__(self):
+        self.session = requests.Session()
+        self.session.headers.update({
+            'User-Agent': 'VLC/3.0.18 LibVLC/3.0.18'
+        })
+        self.session.trust_env = False
+
     # 已知可靠CDN域名关键词（中国大陆可直连）
     KNOWN_DIRECT = {
         # 运营商 CDN
@@ -35,12 +42,6 @@ class DirectChecker:
         # 其他国内 CDN
         'jsdelivr', 'bootcdn', 'staticfile',
     }
-
-    def __init__(self):
-        self.session = requests.Session()
-        self.session.headers.update({
-            'User-Agent': 'VLC/3.0.18 LibVLC/3.0.18'
-        })
 
     def is_known_direct(self, url: str) -> bool:
         """检查是否为已知可靠CDN（支持 IPv6 地址）"""
@@ -83,8 +84,7 @@ class DirectChecker:
         if '[2409:8087' in url or '[2408:8000' in url or '[240e:' in url:
             return True
 
-        # 直连检测（不用代理）
-        no_proxy = {'http': None, 'https': None}
+        # 直连检测（不用代理 - trust_env=False 已禁用系统代理）
         try:
             headers = {
                 'User-Agent': 'VLC/3.0.18 LibVLC/3.0.18',
@@ -92,14 +92,14 @@ class DirectChecker:
                 'Accept': '*/*',
             }
             r = self.session.head(url, timeout=5, verify=False,
-                                 allow_redirects=True, proxies=no_proxy,
+                                 allow_redirects=True,
                                  headers=headers)
             if r.status_code in (200, 206):
                 return True
             # 301/302/304/405 降级 GET
             if r.status_code in (301, 302, 304, 405, 403):
                 r2 = self.session.get(url, timeout=5, verify=False,
-                                      stream=True, proxies=no_proxy,
+                                      stream=True,
                                       headers=headers, allow_redirects=True)
                 if r2.status_code in (200, 206):
                     content = r2.content[:200].decode('utf-8', errors='ignore')
