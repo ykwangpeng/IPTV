@@ -52,6 +52,9 @@
         "CCTV1", "CCTV2", "CCTV3", "CCTV4", "CCTV5", "CCTV6", "CCTV7",
         "CCTV8", "CCTV9", "CCTV10", "CCTV11", "CCTV12", "CCTV14",
         "CCTV15", "CCTV16", "CCTV17", "CCTV18", "CCTV4K", "CCTV8K",
+        "CCTV-1", "CCTV-2", "CCTV-3", "CCTV-4", "CCTV-5", "CCTV-6", "CCTV-7",
+        "CCTV-8", "CCTV-9", "CCTV-10", "CCTV-11", "CCTV-12", "CCTV-14",
+        "CCTV-15", "CCTV-16", "CCTV-17", "CCTV-18", "CCTV-4K", "CCTV-8K",
         "中央", "央视", "CETV", "中国教育", "兵团", "农林"
       ],
       "衛視綜藝": [
@@ -151,7 +154,18 @@
       "m.weibo.com", "m.douyin.com", "m.kuaishou.com", "m.xiaohongshu.com",
       "m.bilibili.com", "m.acfun.cn", "m.nicovideo.jp", "m.youtube.com",
       "m.vimeo.com", "m.dailymotion.com", "m.twitch.tv", "m.tiktok.com",
-      "m.instagram.com", "m.twitter.com", "m.facebook.com"
+      "m.instagram.com", "m.twitter.com", "m.facebook.com",
+      "qingting.fm", "kwimgs.com", "kuaishou.com", "douyin.com",
+      "ixigua.com", "huoshan.com", "pipix.com", "xinpianchang.com",
+      "vmovier.com", "miaopai.com", "weishi.com", "yixia.com",
+      "meipai.com", "xiaokaxiu.com", "quanmin.tv", "yy.com",
+      "huya.com", "douyu.com", "egame.qq.com", "live.qq.com",
+      "inke.cn", "huajiao.com", "yizhibo.com", "taobao.com",
+      "tmall.com", "jd.com", "pinduoduo.com", "suning.com",
+      "vip.com", "dangdang.com", "amazon.cn", "ximalaya.com",
+      "lizhi.fm", "qingting.fm", "dragonfm.com", "radio.cn",
+      "music.163.com", "y.qq.com", "kugou.com", "kuwo.cn",
+      "xiami.com", "tme.qq.com", "joox.com", "spotify.com"
     ],
     "overseas_keywords": [
       "TVB", "凤凰", "翡翠", "明珠", "香港", "台湾", "台视", "华视", "民视",

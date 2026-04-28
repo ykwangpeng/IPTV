@@ -32,7 +32,11 @@ class WebSourceFetcher:
                                     headers={'Accept': '*/*', 'User-Agent': random.choice(Config.UA_POOL)})
             resp.raise_for_status()
 
-            content = resp.text
+            # 强制使用 UTF-8 解码，避免编码错误
+            if resp.encoding and resp.encoding.lower() != 'utf-8':
+                content = resp.content.decode('utf-8', errors='replace')
+            else:
+                content = resp.text
             lines = []
             current_name = None
 
