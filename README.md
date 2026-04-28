@@ -2,7 +2,7 @@
 
 ![IPTV](https://img.shields.io/badge/IPTV-Live%20Sources-blue) ![Python](https://img.shields.io/badge/Python-3.8+-green) ![License](https://img.shields.io/badge/License-MIT-orange)
 
-> 📺 收录全球可用直播源，支持影视仓直接导入，开源免费，持续更新
+> 📺 收录各地可用直播源，支持影视仓直接导入，开源免费，持续更新
 
 ---
 
@@ -46,8 +46,8 @@ https://raw.githubusercontent.com/litywang/IPTV/master/live_ok.m3u
 | **少兒動漫** | 少儿/卡通/动画 | 各大少儿频道 |
 | **音樂頻道** | 音乐/MTV/演唱会 | 各大音乐频道 |
 | **影視劇場** | 影视/电影/剧场 | 各大影视点播频道 |
-| **港澳台國外** | 港台/海外精选 | TVB / 凤凰/ BBC / CNN |
-| **其他頻道** | 未分类频道 | 全球其他直播源 |
+| **港澳台頻** | 港澳台精选 | TVB / 凤凰 / 国际新闻频道 |
+| **其他頻道** | 未分类频道 | 其他直播源 |
 
 ---
 
@@ -190,7 +190,7 @@ python IPTV-Apex-dzh.py --proxy http://127.0.0.1:7890
 - 参考 [IPTV-Apex](https://github.com/CoiaPrant/IPTV-Apex)
 - 参考 [Guovin/iptv-api](https://github.com/Guovin/iptv-api)
 - 参考 [fanmingming/live](https://github.com/fanmingming/live)
-- 数据源 [iptv-org](https://github.com/iptv-org/iptv)
+- 数据源 [iptv-org](https://github.com/iptv-org/iptv)（国际开源项目）
 
 ## License
 
