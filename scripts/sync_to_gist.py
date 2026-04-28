@@ -1,6 +1,10 @@
-import os, requests, subprocess, datetime, sys, re, json
-from pathlib import Path
+import os, subprocess, datetime, sys, json
 from urllib.parse import urlparse, parse_qs, urlencode
+
+# Ensure Git is in PATH for subprocess calls
+_git_paths = r'C:\Program Files\Git\cmd;C:\Program Files\Git\bin'
+if all(p not in os.environ.get('PATH','') for p in ['Git\\cmd','Git\\bin','git.exe']):
+    os.environ['PATH'] = _git_paths + ';' + os.environ.get('PATH','')
 
 if sys.stdout.encoding and sys.stdout.encoding.lower() != 'utf-8':
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -44,14 +48,23 @@ def sanitize_file(src, dst):
         f.write('\n'.join(new_lines) + '\n')
     return len([l for l in new_lines if l.strip() and ',#genre#' not in l])
 
+GIT_EXE = r'C:\Program Files\Git\cmd\git.exe'
+# GIT_TOKEN 已移除硬编码，请通过环境变量 GIST_TOKEN 或 GH_TOKEN 设置
+
 def get_token():
-    token = os.environ.get('GIST_TOKEN','')
+    """从环境变量或 git config 获取 GitHub Token（不再使用硬编码）"""
+    # 优先级：GIST_TOKEN > GH_TOKEN > git config
+    token = os.environ.get('GIST_TOKEN', '')
     if token and token != 'YOUR_GIST_TOKEN_HERE':
         return token
-    r = subprocess.run(['git','config','--global','--list'], capture_output=True, text=True, encoding='utf-8', errors='replace')
+    token = os.environ.get('GH_TOKEN', '')
+    if token:
+        return token
+    # 从 git config 读取
+    r = subprocess.run([GIT_EXE, 'config', '--global', '--list'], capture_output=True, text=True, encoding='utf-8', errors='replace')
     for line in r.stdout.splitlines():
-        if 'ghp_' in line:
-            return line.split('=',1)[1].strip()
+        if line.startswith('user.ghp_') or line.startswith('GIST_TOKEN=') or (line.startswith('GITHUB_TOKEN=') and 'ghp_' in line):
+            return line.split('=', 1)[1].strip()
     return ''
 
 # ========== 1. GitHub Push（推清理版 live_ok_git.txt） ==========
@@ -66,23 +79,26 @@ try:
         chan_count = 0
 
     # 1b. Stage + Commit
-    subprocess.run(['git','add','live_ok_git.txt','live_ok.m3u','.iptv_cache.json','.iptv_stats.json'],
+    subprocess.run([GIT_EXE,'add','live_ok_git.txt','live_ok.m3u','.iptv_cache.json','.iptv_stats.json'],
         capture_output=True)
-    r_diff = subprocess.run(['git','diff','--staged','--stat'],
+    r_diff = subprocess.run([GIT_EXE,'diff','--staged','--stat'],
         capture_output=True, text=True, encoding='utf-8', errors='replace')
     if r_diff.stdout.strip():
         print("Changes: " + r_diff.stdout.strip())
         ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
-        subprocess.run(['git','config','--local','user.email','anftlity@email.com'], check=False)
-        subprocess.run(['git','config','--local','user.name','anftlity'], check=False)
-        subprocess.run(['git','commit','-m','chore: auto-update ' + ts], check=False)
+        # Git user config 从环境变量或使用默认值
+        git_email = os.environ.get('GIT_EMAIL', 'github-actions[bot]@users.noreply.github.com')
+        git_name = os.environ.get('GIT_NAME', 'github-actions[bot]')
+        subprocess.run([GIT_EXE,'config','--local','user.email', git_email], check=False)
+        subprocess.run([GIT_EXE,'config','--local','user.name', git_name], check=False)
+        subprocess.run([GIT_EXE,'commit','-m','chore: auto-update ' + ts], check=False)
         print("Committed.")
         # Push via branch+PR to bypass Push Protection
         token = get_token()
         if token:
             branch = 'auto-' + datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-            subprocess.run(['git','checkout','-b',branch], capture_output=True)
-            r_push = subprocess.run(['git','push','origin',branch],
+            subprocess.run([GIT_EXE,'checkout','-b',branch], capture_output=True)
+            r_push = subprocess.run([GIT_EXE,'push','origin',branch],
                 capture_output=True, text=True, encoding='utf-8', errors='replace')
             if r_push.returncode == 0:
                 print("Branch pushed: " + branch)
@@ -90,7 +106,7 @@ try:
                 payload = json.dumps({'title':'auto-update ' + datetime.date.today().isoformat(),
                     'head':branch,'base':'master'}).encode()
                 req = urllib.request.Request(
-                    'https://api.github.com/repos/litywang/IPTv/pulls',
+                    'https://api.github.com/repos/litywang/IPTV/pulls',
                     data=payload,
                     headers={'Authorization':'token ' + token,
                              'Accept':'application/vnd.github.v3+json',
@@ -102,7 +118,7 @@ try:
                     # Merge
                     mp = json.dumps({'merge_method':'squash'}).encode()
                     mr = urllib.request.Request(
-                        'https://api.github.com/repos/litywang/IPTv/pulls/' + str(pr_num) + '/merge',
+                        'https://api.github.com/repos/litywang/IPTV/pulls/' + str(pr_num) + '/merge',
                         data=mp,
                         headers={'Authorization':'token ' + token,
                                  'Accept':'application/vnd.github.v3+json',
@@ -116,8 +132,8 @@ try:
                         print("PR #" + str(pr_num) + " created - manual merge needed")
                 except:
                     print("Branch " + branch + " pushed - manual PR needed")
-                subprocess.run(['git','checkout','master'], capture_output=True)
-                subprocess.run(['git','branch','-D',branch], capture_output=True)
+                subprocess.run([GIT_EXE,'checkout','master'], capture_output=True)
+                subprocess.run([GIT_EXE,'branch','-D',branch], capture_output=True)
             else:
                 print("Push error: " + (r_push.stderr.strip() or r_push.stdout.strip()))
     else:
@@ -139,7 +155,8 @@ else:
     if not token:
         print("No GIST_TOKEN found, skip")
     else:
-        gist_id = 'dc272a4f2e95ffbd41e7e31d27ef3d76'
+        # Gist ID 从环境变量读取，或使用默认值
+        gist_id = os.environ.get('GIST_ID', '')
         import urllib.request
         payload = json.dumps({
             'description': 'IPTV | ' + str(cnt) + ' sources | ' + ts,

@@ -1,27 +1,21 @@
 @echo off
 chcp 65001 >nul 2>&1
+setlocal
 
-if exist "%~dp0env_config.bat" call "%~dp0env_config.bat"
+:: Python path
+set PYTHON=C:\Users\Administrator\AppData\Local\Programs\Python\Python312\python.exe
 
-set "PATH=C:\tools\ffmpeg\ffmpeg-7.1-essentials_build\bin;%PATH%"
-set "HTTP_PROXY=http://127.0.0.1:3067"
-set "HTTPS_PROXY=http://127.0.0.1:3067"
+:: Run IPTV checker
+%PYTHON% run_iptv.py -w 80 -t 8 --no-speed-check
 
-cd /d C:\tools\IPTV
-
-echo [%date% %time%] === IPTV pipeline start === >> run.log
-python IPTV-Apex-dzh.py -w 120 -t 8 --no-local --no-speed-check
-if %errorlevel% neq 0 (
-    echo [%date% %time%] FAIL: exit %errorlevel% >> run_error.log
-    goto :end
+:: Generate M3U
+if exist live_ok.txt (
+    %PYTHON% scripts\generate_m3u.py
 )
 
-if exist "live_ok.txt" (
-    python scripts\generate_m3u.py >> run.log 2>&1
-    python scripts\sync_to_gist.py >> run.log 2>&1
-    echo [%date% %time%] OK >> run.log
-) else (
-    echo [%date% %time%] FAIL: live_ok.txt not generated >> run_error.log
+:: Sync to GitHub/Gist
+if exist live_ok.txt (
+    %PYTHON% scripts\sync_to_gist.py
 )
 
-:end
+endlocal

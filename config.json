@@ -1,34 +1,192 @@
 {
-  "ENABLE_WEB_CHECK": true,
-  "ENABLE_WEB_FETCH": true,
-  "ENABLE_LOCAL_CHECK": false,
-  "ENABLE_SPEED_CHECK": false,
-  "ENABLE_CACHE": true,
-  "MAX_WORKERS": 30,
-  "FETCH_WORKERS": 20,
-  "TIMEOUT_CN": 4,
-  "TIMEOUT_OVERSEAS": 8,
-  "RETRY_COUNT": 1,
-  "MAX_LINKS_PER_NAME": 1,
-  "FILTER_PRIVATE_IP": true,
-  "ENABLE_QUALITY_FILTER": true,
-  "MIN_QUALITY_SCORE": 5,
-  "MIN_SPEED_MBPS": 0.001,
-  "ENABLE_IPV6_OPTIMIZE": false,
-  "ENABLE_RESOLUTION_FILTER": false,
-  "MAX_NEW_PLAYLISTS": 0,
-  "PLAYLIST_QUALITY_SCORE": false,
-  "WEB_SOURCES": [
-    "https://raw.githubusercontent.com/hujingguang/ChinaIPTV/main/Macao.m3u8",
-    "https://raw.githubusercontent.com/MichaelJorky/Free-IPTV-M3U-Playlist/main/iptv-hongkong.m3u",
-    "https://raw.githubusercontent.com/hujingguang/ChinaIPTV/main/TaiWan.m3u8",
-    "https://peterhchina.github.io/iptv/CNTV-V4.m3u",
-    "http://txt.gt.tc/users/HKTV.txt",
-    "https://live.zbds.top/tv/iptv4.m3u"
-  ],
-  "SKIP_WEB_VALIDATE": true,
-  "MAX_SOURCES_TO_CHECK": 8000,
-  "MAX_OUTPUT_SOURCES": 2000,
-  "AUTO_BACKUP": true,
-  "ARCHIVE_FAIL": false
+  "sources": {
+    "preset_files": [
+      "https://live.zbds.top/tv/iptv4.m3u",
+      "https://raw.githubusercontent.com/imDazui/Tvlist-awesome-m3u-m3u8/master/m3u/台湾港澳.m3u",
+      "https://raw.githubusercontent.com/hujingguang/ChinaIPTV/main/HongKong.m3u8",
+      "https://raw.githubusercontent.com/hujingguang/ChinaIPTV/main/TaiWan.m3u8",
+      "https://raw.githubusercontent.com/hujingguang/ChinaIPTV/main/Macao.m3u8",
+      "https://raw.githubusercontent.com/MichaelJorky/Free-IPTV-M3U-Playlist/main/iptv-hongkong.m3u",
+      "https://peterhchina.github.io/iptv/CNTV-V4.m3u",
+      "https://raw.githubusercontent.com/zxmlxw520/5566/refs/heads/main/fhtv.txt",
+      "http://txt.gt.tc/users/HKTV.txt",
+      "https://raw.githubusercontent.com/nianxinmj/nxpz/refs/heads/main/lib/live.txt",
+      "https://raw.githubusercontent.com/big-mouth-cn/tv/main/iptv-ok.m3u",
+      "https://live.264788.xyz/sub/02RvO5i5Zn1LSQUCr56kkUp2I9xa9A/txt",
+      "https://dsj-1312694395.cos.ap-guangzhou.myqcloud.com/dsj10.1.txt",
+      "http://tv123.vvvv.ee/tv.m3u",
+      "https://iptv-org.github.io/iptv/countries/hk.m3u",
+      "https://iptv-org.github.io/iptv/countries/tw.m3u",
+      "https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt",
+      "https://raw.githubusercontent.com/Guovin/iptv-api/gd/output/result.txt",
+      "https://raw.githubusercontent.com/fanmingming/live/main/tv.m3u",
+      "https://raw.githubusercontent.com/iptv-org/iptv/master/countries/cn.m3u",
+      "https://iptv-org.github.io/iptv/countries/mo.m3u",
+      "https://iptv-org.github.io/iptv/index.m3u"
+    ],
+    "web_fetch_enabled": true,
+    "web_check_enabled": true,
+    "local_check_enabled": true
+  },
+  "categories": {
+    "order": [
+      "4K 專區", "港澳台頻", "影視劇集", "央視頻道", "衛視綜藝",
+      "體育賽事", "少兒動漫", "新聞資訊", "音樂頻道", "其他頻道"
+    ],
+    "rules": {
+      "4K 專區": ["4K", "8K", "UHD", "ULTRAHD", "2160", "超高清", "HDR", "杜比视界"],
+      "央視頻道": [
+        "CCTV1", "CCTV2", "CCTV3", "CCTV4", "CCTV5", "CCTV6", "CCTV7",
+        "CCTV8", "CCTV9", "CCTV10", "CCTV11", "CCTV12", "CCTV14",
+        "CCTV15", "CCTV16", "CCTV17", "CCTV18", "CCTV4K", "CCTV8K",
+        "中央", "央视", "CETV", "中国教育", "兵团", "农林"
+      ],
+      "衛視綜藝": [
+        "卫视", "湖南卫视", "浙江卫视", "江苏卫视", "东方卫视", "北京卫视",
+        "广东卫视", "山东卫视", "四川卫视", "安徽卫视", "天津卫视",
+        "河北卫视", "河南卫视", "湖北卫视", "江西卫视", "重庆卫视",
+        "福建卫视", "辽宁卫视", "深圳卫视", "广西卫视", "黑龙江卫视",
+        "云南卫视", "陕西卫视", "甘肃卫视", "贵州卫视", "山西卫视",
+        "吉林卫视", "内蒙古卫视", "宁夏卫视", "新疆卫视", "海南卫视",
+        "青海卫视", "西藏卫视", "兵团卫视", "CETV", "农林卫视"
+      ],
+      "新聞資訊": [
+        "新闻", "资讯", "财经", "股票", "气象", "交通", "旅游",
+        "新闻台", "资讯台", "财经台", "直播", "CCTV13", "凤凰资讯",
+        "第一财经", "东方财富", "财新", "21财经", "财联社",
+        "看看新闻", "澎湃", "封面新闻", "红星新闻", "触电新闻",
+        "新京报", "经济观察", "凤凰卫视资讯"
+      ],
+      "體育賽事": [
+        "体育", "运动", "足球", "篮球", "网球", "羽毛球", "乒乓球", "排球",
+        "台球", "棋", "赛马", "CCTV5", "CCTV5+", "五星体育", "咪视", "竞技",
+        "SPORT", "SPOTV", "BALL", "晴彩", "咪咕", "NBA", "英超", "西甲", "意甲",
+        "德甲", "法甲", "欧冠", "欧联", "亚冠", "中超", "J联赛", "K联赛", "美职",
+        "MLS", "F1", "MotoGP", "WWE", "UFC", "拳击", "高尔夫", "GOLF", "PGA",
+        "ATP", "WTA", "澳网", "法网", "温网", "美网", "斯诺克", "世锦赛", "奥运",
+        "文体", "亚运", "世界杯", "欧洲杯", "美洲杯", "非洲杯", "亚洲杯", "CBA",
+        "五大联赛", "Pac-12", "劲爆体育", "广州竞赛", "深圳体育", "辽宁体育",
+        "山东体育", "北京体育", "江苏体育", "四川体育", "湖北体育",
+        "NFL", "MLB", "NHL", "东亚杯", "澳超", "大师赛", "看球", "直播吧", "虎扑", "劲球"
+      ],
+      "少兒動漫": [
+        "卡通", "动漫", "动画", "曼迪", "儿童", "少儿", "幼", "宝宝", "宝贝",
+        "炫动", "卡通片", "动漫片", "动画片", "CARTOON", "ANIME", "ANIMATION",
+        "KIDS", "CHILDREN", "TODDLER", "BABY", "NICK", "DISNEY", "CARTOONS",
+        "TOON", "BOOMERANG", "尼克", "小公视", "蓝猫", "喜羊羊", "熊出没", "萌鸡小队",
+        "宝宝巴士", "贝乐虎", "小猪佩奇", "汪汪队", "海底小纵队", "超级飞侠",
+        "迷你特工队", "奥特曼", "假面骑士", "巧虎", "洪恩", "大耳朵图图",
+        "大头儿子", "朵拉", "托马斯", "小马宝莉", "变形警车"
+      ],
+      "音樂頻道": [
+        "音乐", "MTV", "演唱会", "演唱", "CMUSIC", "KTV",
+        "流行", "嘻哈", "摇滚", "古典", "爵士", "民谣", "电音", "EDM",
+        "纯音乐", "伴奏", "Karaoke", "Channel V", "Trace", "VH1",
+        "MTV Hits", "MTV Live", "女团", "音悦台", "V音乐", "音乐之声",
+        "HITFM", "经典音乐", "发烧音乐", "NewAge", "民乐",
+        "华语音乐", "欧美音乐"
+      ],
+      "影視劇集": [
+        "爱奇艺", "优酷", "腾讯视频", "芒果TV", "IQIYI", "POPC",
+        "剧集", "电影", "影院", "影视", "剧场", "Hallmark", "龙华",
+        "Prime", "Paramount+", "电视剧", "Peacock", "Max", "靖洋",
+        "Showtime", "Starz", "AMC", "FX", "TNT", "TBS", "Syfy", "Lifetime",
+        "华纳", "环球", "派拉蒙", "索尼", "狮门", "A24", "漫威", "DC", "星战",
+        "Marvel", "DCU", "Star Wars", "NETFLIX", "SERIES", "MOVIE", "SHORTS",
+        "网剧", "短剧", "微剧", "首播", "独播", "热播", "天映",
+        "港片", "台剧", "韩剧", "日剧", "美剧", "英剧",
+        "悬疑", "科幻", "古装", "都市", "喜剧", "爱情", "冒险",
+        "制片", "影业", "院线", "怀旧", "经典", "邵氏", "华剧",
+        "华影", "金鹰", "星河", "新视觉", "哔哩哔哩", "B站", "西瓜视频",
+        "搜狐视频", "乐视", "PP视频", "聚力", "风行", "暴风影音", "欢喜首映",
+        "南瓜电影", "独播剧场", "黄金剧场", "首播剧场", "院线大片", "经典电影",
+        "华语电影", "欧美电影", "日韩电影", "付费点播", "VIP影院", "家庭影院",
+        "动作电影", "喜剧电影", "爱情电影", "科幻电影", "恐怖电影", "纪录片",
+        "微电影", "网络大电影", "影城", "影厅", "首映", "点播影院",
+        "1905电影", "CCTV6", "上海电影", "珠江电影", "峨眉电影", "长影频道",
+        "潇湘电影", "西部电影", "华数TV", "响巢看看", "PPTV", "大剧",
+        "热播剧场", "古装剧", "抗战剧", "刑侦剧", "家庭剧", "偶像剧"
+      ],
+      "港澳台頻": [
+        "翡翠", "博斯", "凤凰", "TVB", "CNN", "BBC", "DISCOVERY", "国家地理",
+        "香港", "华文", "八度", "华艺", "环球", "生命", "镜", "澳", "台湾", "探索",
+        "年代", "明珠", "唯心", "公视", "东森", "三立", "爱尔达", "NOW", "VIU",
+        "STAR", "星空", "纬来", "非凡", "中天", "中视", "无线", "寰宇", "Z频道",
+        "GOOD", "ROCK", "华视", "台视", "民视", "TVBS"
+      ]
+    }
+  },
+  "filter": {
+    "blacklist": [
+      "购物", "备用", "测试", "福利", "广告", "下线", "加群", "提示",
+      "教程", "联系", "推广", "免费", "无效", "过期", "失效", "禁播",
+      "视频", "点播", "直播带货", "广告推广"
+    ],
+    "vod_domains": [
+      "vd2.bdstatic.com", "vd3.bdstatic.com", "vd4.bdstatic.com",
+      "vd1.bdstatic.com", "m.v.qq.com", "m.iqiyi.com", "m.youku.com",
+      "m.bilibili.com", "m.mgtv.com", "m.pptv.com", "m.le.com",
+      "m.wasu.cn", "m.1905.com", "m.fun.tv", "m.baomihua.com",
+      "m.pearvideo.com", "m.56.com", "m.ku6.com", "m.tudou.com",
+      "m.letv.com", "m.sohu.com", "m.sina.com.cn", "m.ifeng.com",
+      "m.people.com.cn", "m.xinhuanet.com", "m.cctv.com",
+      "m.chinanews.com", "m.huanqiu.com", "m.globaltimes.cn",
+      "m.youth.cn", "m.gmw.cn", "m.ce.cn", "m.caijing.com.cn",
+      "m.hexun.com", "m.jrj.com", "m.stockstar.com", "m.10jqka.com.cn",
+      "m.eastmoney.com", "m.sina.com.cn", "m.163.com", "m.qq.com",
+      "m.sohu.com", "m.ifeng.com", "m.toutiao.com", "m.baidu.com",
+      "m.weibo.com", "m.douyin.com", "m.kuaishou.com", "m.xiaohongshu.com",
+      "m.bilibili.com", "m.acfun.cn", "m.nicovideo.jp", "m.youtube.com",
+      "m.vimeo.com", "m.dailymotion.com", "m.twitch.tv", "m.tiktok.com",
+      "m.instagram.com", "m.twitter.com", "m.facebook.com"
+    ],
+    "overseas_keywords": [
+      "TVB", "凤凰", "翡翠", "明珠", "香港", "台湾", "台视", "华视", "民视",
+      "东森", "三立", "纬来", "中天", "非凡", "龙祥", "靖天", "爱尔达",
+      "CNN", "BBC", "NHK", "KBS", "SBS", "MBC", "DISCOVERY", "国家地理",
+      "HBO", "STAR", "AXN", "KIX", "VIU", "NOW", "FOX", "ESPN", "BEIN",
+      "HOY", "ViuTV", "澳广视", "TDM", "壹电视", "TVBS", "八大",
+      "博斯", "澳", "公视", "华文", "八度", "华艺", "Z频道", "GOOD",
+      "星空", "寰宇", "GEM", "J2", "开电视", "奇妙电视", "有线宽频",
+      "Now TV", "Cable TV", "PCCW", "HKTV", "TTV", "FTV", "TRANSTV",
+      "Fuji TV", "WOWOW", "Sky", "DAZN", "Eleven Sports", "SPOTV NOW"
+    ],
+    "playlist_whitelist": [
+      "github.com", "githubusercontent.com", "gitlab.com", "gitee.com"
+    ],
+    "playlist_blacklist": [
+      "shortlink", "bit.ly", "tinyurl", "adf.ly", "link-short", "goo.gl"
+    ]
+  },
+  "network": {
+    "user_agents": [
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0",
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 14.2_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15",
+      "VLC/3.0.18 LibVLC/3.0.18 (LGPLv2.1+)",
+      "IINA/1.3.3 (Macintosh; Intel Mac OS X 14.5.0)",
+      "PotPlayer/230502 (Windows NT 10.0; x64)",
+      "Kodi/21.0 (Omega) Android/13.0.0 Sys_CPU/aarch64",
+      "TiviMate/4.7.0 (Android TV)",
+      "Perfect Player/1.6.0.1 (Linux;Android 13)",
+      "Mozilla/5.0 (Linux; Android 13; TV Box) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      "Mozilla/5.0 (Linux; Android 12; Amlogic S905X4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
+    ],
+    "timeout_cn": 8,
+    "timeout_overseas": 15,
+    "max_workers": 120,
+    "fetch_workers": 20
+  },
+  "quality": {
+    "enable_speed_check": true,
+    "min_speed_mbps": 0.001,
+    "enable_resolution_filter": false,
+    "min_resolution_width": 640,
+    "min_resolution_height": 480
+  },
+  "proxy": {
+    "use_env": true,
+    "http_proxy": null
+  }
 }

@@ -11,7 +11,7 @@ $ErrorActionPreference = "Stop"
 $BASE = "C:\tools\IPTV"
 
 # FFmpeg 路径
-$env:PATH = "C:\tools\ffmpeg\ffmpeg-7.1-essentials_build\bin;$env:PATH"
+$env:PATH = "C:\tools\ffmpeg\bin;$env:PATH"
 
 # 代理（仅拉取订阅源用，测活直连不过代理）
 # 因为目标用户是大陆直连用户，测活直连才能过滤出真正可用的源
