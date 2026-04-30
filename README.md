@@ -195,3 +195,7 @@ python IPTV-Apex-dzh.py --proxy http://127.0.0.1:7890
 ## License
 
 MIT License
+
+---
+
+**Author**: 𝔄𝔫𝔣𝔱𝔩𝔦𝔱𝔶
