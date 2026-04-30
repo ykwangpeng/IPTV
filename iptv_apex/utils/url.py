@@ -107,12 +107,24 @@ class URLCleaner:
 
     @staticmethod
     def is_vod_domain(url: str) -> bool:
-        """检查是否为点播域名"""
+        """检查是否为点播域名（支持域名+路径匹配）"""
         if not Config.VOD_DOMAINS:
             return False
         try:
-            netloc = urlparse(url).netloc.lower()
-            return any(vod in netloc for vod in Config.VOD_DOMAINS)
+            parsed = urlparse(url)
+            netloc = parsed.netloc.lower()
+            path = parsed.path.lower()
+            full = f"{netloc}{path}"
+            for vod in Config.VOD_DOMAINS:
+                if '/' in vod:
+                    # 域名+路径匹配，如 goodiptv.club/douyu
+                    if vod in full:
+                        return True
+                else:
+                    # 纯域名匹配
+                    if vod in netloc:
+                        return True
+            return False
         except Exception:
             return False
 

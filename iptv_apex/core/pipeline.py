@@ -149,11 +149,18 @@ class IPTVChecker:
                         except Exception as e:
                             self.logger.error(f"❌ 拉取异常: {url} - {e}")
 
-        # 3. 追加爬虫源
+        # 3. 追加爬虫源（需要过滤）
         if crawl_domain_lines:
             for domain, urls in crawl_domain_lines.items():
                 for url_line in urls:
-                    fp = URLCleaner.get_fingerprint(url_line.split(',', 1)[-1])
+                    parts = url_line.split(',', 1)
+                    if len(parts) != 2:
+                        continue
+                    name, url = parts
+                    # 过滤 VOD 域名
+                    if URLCleaner.is_vod_domain(url):
+                        continue
+                    fp = URLCleaner.get_fingerprint(url)
                     if fp not in seen_fp and fp not in crawl_seen_fp:
                         seen_fp.add(fp)
                         domain_lines[domain].append(url_line)
