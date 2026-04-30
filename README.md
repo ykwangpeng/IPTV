@@ -12,7 +12,7 @@
 
 **推荐直链（GitHub Raw）：**
 ```
-https://raw.githubusercontent.com/litywang/IPTV/master/live_ok.txt
+https://raw.githubusercontent.com/litywang/IPTV/master/live_ok_git.txt.txt
 ```
 
 ```
