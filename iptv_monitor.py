@@ -21,6 +21,40 @@ from urllib.parse import urlparse
 
 import requests
 
+
+def load_config_sources(base_dir: Path) -> dict:
+    """从 config.json 加载 web_sources 作为监控源（去重，保留顺序）"""
+    config_file = base_dir / "config.json"
+    sources = {}
+    seen_urls = set()
+    if config_file.exists():
+        try:
+            with open(config_file, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            # 只读 web_sources（preset_files 已合并到 web_sources）
+            src_cfg = data.get("sources", {})
+            url_list = src_cfg.get("web_sources", [])
+            for url in url_list:
+                if not url.startswith(("http://", "https://")):
+                    continue
+                if url in seen_urls:
+                    continue
+                seen_urls.add(url)
+                # 用域名+路径最后一段作为短名
+                parsed = urlparse(url)
+                path_part = parsed.path.strip("/").split("/")[-1] if parsed.path else ""
+                short_name = f"{parsed.netloc}/{path_part}" if path_part else parsed.netloc
+                # 去重：同名加序号
+                orig = short_name
+                idx = 1
+                while short_name in sources:
+                    short_name = f"{orig}#{idx}"
+                    idx += 1
+                sources[short_name] = url
+        except Exception as e:
+            log.warning(f"加载 config.json 失败: {e}")
+    return sources
+
 # ── 基本设置 ──────────────────────────────────────────────
 BASE_DIR = Path(__file__).resolve().parent
 HASH_FILE = BASE_DIR / ".source_hashes.json"
@@ -43,10 +77,8 @@ logging.basicConfig(
 )
 log = logging.getLogger("iptv_monitor")
 
-# ── 订阅源列表（短名 → URL）───────────────────────────────
-SOURCES = {
-    "FYTV":                "http://iptv.4666888.xyz/FYTV.m3u",
-    "xinzb":               "http://47.120.41.246:8899/xinzb.txt",
+# ── 订阅源列表（从 config.json 加载，失败则回退到内置列表）──
+DEFAULT_SOURCES = {
     "live.zbds.top":       "https://live.zbds.top/tv/iptv4.m3u",
     "live.hacks zho":      "https://live.hacks.tools/iptv/languages/zho.m3u",
     "live.hacks Taiwan":   "https://live.hacks.tools/tv/ipv4/categories/taiwan.m3u",
@@ -54,10 +86,6 @@ SOURCES = {
     "dsj COS":             "https://dsj-1312694395.cos.ap-guangzhou.myqcloud.com/dsj10.1.txt",
     "live.hacks Macau":    "https://live.hacks.tools/tv/ipv4/categories/macau.m3u",
     "live.hacks HongKong": "https://live.hacks.tools/tv/ipv4/categories/hong_kong.m3u",
-    "zxmlxw520 GitHub":    "https://raw.githubusercontent.com/zxmlxw520/5566/refs/heads/main/fhtv.txt",
-    "peterhchina GitHub":  "https://peterhchina.github.io/iptv/CNTV-V4.m3u",
-    "imDazui GitHub":      "https://raw.githubusercontent.com/imDazui/Tvlist-awesome-m3u-m3u8/master/m3u/%E5%8F%B0%E6%B9%BE%E9%A6%99%E6%B8%AF%E6%BE%B3%E9%97%A8202506.m3u",
-    "iptv-org Taiwan":     "https://iptv-org.github.io/iptv/countries/tw.m3u",
 }
 
 
@@ -100,6 +128,13 @@ def save_hashes(data: dict):
 
 def main():
     log.info("=== IPTV RSS Monitor scan start ===")
+
+    # 优先从 config.json 加载源列表
+    SOURCES = load_config_sources(BASE_DIR)
+    if not SOURCES:
+        log.warning("config.json 无有效源，使用内置默认列表")
+        SOURCES = DEFAULT_SOURCES
+    log.info(f"监控源数量: {len(SOURCES)}")
 
     old_hashes = load_hashes()
     new_hashes = {}
@@ -148,31 +183,23 @@ def main():
         TRIGGER_FILE.write_text("1", encoding="utf-8")
         log.info(f"Trigger flag created: {TRIGGER_FILE}")
 
-        # 触发增量更新
+        # 触发增量更新（后台异步执行，不阻塞监控）
         log.info("=== 触发增量更新 ===")
-        apex_script = BASE_DIR / "IPTV-Apex-dzh.py"
+        apex_script = BASE_DIR / "run_iptv.py"
         if apex_script.exists():
             try:
                 import subprocess
-                result = subprocess.run(
-                    [sys.executable, str(apex_script), "--incremental"],
+                # 使用 Popen 后台启动，避免阻塞监控进程
+                subprocess.Popen(
+                    [sys.executable, str(apex_script), "--incremental", "--no-speed-check", "-w", "40"],
                     cwd=str(BASE_DIR),
-                    capture_output=True,
-                    text=True,
-                    encoding="utf-8",
-                    errors="replace",
-                    timeout=600,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    creationflags=subprocess.CREATE_NEW_CONSOLE if sys.platform == 'win32' else 0,
                 )
-                if result.returncode == 0:
-                    log.info("[OK] 增量更新成功")
-                else:
-                    log.error(f"[FAIL] 增量更新失败 (rc={result.returncode})")
-                    if result.stderr:
-                        log.error(result.stderr[:500])
-            except subprocess.TimeoutExpired:
-                log.error("[FAIL] 增量更新超时")
+                log.info("[OK] 增量更新已后台启动")
             except Exception as e:
-                log.error(f"[FAIL] 增量更新异常: {e}")
+                log.error(f"[FAIL] 增量更新启动异常: {e}")
         else:
             log.warning(f"主脚本不存在: {apex_script}")
 

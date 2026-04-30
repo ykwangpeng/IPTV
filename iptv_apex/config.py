@@ -27,6 +27,7 @@ class Config:
     ENABLE_WEB_CHECK = True
     ENABLE_LOCAL_CHECK = True
     ENABLE_SPEED_CHECK = True
+    ENABLE_ASYNC_CRAWL = False
     DEBUG_MODE = False
     AUTO_BACKUP = True
     ARCHIVE_FAIL = True
@@ -152,10 +153,10 @@ class Config:
         'Mozilla/5.0 (Linux; Android 12; Amlogic S905X4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
     ]
 
-    # 分类顺序
+    # 分类顺序（简体中文）
     CATEGORY_ORDER = [
-        "4K 專區", "港澳台頻", "影視劇集", "央視頻道", "衛視綜藝", "體育賽事",
-        "少兒動漫", "新聞資訊", "音樂頻道", "其他頻道"
+        "4K专区", "港澳台频", "影视剧集", "央视频道", "卫视频道", "体育赛事",
+        "少儿动漫", "新闻资讯", "音乐频道", "其他频道"
     ]
 
     # 分类规则（从 config.json 加载时覆盖）

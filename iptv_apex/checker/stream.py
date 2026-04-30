@@ -137,13 +137,13 @@ class StreamChecker:
         return min(quality, 100)
 
     def check_speed(self, url: str, proxy: Optional[str] = None) -> float:
-        """检测下载速度 (MB/s)"""
+        """检测下载速度 (MB/s)，测活阶段不用代理"""
         try:
             headers = {'User-Agent': random.choice(Config.UA_POOL)}
-            proxies = {'http': proxy, 'https': proxy} if proxy else None
+            # 测活阶段禁用代理（SOUL.md 策略）
             start = time.time()
             resp = self.session.get(url, headers=headers, stream=True,
-                                   verify=False, proxies=proxies, timeout=10)
+                                   verify=False, proxies=None, timeout=10)
             if resp.status_code not in (200, 206):
                 return 0.0
             downloaded = 0

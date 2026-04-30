@@ -9,6 +9,7 @@ IPTV-Apex 重构版入口
 import argparse
 import asyncio
 import io
+import os
 import sys
 
 # 修复 Windows 编码
@@ -46,6 +47,10 @@ def main():
         Config.ENABLE_LOCAL_CHECK = False
     if args.no_speed_check:
         Config.ENABLE_SPEED_CHECK = False
+
+    # 测活阶段确保无代理环境变量（订阅拉取在 WebSourceFetcher 内单独处理代理）
+    for var in ('HTTP_PROXY', 'HTTPS_PROXY', 'http_proxy', 'https_proxy'):
+        os.environ.pop(var, None)
 
     checker = IPTVChecker()
 

@@ -11,7 +11,7 @@ if exist env_config.bat (
 set PYTHON=C:\Users\Administrator\AppData\Local\Programs\Python\Python312\python.exe
 
 :: Run IPTV checker
-%PYTHON% run_iptv.py -w 80 -t 8 --no-speed-check
+%PYTHON% run_iptv.py -w 20 -t 10 --no-speed-check --async-crawl
 
 :: Generate M3U
 if exist live_ok.txt (

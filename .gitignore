@@ -21,6 +21,32 @@ Karing/
 
 # 测试文件
 test_*.py
+_*.py
+_*.txt
+_*.bat
+_*.ps1
+
+# 临时状态文件
+.source_*.json
+
+# 旧数据文件
+*_backup_*.txt
+live_ok_fail.txt
+live_ok_test.txt
+
+# 日志和输出
+cache_status.txt
+trace_output.txt
+run_log.txt
+_cron_output.txt
+
+# 调试脚本
+patch_direct_recheck.py
+z_fix.py
+analyze_sources.py
+
+# 旧备份
+*.bak
 
 env_config.bat
 

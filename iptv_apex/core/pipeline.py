@@ -6,12 +6,14 @@ IPTV 检测主流程
 
 import io
 import logging
+import os
 import shutil
 import sys
 import time
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
+from urllib.parse import urlparse
 from typing import Dict, List, Optional, Set
 
 from tqdm import tqdm
@@ -25,6 +27,7 @@ from ..utils.url import URLCache, URLCleaner
 from ..utils.name import NameProcessor
 from ..utils.stats import StatsManager
 from ..crawler.sync_fetcher import WebSourceFetcher
+from ..crawler.async_crawler import AsyncWebSourceCrawler
 from ..checker.stream import StreamChecker
 from ..checker.direct import DirectChecker
 
@@ -236,6 +239,7 @@ class IPTVChecker:
             self.stats_manager.update('filtered', self.stats['filtered_by_quality'])
             self.stats_manager.update('written', _total_written)
             self.stats_manager.update('duration_seconds', duration)
+            self.cache.flush()  # 一次性原子写入缓存
             self.stats_manager.save()
             self.stats_manager.print_comparison()
         except Exception as e:
@@ -246,13 +250,18 @@ class IPTVChecker:
         output_limit = getattr(Config, 'MAX_OUTPUT_SOURCES', 2000)
         max_links = getattr(Config, 'MAX_LINKS_PER_NAME', 1)
 
+        # 使用规范化名称进行分组，避免因名称差异导致重复
         cat_grouped: Dict[str, Dict[str, List[Dict]]] = {}
         for cat, channels in cat_map.items():
             grouped = defaultdict(list)
             for ch in channels:
                 if Config.ENABLE_QUALITY_FILTER and ch.get('quality', 0) < Config.MIN_QUALITY_SCORE:
                     continue
-                grouped[ch['name']].append(ch)
+                # 使用规范化名称作为分组键
+                norm_name = NameProcessor.normalize(ch['name'])
+                # 保存原始名称用于显示
+                ch['_norm_name'] = norm_name
+                grouped[norm_name].append(ch)
             if grouped:
                 cat_grouped[cat] = grouped
 
@@ -261,9 +270,9 @@ class IPTVChecker:
             self.logger.warning("⚠️ 无通过质量过滤的频道")
             return 0
 
-        PRIORITY_CATS = [c for c in Config.CATEGORY_ORDER if c != "其他頻道"]
+        PRIORITY_CATS = [c for c in Config.CATEGORY_ORDER if c not in ("其他频道", "其他頻道")]
         PRIORITY_TOTAL = sum(len(cat_grouped.get(c, {})) for c in PRIORITY_CATS)
-        OTHER_TOTAL = len(cat_grouped.get("其他頻道", {}))
+        OTHER_TOTAL = len(cat_grouped.get("其他频道", {})) + len(cat_grouped.get("其他頻道", {}))
         OTHER_QUOTA = max(30, (OTHER_TOTAL * output_limit // max(total_ch_count, 1)) if OTHER_TOTAL > 0 else 30)
         PRIORITY_QUOTA = max(0, output_limit - OTHER_QUOTA)
 
@@ -284,9 +293,7 @@ class IPTVChecker:
         _total_written = 0
         try:
             _out = Path(output_file).resolve() if output_file else (Path(__file__).parent.parent / "live_ok.txt")
-            _tmp = _out.with_suffix('.tmp')
-            if _tmp.exists():
-                _tmp.unlink()
+            _tmp = _out.with_suffix('.tmp.' + str(os.getpid()))
 
             with open(_tmp, 'w', encoding='utf-8') as f:
                 for cat in Config.CATEGORY_ORDER:
@@ -294,15 +301,14 @@ class IPTVChecker:
                         continue
                     grouped = cat_grouped[cat]
                     
-                    # 判断是否为CCTV组（央視頻道）
-                    is_cctv_cat = '央視' in cat or '央视' in cat
+                    # 判断是否为CCTV组（央视频道）
+                    is_cctv_cat = '央视' in cat or '央視' in cat
                     
                     if is_cctv_cat:
                         # CCTV组：按固定顺序排列
-                        def cctv_sort_key(name):
-                            # 提取CCTV编号
-                            import re
-                            m = re.match(r'CCTV-?(\d+)(\+?)', name, re.IGNORECASE)
+                        def cctv_sort_key(norm_name):
+                            # 从规范化名称提取CCTV编号
+                            m = re.match(r'CCTV-?(\d+)(\+?)', norm_name, re.IGNORECASE)
                             if m:
                                 num = int(m.group(1))
                                 plus = 1 if m.group(2) else 0
@@ -311,7 +317,7 @@ class IPTVChecker:
                                     return (5, 1)  # CCTV5+ 紧跟 CCTV5
                                 return (num, 0)
                             # 非CCTV频道排在最后，按评分排序
-                            return (999, -max(ch['quality'] for ch in grouped[name]))
+                            return (999, -max(ch['quality'] for ch in grouped[norm_name]))
                         
                         ordered_keys = sorted(grouped.keys(), key=cctv_sort_key)
                     else:
@@ -321,26 +327,28 @@ class IPTVChecker:
                     
                     cat_count = 0
                     _wrote_genre = False
-                    for name in ordered_keys:
+                    for norm_name in ordered_keys:
                         if _total_written >= output_limit:
                             break
                         if not _wrote_genre:
                             f.write(f"{cat},#genre#\n")
                             _wrote_genre = True
-                        chs = sorted(grouped[name], key=lambda x: x['quality'], reverse=True)
+                        chs = sorted(grouped[norm_name], key=lambda x: x['quality'], reverse=True)
+                        # 获取最佳显示名称
+                        display_name = NameProcessor.get_display_name(chs[0]['name']) if chs else norm_name
                         for ch in chs[:max_links]:
                             if _total_written >= output_limit:
                                 break
-                            f.write(f"{ch['name']},{ch['url']}\n")
+                            # 使用规范化后的显示名称
+                            f.write(f"{display_name},{ch['url']}\n")
                             _total_written += 1
                             cat_count += 1
                     self.stats['by_category'][cat] = cat_count
 
             if _total_written > output_limit:
                 _total_written = output_limit
-            if _out.exists():
-                _out.unlink()
-            _tmp.rename(_out)
+            # 原子替换（同卷 .replace() 为原子操作，无"文件缺失"窗口）
+            _tmp.replace(_out)
             self.logger.info(f"✅ 写入: {_out} ({_total_written} 条)")
         except Exception as e:
             self.logger.error(f"❌ 写入失败: {e}")
@@ -364,14 +372,40 @@ class IPTVChecker:
         return _total_written
 
     async def run_async(self, args):
-        """异步运行模式"""
+        """Async mode: crawl new sources, then merge into main check pipeline"""
         seen_fp: Set[str] = set()
         domain_lines: Dict[str, List[str]] = defaultdict(list)
+        async_seen_fp: Set[str] = set()
 
+        # 0. Async crawler: discover sub-playlist URLs from preset sources
+        if getattr(args, 'async_crawl', False) or Config.ENABLE_ASYNC_CRAWL:
+            web_sources = Config.WEB_SOURCES or Config.PRESET_FILES
+            if web_sources:
+                self.logger.info("? Async crawl mode: scanning %d preset sources...", len(web_sources))
+                try:
+                    async with AsyncWebSourceCrawler() as crawler:
+                        raw_map: Dict[str, str] = await crawler.crawl_all()
+                        self.logger.info("? Crawler found %d sub-URLs", len(raw_map))
+                        for sub_url, base_domain in raw_map.items():
+                            fp = URLCleaner.get_fingerprint(sub_url)
+                            if fp in async_seen_fp:
+                                continue
+                            async_seen_fp.add(fp)
+                            path_str = urlparse(sub_url).path
+                            name = Path(path_str).stem
+                            if name.isdigit() or len(name) <= 3:
+                                name = base_domain
+                            else:
+                                name = "%s (%s)" % (name, base_domain)
+                            domain_lines.setdefault("async_discovered", []).append("%s,%s" % (name, sub_url))
+                except Exception as e:
+                    self.logger.warning("! Async crawl error (non-fatal): %s", e)
+
+        # 1. Sync fetch web_sources
         if Config.ENABLE_WEB_FETCH or getattr(args, 'async_crawl', False):
             web_sources = Config.WEB_SOURCES or Config.PRESET_FILES
             if web_sources:
-                self.logger.info(f"🌐 同步爬取 {len(web_sources)} 个源...")
+                self.logger.info("? Fetching %d web sources...", len(web_sources))
                 for url in web_sources:
                     try:
                         fetched = self.fetcher.fetch(url, Config.PROXY)
@@ -388,6 +422,6 @@ class IPTVChecker:
                                 seen_fp.add(fp)
                                 domain_lines.setdefault("crawled", []).append(ln)
                     except Exception as e:
-                        self.logger.error(f"❌ 爬取异常: {url} - {e}")
+                        self.logger.error("X Fetch error: %s - %s", url, e)
 
-        self.run(args, pre_seen_fp=None, pre_domain_lines=domain_lines)
+        self.run(args, pre_seen_fp=async_seen_fp, pre_domain_lines=domain_lines)

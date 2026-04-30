@@ -5,6 +5,7 @@
 核心：过滤海外域名/GFW封禁/token过期源
 """
 
+import random
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Dict, List
 
@@ -85,27 +86,27 @@ class DirectChecker:
             return True
 
         # 直连检测（不用代理 - trust_env=False 已禁用系统代理）
+        # 使用 GET+Range 代替 HEAD，避免部分 CDN/运营商拦截 HEAD 请求
         try:
             headers = {
-                'User-Agent': 'VLC/3.0.18 LibVLC/3.0.18',
+                'User-Agent': random.choice(Config.UA_POOL),
                 'Range': 'bytes=0-511',
                 'Accept': '*/*',
+                'Connection': 'keep-alive',
             }
-            r = self.session.head(url, timeout=5, verify=False,
-                                 allow_redirects=True,
-                                 headers=headers)
+            r = self.session.get(url, timeout=5, verify=False,
+                                stream=True, headers=headers,
+                                allow_redirects=True)
             if r.status_code in (200, 206):
+                # 验证内容是否包含媒体特征（#EXTM3U/TS/FLV）
+                try:
+                    preview = r.raw.read(200) if hasattr(r.raw, 'read') else b''
+                    if preview:
+                        if b'#EXTM3U' in preview or b'\x47' in preview[:4] or b'FLV' in preview:
+                            return True
+                except Exception:
+                    pass
                 return True
-            # 301/302/304/405 降级 GET
-            if r.status_code in (301, 302, 304, 405, 403):
-                r2 = self.session.get(url, timeout=5, verify=False,
-                                      stream=True,
-                                      headers=headers, allow_redirects=True)
-                if r2.status_code in (200, 206):
-                    content = r2.content[:200].decode('utf-8', errors='ignore')
-                    if '#extm3u' in content.lower() or 'stream' in content.lower() or 'http' in content.lower():
-                        return True
-                return False
             return r.status_code < 500
         except Exception:
             return False

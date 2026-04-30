@@ -39,8 +39,10 @@ class URLCache:
         if not Config.ENABLE_CACHE:
             return
         try:
-            with open(self.cache_file, 'w', encoding='utf-8') as f:
+            tmp = self.cache_file.with_suffix('.tmp')
+            with open(tmp, 'w', encoding='utf-8') as f:
                 json.dump(self.cache, f, ensure_ascii=False, indent=2)
+            tmp.replace(self.cache_file)  # 原子替换，防止截断损坏
         except Exception:
             pass
 
@@ -59,14 +61,20 @@ class URLCache:
             if time.time() - self.cache[fingerprint] <= self.ttl_seconds:
                 return True
             del self.cache[fingerprint]
-            self._save()
+            self._dirty = True  # 标记脏，不立即写
         return False
 
     def add(self, fingerprint: str):
         if not Config.ENABLE_CACHE:
             return
         self.cache[fingerprint] = time.time()
-        self._save()
+        self._dirty = True
+
+    def flush(self):
+        """统一写入，避免频繁 IO。外部在 run 结束时调用。"""
+        if getattr(self, '_dirty', False) and Config.ENABLE_CACHE:
+            self._save()
+            self._dirty = False
 
 
 class URLCleaner:
