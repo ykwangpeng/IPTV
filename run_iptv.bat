@@ -2,7 +2,10 @@
 chcp 65001 >nul 2>&1
 setlocal
 
-:: Load environment variables (GIST_TOKEN, GIST_ID, etc.)
+:: Change to script directory
+cd /d C:\tools\IPTV
+
+:: Load environment variables
 if exist env_config.bat (
     call env_config.bat
 )
