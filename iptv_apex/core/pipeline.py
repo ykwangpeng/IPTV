@@ -7,6 +7,7 @@ IPTV 检测主流程
 import io
 import logging
 import os
+import re
 import shutil
 import sys
 import time

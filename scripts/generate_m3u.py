@@ -4,16 +4,16 @@ import sys
 # 分类中文名 -> M3U group-title 映射
 # M3U group-title 使用英文映射
 CAT_NAMES = {
-    "4K 專區": "4K",
-    "港澳台頻": "GDHKTW",
-    "影視劇集": "Movies",
-    "央視頻道": "CCTV",
-    "衛視綜藝": "Variety",
-    "體育賽事": "Sports",
-    "少兒動漫": "Kids",
-    "新聞資訊": "News",
-    "音樂頻道": "Music",
-    "其他頻道": "Other",
+    "4K专区": "4K",
+    "港澳台频": "GDHKTW",
+    "影视剧集": "Movies",
+    "央视频道": "CCTV",
+    "卫视频道": "Variety",
+    "体育赛事": "Sports",
+    "少儿动漫": "Kids",
+    "新闻资讯": "News",
+    "音乐频道": "Music",
+    "其他频道": "Other",
 }
 
 def make_group_tag(cat_prefix):
