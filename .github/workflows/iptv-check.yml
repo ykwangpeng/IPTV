@@ -1,8 +1,6 @@
 name: IPTV Auto Check
 
 on:
-  schedule:
-    - cron: '0 18 */2 * *'
   workflow_dispatch:
   push:
     branches:
