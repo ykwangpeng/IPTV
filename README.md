@@ -58,7 +58,7 @@ https://raw.githubusercontent.com/litywang/IPTV/master/live_ok.m3u
 ```bash
 # 克隆仓库
 git clone https://github.com/litywang/IPTV.git
-cd IPTV
+c IPTV
 
 # 安装依赖
 pip install requests httpx zhconv tqdm
@@ -67,29 +67,35 @@ pip install requests httpx zhconv tqdm
 pip install m3u8
 
 # 运行检测（默认参数）
-python IPTV-Apex-dzh.py
+python run_iptv.py
+
+# 自定义并发
+python run_iptv.py -w 100 -t 10
+
+# 跳过本地文件，仅爬取网络源
+python run_iptv.py --no-local
+
+# 跳过网络爬取，仅检测本地 paste.txt
+python run_iptv.py --no-web-fetch
 
 # 关闭速度检测（更快）
-python IPTV-Apex-dzh.py --no-speed-check
+python run_iptv.py --no-speed-check
 
-# 启用异步爬虫 + 自定义并发
-python IPTV-Apex-dzh.py --async-crawl -w 100
-
-# 使用代理
-python IPTV-Apex-dzh.py --proxy http://127.0.0.1:7890
+# 启用异步爬虫 + 增量模式
+python run_iptv.py --async-crawl --incremental
 ```
 
 ### 命令行参数
 
 | 参数 | 默认值 | 说明 |
 |------|--------|------|
-| `-i, --input` | paste.txt | 输入文件路径 |
-| `-o, --output` | live_ok.txt | 输出文件路径 |
-| `-w, --workers` | 120 | 并发检测线程数 |
-| `-t, --timeout` | 15 | 境内源超时（秒） |
-| `--proxy` | 无 | 代理地址 |
+| `-w, --workers` | 80 | 并发检测线程数 |
+| `-t, --timeout` | 8 | 单源超时（秒） |
+| `--no-local` | 关闭 | 跳过本地 paste.txt |
+| `--no-web-fetch` | 关闭 | 跳过网络爬取 |
+| `--no-cache` | 关闭 | 禁用 URL 去重缓存 |
 | `--no-speed-check` | 关闭 | 关闭速度检测（提速） |
-| `--no-cache` | 关闭 | 禁用URL去重缓存 |
+| `--incremental` | 关闭 | 增量模式 |
 | `--async-crawl` | 关闭 | 启用异步爬虫扫描新源 |
 
 ---
@@ -178,9 +184,12 @@ python IPTV-Apex-dzh.py --proxy http://127.0.0.1:7890
 |------|------|
 | `live_ok.txt` | 可用直播源列表（名称,URL 格式） |
 | `live_ok.m3u` | M3U8 格式可直接导入播放器 |
-| `IPTV-Apex-dzh.py` | 检测主脚本 |
+| `run_iptv.py` | 检测主入口 |
+| `run_iptv.bat` | Windows 批处理入口（含同步 GitHub/Gist） |
 | `config.json` | 配置文件 |
 | `paste.txt` | 本地待检测源列表 |
+| `iptv_apex/` | 核心模块包 |
+| `scripts/` | 辅助脚本（generate_m3u.py, sync_to_gist.py） |
 
 ---
 
