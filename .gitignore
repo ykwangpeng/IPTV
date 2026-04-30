@@ -48,7 +48,28 @@ analyze_sources.py
 # 旧备份
 *.bak
 
+# 环境配置（含 token）
 env_config.bat
 
 # IPTV: live_ok.txt has tokens, track live_ok_git.txt instead
 live_ok.txt
+
+# Archive 目录（历史代码）
+IPTV/archive/
+
+# 临时分析脚本
+analyze_*.py
+check_*.py
+verify_*.py
+fix_*.py
+quick_test.py
+paste.txt
+
+# 文档（不需要同步）
+BUG_FIX_REPORT.md
+SCRIPTS.md
+_async_crawler_audit.md
+task-summary_*.md
+
+# 破损缓存
+.iptv_cache.json.broken.*
