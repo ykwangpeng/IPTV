@@ -93,49 +93,13 @@ try:
         subprocess.run([GIT_EXE,'config','--local','user.name', git_name], check=False)
         subprocess.run([GIT_EXE,'commit','-m','chore: auto-update ' + ts], check=False)
         print("Committed.")
-        # Push via branch+PR to bypass Push Protection
-        token = get_token()
-        if token:
-            branch = 'auto-' + datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-            subprocess.run([GIT_EXE,'checkout','-b',branch], capture_output=True)
-            r_push = subprocess.run([GIT_EXE,'push','origin',branch],
-                capture_output=True, text=True, encoding='utf-8', errors='replace')
-            if r_push.returncode == 0:
-                print("Branch pushed: " + branch)
-                import urllib.request
-                payload = json.dumps({'title':'auto-update ' + datetime.date.today().isoformat(),
-                    'head':branch,'base':'master'}).encode()
-                req = urllib.request.Request(
-                    'https://api.github.com/repos/litywang/IPTV/pulls',
-                    data=payload,
-                    headers={'Authorization':'token ' + token,
-                             'Accept':'application/vnd.github.v3+json',
-                             'Content-Type':'application/json'})
-                try:
-                    with urllib.request.urlopen(req, timeout=10) as resp:
-                        pr_data = json.loads(resp.read())
-                    pr_num = pr_data.get('number')
-                    # Merge
-                    mp = json.dumps({'merge_method':'squash'}).encode()
-                    mr = urllib.request.Request(
-                        'https://api.github.com/repos/litywang/IPTV/pulls/' + str(pr_num) + '/merge',
-                        data=mp,
-                        headers={'Authorization':'token ' + token,
-                                 'Accept':'application/vnd.github.v3+json',
-                                 'Content-Type':'application/json'})
-                    try:
-                        with urllib.request.urlopen(mr, timeout=10) as resp2:
-                            merged = json.loads(resp2.read())
-                        if merged.get('merged'):
-                            print("GitHub merged PR #" + str(pr_num))
-                    except:
-                        print("PR #" + str(pr_num) + " created - manual merge needed")
-                except:
-                    print("Branch " + branch + " pushed - manual PR needed")
-                subprocess.run([GIT_EXE,'checkout','master'], capture_output=True)
-                subprocess.run([GIT_EXE,'branch','-D',branch], capture_output=True)
-            else:
-                print("Push error: " + (r_push.stderr.strip() or r_push.stdout.strip()))
+        # Push directly to master branch
+        r_push = subprocess.run([GIT_EXE,'push','origin','master'],
+            capture_output=True, text=True, encoding='utf-8', errors='replace')
+        if r_push.returncode == 0:
+            print("Pushed to master.")
+        else:
+            print("Push error: " + (r_push.stderr.strip() or r_push.stdout.strip()))
     else:
         print("No changes, skip")
 except Exception as e:
