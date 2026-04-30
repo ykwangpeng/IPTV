@@ -97,6 +97,7 @@ class DirectChecker:
             r = self.session.get(url, timeout=5, verify=False,
                                 stream=True, headers=headers,
                                 allow_redirects=True)
+            # 301/302/303/307/308: 跟随重定向后降级为 GET 验证实际内容
             if r.status_code in (200, 206):
                 # 验证内容是否包含媒体特征（#EXTM3U/TS/FLV）
                 try:
@@ -107,6 +108,36 @@ class DirectChecker:
                 except Exception:
                     pass
                 return True
+            # 3xx 重定向：尝试跟随到最终 URL（禁用自动重定向，由 requests 手动跟随）
+            if r.status_code in (301, 302, 303, 307, 308):
+                final_url = r.url  # requests 自动解析后的最终 URL
+                if final_url and final_url != url:
+                    try:
+                        r2 = self.session.get(final_url, timeout=5, verify=False,
+                                              stream=True, headers=headers,
+                                              allow_redirects=False)
+                        if r2.status_code in (200, 206):
+                            try:
+                                preview = r2.raw.read(200) if hasattr(r2.raw, 'read') else b''
+                                if preview:
+                                    if b'#EXTM3U' in preview or b'\x47' in preview[:4] or b'FLV' in preview:
+                                        return True
+                            except Exception:
+                                pass
+                            return True
+                        if r2.status_code in (301, 302, 303, 307, 308):
+                            # 多重重定向，取最终 URL
+                            final2 = r2.url
+                            if final2 and final2 != final_url:
+                                r3 = self.session.get(final2, timeout=5, verify=False,
+                                                      stream=True, headers=headers,
+                                                      allow_redirects=False)
+                                if r3.status_code in (200, 206):
+                                    return True
+                                r3.close()
+                        r2.close()
+                    except Exception:
+                        pass
             return r.status_code < 500
         except Exception:
             return False

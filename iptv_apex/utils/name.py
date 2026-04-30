@@ -254,8 +254,10 @@ class NameProcessor:
                 name = 'CCTV-3综艺'
             elif '中文国际' in raw_name or num == '4':
                 name = 'CCTV-4中文国际'
-            elif '体育' in raw_name or num == '5':
+            elif '体育' in raw_name and num == '5' and not plus:
                 name = 'CCTV-5体育'
+            elif '体育' in raw_name and num == '5' and plus:
+                name = 'CCTV-5+体育'
             elif '电影' in raw_name or num == '6':
                 name = 'CCTV-6电影'
             elif '国防军事' in raw_name or num == '7':

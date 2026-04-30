@@ -34,7 +34,7 @@ class Config:
 
     # 缓存
     ENABLE_CACHE = True
-    CACHE_TTL_HOURS = 24
+    CACHE_TTL_HOURS = 6
 
     # 爬虫控制
     MAX_NEW_PLAYLISTS = 200
@@ -228,6 +228,9 @@ class Config:
                 cls.PROXY = cls._env_proxy
             else:
                 cls.PROXY = proxy.get('http_proxy', cls._env_proxy)
+
+            # 加载后自动编译分类正则（解决 CATEGORY_RULES_COMPILED 未自动初始化问题）
+            cls.init_compiled_rules()
 
             return True
         except Exception as e:

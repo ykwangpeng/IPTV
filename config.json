@@ -193,6 +193,7 @@
     "fetch_workers": 20
   },
   "quality": {
+    "cache_ttl_hours": 6,
     "enable_speed_check": true,
     "min_speed_mbps": 0.001,
     "enable_resolution_filter": false,
