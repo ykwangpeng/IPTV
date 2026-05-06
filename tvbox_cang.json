@@ -1,0 +1,60 @@
+{
+    "urls": [
+        {
+            "url": "https://bitbucket.org/xduo/libs/raw/master/index.json",
+            "name": "道长"
+        },
+        {
+            "url": "https://4key.cn/ule",
+            "name": "暮雨福利"
+        },
+        {
+            "url": "https://clun.top/box.json",
+            "name": "聚合"
+        },
+        {
+            "url": "https://6800.kstore.vip/fish.json",
+            "name": "摸鱼"
+        },
+        {
+            "url": "https://9lnk.io/BpuF",
+            "name": "青檬"
+        },
+        {
+            "url": "https://9280.kstore.vip/wex.json",
+            "name": "二小"
+        },
+        {
+            "url": "https://www.252035.xyz/p/jsm.json",
+            "name": "PG"
+        },
+        {
+            "url": "https://www.252035.xyz/z/FongMi.json",
+            "name": "真心"
+        },
+        {
+            "url": "https://chuanshuo.77blog.cn/tv.json",
+            "name": "电视魔盒"
+        },
+        {
+            "url": "https://11405.kstore.space/xiaye/qk4k.json",
+            "name": "夏天微风"
+        },
+        {
+            "url": "http://47.96.82.41:5188/svip/svip.json",
+            "name": "软件小哥哥"
+        },
+        {
+            "url": "http://zhangqun1818.serv00.net/zq/api.json",
+            "name": "张群"
+        },
+        {
+            "url": "https://clun.top/fun.json",
+            "name": "福利2"
+        },
+        {
+            "url": "https://ghfast.top/https://raw.githubusercontent.com/wwb521/live/main/video.json",
+            "name": "福利3"
+        }
+    ]
+}
