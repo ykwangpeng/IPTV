@@ -1,418 +1,440 @@
 #EXTM3U
 
 #EXTGRP:4K专
-#EXTINF:-1 group-title="4K专",东方4K
-http://ddns.xryo.cn:8888/udp/239.111.205.67:5140
+#EXTINF:-1 group-title="4K专",广东4K
+http://ddns.xryo.cn:8888/udp/239.111.205.103:5140
 #EXTINF:-1 group-title="4K专",2025年春晚
 https://svip.high24-playback.com/20250129/17159_7bca93c4/2000k/hls/mixed.m3u8
 #EXTGRP:港澳台
+#EXTINF:-1 group-title="港澳台",明珠
+http://r.jdshipin.com/jUx8K
 #EXTINF:-1 group-title="港澳台",TVBPLUS
 http://r.jdshipin.com/ndGgS
-#EXTINF:-1 group-title="港澳台",台视
-http://165.154.226.214:50007/li-4gtv-4gtv066/index.m3u8?proxy=true
-#EXTINF:-1 group-title="港澳台",金鹰卡通
-http://121.29.215.217:2083/rtp/239.253.92.163:8055
-#EXTINF:-1 group-title="港澳台",优漫卡通
-http://121.29.215.217:2083/rtp/239.253.93.204:6382
-#EXTINF:-1 group-title="港澳台",嘉佳卡通
-http://121.29.215.217:2083/rtp/239.253.93.203:6381
-#EXTINF:-1 group-title="港澳台",FOX32Chicago
-http://bgdc.live:25461/catrinamcdermott/catrinamcdermott/215737
-#EXTINF:-1 group-title="港澳台",U&GoldUK
-http://epicboss.live/bjune@teksavvy.com/5193594414/30171
-#EXTINF:-1 group-title="港澳台",靖天资讯
-http://breezy-audrie-zspace-7524863c.koyeb.app/vipsir?token=leifeng&id=4gtv-4gtv065
-#EXTINF:-1 group-title="港澳台",靖天戏剧
-http://serv00.bkpcp.top/litv3.php?id=4gtv-4gtv058
-#EXTINF:-1 group-title="港澳台",纬来育乐
-https://live.catvod.com/live.php?id=videolandyule
-#EXTINF:-1 group-title="港澳台",明珠台
-http://r.jdshipin.com/jUx8K
-#EXTINF:-1 group-title="港澳台",倩女幽魂人间道
-http://jsmov2.a.yximgs.com/bs3/video-hls/5250634317044855747_hlsb.m3u8
+#EXTINF:-1 group-title="港澳台",凤凰资讯
+http://j.s.bkpcp.top/js/fhzx
 #EXTINF:-1 group-title="港澳台",BBC
 https://d3pxo1qcgzxtxs.cloudfront.net/10005/99951298/hls/playlist.m3u8?ads.xumo_channelId=99951298
+#EXTINF:-1 group-title="港澳台",嘉佳卡通
+http://114.254.36.134:8888/rtp/239.3.1.147:9268
+#EXTINF:-1 group-title="港澳台",湖南金鹰卡通
+http://171.8.106.37:8800/rtp/239.16.20.104:11040
+#EXTINF:-1 group-title="港澳台",金鹰卡通
+http://106.116.126.119:4022/rtp/239.254.200.92:9252
+#EXTINF:-1 group-title="港澳台",优漫卡通
+http://116.2.167.19:4010/rtp/232.0.0.159:1234
+#EXTINF:-1 group-title="港澳台",靖天戏剧
+http://serv00.bkpcp.top/litv3.php?id=4gtv-4gtv058
+#EXTINF:-1 group-title="港澳台",靖天资讯
+http://breezy-audrie-zspace-7524863c.koyeb.app/vipsir?token=leifeng&id=4gtv-4gtv065
+#EXTINF:-1 group-title="港澳台",TVBJ2
+http://bziyunshao.synology.me:8890/bysid/82
+#EXTINF:-1 group-title="港澳台",TVB明珠台
+http://bziyunshao.synology.me:8890/bysid/2
+#EXTINF:-1 group-title="港澳台",倩女幽魂人间道
+http://jsmov2.a.yximgs.com/bs3/video-hls/5250634317044855747_hlsb.m3u8
+#EXTINF:-1 group-title="港澳台",纬来育乐
+https://live.catvod.com/live.php?id=videolandyule
 #EXTGRP:影视剧
-#EXTINF:-1 group-title="影视剧",上海都市
-https://live.264788.xyz/channel/shanghaidushi?streamid=66feaac0153fda6d6dce43f793c0ae59&livekey=01Whq5ncXSAY4QR6q3G3zQhmyaOfTogQmpiTt
 #EXTINF:-1 group-title="影视剧",美亚电影
 https://cdn9.163189.xyz/smt3.1.1.php?id=meiyamovie_twn
-#EXTINF:-1 group-title="影视剧",家庭剧专区
-https://live.ottiptv.cc/huya/11352872
-#EXTINF:-1 group-title="影视剧",抗战剧专区
-https://live.ottiptv.cc/huya/30080238
-#EXTINF:-1 group-title="影视剧",爱情剧专区
-https://live.ottiptv.cc/huya/29982671
-#EXTINF:-1 group-title="影视剧",偶像剧专区
-https://live.ottiptv.cc/huya/11601964
-#EXTINF:-1 group-title="影视剧",吾聊电影
-https://live.ottiptv.cc/huya/16424416
-#EXTINF:-1 group-title="影视剧",止戈电影
-https://live.ottiptv.cc/huya/19863777
-#EXTINF:-1 group-title="影视剧",重庆古装剧场
-http://home.scanflove.com:7788/rtp/235.254.198.76:1580$重庆cmc3+
-#EXTINF:-1 group-title="影视剧",重庆军旅剧场
-http://home.scanflove.com:7788/rtp/235.254.198.75:1576$重庆cmc3+
+#EXTINF:-1 group-title="影视剧",深圳都市频道
+http://183.236.43.98:4013/udp/239.77.1.176:5146
+#EXTINF:-1 group-title="影视剧",重庆经典电影
+http://home.scanflove.com:7788/rtp/235.254.198.114:1732$重庆cmc3+
 #EXTINF:-1 group-title="影视剧",重庆热播剧场
 http://home.scanflove.com:7788/rtp/235.254.198.113:1728$重庆cmc3+
-#EXTINF:-1 group-title="影视剧",华数武侠剧场
-http://114.254.36.134:8888/rtp/239.3.1.90:4120
+#EXTINF:-1 group-title="影视剧",科幻片系列
+https://live.ottiptv.cc/huya/11352965
+#EXTINF:-1 group-title="影视剧",都市剧专区
+https://live.ottiptv.cc/huya/29982666
+#EXTINF:-1 group-title="影视剧",偶像剧专区
+https://live.ottiptv.cc/huya/11601964
+#EXTINF:-1 group-title="影视剧",电影狂人A
+https://live.ottiptv.cc/huya/18715610
+#EXTINF:-1 group-title="影视剧",扁豆看电影
+https://live.ottiptv.cc/huya/16028551
+#EXTINF:-1 group-title="影视剧",电影最TOP
+https://live.ottiptv.cc/huya/11774959
+#EXTINF:-1 group-title="影视剧",北京IPTV淘电影
+http://114.254.36.134:8888/rtp/239.3.1.250:8001
 #EXTINF:-1 group-title="影视剧",古装剧场
 http://114.254.36.134:8888/rtp/239.3.1.69:4120
-#EXTINF:-1 group-title="影视剧",华数军旅剧场
-http://114.254.36.134:8888/rtp/239.3.1.68:4120
+#EXTINF:-1 group-title="影视剧",河南调解剧场
+http://171.8.106.37:8800/rtp/239.16.20.197:11970
+#EXTINF:-1 group-title="影视剧",上海欢笑剧场
+http://171.8.106.37:8800/rtp/239.16.20.39:10390
 #EXTINF:-1 group-title="影视剧",河北都市频道
-http://106.116.126.134:4022/rtp/239.254.200.19:6000
-#EXTINF:-1 group-title="影视剧",CCTV风云剧场
-http://60.4.28.155:8077/rtp/239.253.93.251:6429
-#EXTINF:-1 group-title="影视剧",CCTV第一剧场
-http://121.29.215.217:2083/rtp/239.253.93.138:6428
-#EXTINF:-1 group-title="影视剧",CCTV怀旧剧场
-http://121.29.215.217:2083/rtp/239.253.93.252:6430
+http://106.116.126.119:4022/rtp/239.254.200.19:6000
+#EXTINF:-1 group-title="影视剧",河北影视剧频道
+http://106.116.126.119:4022/rtp/239.254.200.20:6000
+#EXTINF:-1 group-title="影视剧",淄博都市
+http://144.255.31.141:6688/udp/239.21.1.83:5002
 #EXTINF:-1 group-title="影视剧",金鹰纪实
-http://121.29.215.217:2083/rtp/239.253.92.103:6054
+http://124.114.101.253:6789/rtp/239.112.205.203:5140
+#EXTINF:-1 group-title="影视剧",环球奇观
+http://36.49.53.61:8800/rtp/239.37.0.105:5540
+#EXTINF:-1 group-title="影视剧",云南都市频道
+http://106.59.3.18:55555/rtp/239.200.200.12:8844
+#EXTINF:-1 group-title="影视剧",CHC家庭影院
+http://106.59.3.18:55555/rtp/239.200.201.30:8140
+#EXTINF:-1 group-title="影视剧",CCTV怀旧剧场
+http://106.59.3.18:55555/rtp/239.200.200.85:8032
+#EXTINF:-1 group-title="影视剧",CCTV风云剧场
+http://106.59.3.18:55555/rtp/239.200.200.84:8016
+#EXTINF:-1 group-title="影视剧",华数电影1
+http://106.59.3.18:55555/udp/239.200.200.77:9016
 #EXTINF:-1 group-title="影视剧",CHC动作电影
 http://39.77.95.74:4002/rtp/239.253.254.153:8000
-#EXTINF:-1 group-title="影视剧",CHC家庭影院
-http://39.77.95.74:4002/rtp/239.253.254.152:8000
 #EXTINF:-1 group-title="影视剧",CHC影迷电影
 http://39.77.95.74:4002/rtp/239.253.254.154:8000
+#EXTINF:-1 group-title="影视剧",精彩影视
+http://39.77.95.74:4002/rtp/239.253.254.142:8000
+#EXTINF:-1 group-title="影视剧",CCTV第一剧场
+http://116.2.167.19:4010/rtp/232.0.0.29:1234
+#EXTINF:-1 group-title="影视剧",东方影视
+https://www.freetv.top/migu/617290047.m3u8?migutoken=86c02ad0875d5cc49d77bcc8bdb628f2c9d508ffc323b964a03c8f92dde4afafa0345cf5a8fefbdf915c748e3d11c6c18e27ae1e21a609cec31a45e6c437db26a7a243625f9cf35c271171a22c
 #EXTINF:-1 group-title="影视剧",新视觉
 http://120.76.248.139/live/bfgd/4200000249.m3u8
 #EXTINF:-1 group-title="影视剧",爱情公寓
 http://live.metshop.top/huya/11336726
 #EXTGRP:央视频
 #EXTINF:-1 group-title="央视频",CCTV-1综合
-http://115.171.216.46:4000/rtp/225.1.8.1:8008
+http://223.105.252.60/PLTV/4/224/3221228581/index.m3u8?servicetype=1
 #EXTINF:-1 group-title="央视频",CCTV-2财经
-http://115.171.216.46:4000/rtp/225.1.8.2:8084
+https://live.264788.xyz/channel/cctv2?streamid=3ad8659873beb150fd0c70e2762d1f51&livekey=01Whq5ncXSAY4QR6pxFecNJPn2TD9XzQG6tPi
 #EXTINF:-1 group-title="央视频",CCTV-3综艺
-http://223.105.252.59/PLTV/4/224/3221228499/index.m3u8?servicetype=1
+http://hlsztemgsplive.miguvideo.com:8080/wd_r2/2018/ocn/cctv3hd/2000/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=5500212864&pid=2028597139&timestamp=20260518225647&Channel_ID=0116_2600037000-99000-200300220105406&ProgramID=624878271&ParentNodeID=-99&assertID=5500212864&client_ip=113.6.228.57&SecurityKey=20260518225647&promotionId=&mvid=5100001683&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=876b85dc555336a5c0ce88ebb5403ee5
 #EXTINF:-1 group-title="央视频",CCTV-4中文国际
-http://49.77.104.95:8554/rtp/239.49.8.131:6000
+http://223.105.252.60/PLTV/4/224/3221228228/index.m3u8?servicetype=1
 #EXTINF:-1 group-title="央视频",CCTV-4中文国际
-http://124.112.240.102:4022/rtp/238.1.78.137:6968
+http://hlsztemgsplive.miguvideo.com:8080/wd_r2/cctv/cctv4hd/1500/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=5500346947&pid=2028597139&timestamp=20260518225545&Channel_ID=0116_2600037000-99000-200300220105404&ProgramID=631780421&ParentNodeID=-99&assertID=5500346947&client_ip=113.6.228.55&SecurityKey=20260518225545&promotionId=&mvid=5101064235&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=ef8e39cf4bc97112792f914b87a832a4
 #EXTINF:-1 group-title="央视频",CCTV-4中文国际
-http://121.29.215.217:2083/rtp/239.253.93.192:6370
+http://114.254.84.33:8888/rtp/239.3.1.105:8092
 #EXTINF:-1 group-title="央视频",CCTV-4中文国际
-http://hlsztemgsplive.miguvideo.com:8080/wd_r2/cctv/cctv4hd/1500/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=5500346947&pid=2028597139&timestamp=20260517222409&Channel_ID=0116_2600037000-99000-200300220105263&ProgramID=631780421&ParentNodeID=-99&assertID=5500346947&client_ip=111.7.106.60&SecurityKey=20260517222409&promotionId=&mvid=5101064235&mcid=500020&playurlVersion=ZQ-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=8f46470c73a3fc5e8112c924df0ffa45
+http://114.254.36.134:8888/rtp/239.3.1.214:4220
+#EXTINF:-1 group-title="央视频",CCTV-4中文国际
+http://144.255.31.141:6688/udp/239.21.2.29:5002
+#EXTINF:-1 group-title="央视频",CCTV-4中文国际
+http://106.59.3.18:55555/rtp/239.200.201.180:4220
 #EXTINF:-1 group-title="央视频",CCTV-5体育
-http://183.236.43.98:4013/udp/239.77.0.170:5146
+http://hlsztemgsplive.miguvideo.com:8080/wd_r2/cctv/cctv5hdnew/1200/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=5500516171&pid=2028597139&timestamp=20260518225440&Channel_ID=0116_2600037000-99000-200300220105402&ProgramID=641886683&ParentNodeID=-99&assertID=5500516171&client_ip=113.6.228.54&SecurityKey=20260518225440&promotionId=&mvid=5102048712&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=8c9a1e0f03e6d83cb6e082f0f6d3146d
 #EXTINF:-1 group-title="央视频",CCTV-5+体育
-http://221.220.132.128:8012/rtp/239.3.1.130:8004
+http://hlsztemgsplive.miguvideo.com:8080/wd_r2/cctv/cctv5plusnew/1200/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=5500516288&pid=2028597139&timestamp=20260518225514&Channel_ID=0116_2600037000-99000-200300220105403&ProgramID=641886773&ParentNodeID=-99&assertID=5500516288&client_ip=113.6.228.54&SecurityKey=20260518225514&promotionId=&mvid=5102048803&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=e4c897fc13ef68ecf84ed697d44e1f6e
 #EXTINF:-1 group-title="央视频",CCTV-6电影
-http://121.29.215.217:2083/rtp/239.253.92.193:6058
+http://hlsztemgsplive.miguvideo.com:8080/wd_r2/2018/ocn/cctv6hd/2000/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=5500212872&pid=2028597139&timestamp=20260518225403&Channel_ID=0116_2600037000-99000-200300220105401&ProgramID=624878396&ParentNodeID=-99&assertID=5500212872&client_ip=113.6.228.53&SecurityKey=20260518225403&promotionId=&mvid=5100001694&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=f6aecd90f958316e4dfb5be8a3c72edf
 #EXTINF:-1 group-title="央视频",CCTV-7国防军事
-http://106.59.2.72:55555/udp/239.200.200.105:8104
+http://hlsztemgsplive.miguvideo.com:8080/migu/kailu/20200324/cctv7hd/51/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=5501083622&pid=2028597139&timestamp=20260518225332&Channel_ID=0116_2600037000-99000-200300220105400&ProgramID=673168121&ParentNodeID=-99&assertID=5501083622&client_ip=113.6.228.52&SecurityKey=20260518225332&promotionId=&mvid=5102910278&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=63b50d29c42ccf2df087fbb4dc38235d
 #EXTINF:-1 group-title="央视频",CCTV-7国防军事
-http://hlsztemgsplive.miguvideo.com:8080/migu/kailu/20200324/cctv7hd/51/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=5501083622&pid=2028597139&timestamp=20260517222207&Channel_ID=0116_2600037000-99000-200300220105259&ProgramID=673168121&ParentNodeID=-99&assertID=5501083622&client_ip=111.7.106.54&SecurityKey=20260517222207&promotionId=&mvid=5102910278&mcid=500020&playurlVersion=ZQ-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=a2103d91ccae48322b0861b8e2ef118f
+http://221.220.132.128:8012/rtp/239.3.1.61:8104
 #EXTINF:-1 group-title="央视频",CCTV-8电视剧
-http://114.254.36.134:8888/rtp/239.3.1.175:8001
+http://hlsztemgsplive.miguvideo.com:8080/wd_r2/2018/ocn/cctv8hd/2000/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=5500212868&pid=2028597139&timestamp=20260518225255&Channel_ID=0116_2600037000-99000-200300220105399&ProgramID=624878356&ParentNodeID=-99&assertID=5500212868&client_ip=113.6.228.51&SecurityKey=20260518225255&promotionId=&mvid=5100001695&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=0df07c8e943f0ad23b6e839b11825eb8
 #EXTINF:-1 group-title="央视频",CCTV-9纪录
-http://121.29.215.217:2083/rtp/239.253.92.107:6020
+http://hlsztemgsplive.miguvideo.com:8080/migu/kailu/20200324/cctv9hd/51/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=5501083624&pid=2028597139&timestamp=20260518225221&Channel_ID=0116_2600037000-99000-200300220105398&ProgramID=673168140&ParentNodeID=-99&assertID=5501083624&client_ip=113.6.228.51&SecurityKey=20260518225221&promotionId=&mvid=5102910384&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=45ec76dff9e5b8357b3756025a228d17
 #EXTINF:-1 group-title="央视频",CCTV-10科教
-http://58.57.40.22:9901/tsfile/live/1010_1.m3u8
+http://hlsztemgsplive.miguvideo.com:8080/wd_r2/2018/ocn/cctv10hd/2000/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=5500212874&pid=2028597139&timestamp=20260518225144&Channel_ID=0116_2600037000-99000-200300220105397&ProgramID=624878405&ParentNodeID=-99&assertID=5500212874&client_ip=113.6.228.50&SecurityKey=20260518225144&promotionId=&mvid=5100001696&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=aace59ffbe1359eb20d695789f9db2c2
 #EXTINF:-1 group-title="央视频",CCTV-11戏曲
-http://58.57.40.22:9901/tsfile/live/1011_1.m3u8
+http://hlsztemgsplive.miguvideo.com:8080/migu/kailu/cctv11hd/51/20200103/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=5500988610&pid=2028597139&timestamp=20260518225104&Channel_ID=0116_2600037000-99000-200300220105396&ProgramID=667987558&ParentNodeID=-99&assertID=5500988610&client_ip=113.6.228.50&SecurityKey=20260518225104&promotionId=&mvid=5102751362&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=4ffcf0119f4f459548887df72f0351fd
 #EXTINF:-1 group-title="央视频",CCTV-12社会与法
-http://106.116.126.134:4022/rtp/239.254.200.161:6000
+http://hlsztemgsplive.miguvideo.com:8080/migu/kailu/20200324/cctv12hd/51/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=5501083627&pid=2028597139&timestamp=20260518225030&Channel_ID=0116_2600037000-99000-200300220105395&ProgramID=673168185&ParentNodeID=-99&assertID=5501083627&client_ip=113.6.228.50&SecurityKey=20260518225030&promotionId=&mvid=5102910389&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=2c4a4709c0d5bc4abeda6ae33cffb843
 #EXTINF:-1 group-title="央视频",CCTV-12社会与法
-http://hlsztemgsplive.miguvideo.com:8080/migu/kailu/20200324/cctv12hd/51/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=5501083627&pid=2028597139&timestamp=20260517221931&Channel_ID=0116_2600037000-99000-200300220105254&ProgramID=673168185&ParentNodeID=-99&assertID=5501083627&client_ip=111.6.230.109&SecurityKey=20260517221931&promotionId=&mvid=5102910389&mcid=500020&playurlVersion=ZQ-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=081c0eed0c700a8fea42e85803e96d2c
+http://171.8.106.37:8800/rtp/239.16.20.12:10120
 #EXTINF:-1 group-title="央视频",CCTV-13新闻
-http://121.29.215.217:2083/rtp/239.253.92.13:8008
+http://hlsztemgsplive.miguvideo.com:8080/envivo_x/2018/SD/cctv13/2000/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=2202208864&pid=2028597139&timestamp=20260518224848&Channel_ID=0116_2600037000-99000-200300220105392&ProgramID=608807423&ParentNodeID=-99&assertID=2202208864&client_ip=113.6.228.49&SecurityKey=20260518224848&promotionId=&mvid=2202208864&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=71ecbaa5477fdb30d842372d4b9f353b
 #EXTINF:-1 group-title="央视频",CCTV-14少儿
-http://58.57.40.22:9901/tsfile/live/1014_1.m3u8
+http://hlsztemgsplive.miguvideo.com:8080/wd_r2/2018/ocn/cctv14hd/2000/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=5500212875&pid=2028597139&timestamp=20260518224953&Channel_ID=0116_2600037000-99000-200300220105394&ProgramID=624878440&ParentNodeID=-99&assertID=5500212875&client_ip=113.6.228.50&SecurityKey=20260518224953&promotionId=&mvid=5100001697&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=ce43a91e3218d417c3856e061a77cdfd
 #EXTINF:-1 group-title="央视频",CCTV-15音乐
-http://121.29.215.217:2083/rtp/239.253.93.154:6322
+http://hlsztemgsplive.miguvideo.com:8080/migu/kailu/20200324/cctv15hd/51/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=5501083628&pid=2028597139&timestamp=20260518224919&Channel_ID=0116_2600037000-99000-200300220105393&ProgramID=673168223&ParentNodeID=-99&assertID=5501083628&client_ip=113.6.228.49&SecurityKey=20260518224919&promotionId=&mvid=5102910391&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=046c05e2c5dbeeec983e58109d5d5055
 #EXTINF:-1 group-title="央视频",CCTV-17农业农村
-http://106.116.126.134:4022/rtp/239.254.201.120:8144
+http://hlsztemgsplive.miguvideo.com:8080/migu/kailu/20200324/cctv17hd/51/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=5501083631&pid=2028597139&timestamp=20260518224811&Channel_ID=0116_2600037000-99000-200300220105391&ProgramID=673168256&ParentNodeID=-99&assertID=5501083631&client_ip=113.6.228.49&SecurityKey=20260518224811&promotionId=&mvid=5102910396&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=ee429fdc6f0603c4f944611ee833b203
 #EXTINF:-1 group-title="央视频",CCTV-17农业农村
-http://hlsztemgsplive.miguvideo.com:8080/migu/kailu/20200324/cctv17hd/51/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=5501083631&pid=2028597139&timestamp=20260517221728&Channel_ID=0116_2600037000-99000-200300220105250&ProgramID=673168256&ParentNodeID=-99&assertID=5501083631&client_ip=111.6.230.108&SecurityKey=20260517221728&promotionId=&mvid=5102910396&mcid=500020&playurlVersion=ZQ-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=08a4d221f0ca9cbba71e916e5e790e90
+http://106.116.126.119:4022/rtp/239.254.201.120:8144
 #EXTINF:-1 group-title="央视频",深圳少儿频道
 http://183.236.43.98:4013/udp/239.77.1.244:5146
-#EXTINF:-1 group-title="央视频",重庆社会与法
-http://home.scanflove.com:7788/rtp/235.254.196.210:1112$重庆cmc3+
+#EXTINF:-1 group-title="央视频",广东体育频道
+http://183.236.43.98:4013/udp/239.77.0.112:5146
+#EXTINF:-1 group-title="央视频",广州新闻频道
+http://183.236.43.98:4013/udp/239.253.43.72:5146
+#EXTINF:-1 group-title="央视频",潮州综合频道
+http://183.236.43.98:4013/udp/239.253.43.70:5146
+#EXTINF:-1 group-title="央视频",CCTV
+http://223.105.252.59/PLTV/4/224/3221228314/index.m3u8?servicetype=1
 #EXTINF:-1 group-title="央视频",北京新闻频道
 http://114.254.36.134:8888/rtp/239.3.1.159:8000
-#EXTINF:-1 group-title="央视频",六安综合频道
-http://124.112.240.102:4022/rtp/238.1.78.144:7024
-#EXTINF:-1 group-title="央视频",临泉新闻频道
-http://124.112.240.102:4022/rtp/238.1.78.29:6160
-#EXTINF:-1 group-title="央视频",亳州综合频道
-http://124.112.240.102:4022/rtp/238.1.78.128:6896
-#EXTINF:-1 group-title="央视频",无为新闻频道
-http://124.112.240.102:4022/rtp/238.1.78.188:7376
-#EXTINF:-1 group-title="央视频",潜山综合频道
-http://124.112.240.102:4022/rtp/238.1.78.192:7408
-#EXTINF:-1 group-title="央视频",宣城综合频道
-http://124.112.240.102:4022/rtp/238.1.78.142:7008
-#EXTINF:-1 group-title="央视频",金寨综合频道
-http://124.112.240.102:4022/rtp/238.1.79.21:4280
-#EXTINF:-1 group-title="央视频",邢台综合频道
-http://106.116.126.134:4022/rtp/239.254.200.150:6000
-#EXTINF:-1 group-title="央视频",CCTV风云音乐
-http://121.29.215.217:2083/rtp/239.253.93.253:6431
-#EXTINF:-1 group-title="央视频",CCTV风云足球
-http://121.29.215.217:2083/rtp/239.253.93.254:6432
-#EXTINF:-1 group-title="央视频",CCTV央视台球
-http://121.29.215.217:2083/rtp/239.253.93.231:6409
-#EXTINF:-1 group-title="央视频",CCTV兵器科技
-http://121.29.215.217:2083/rtp/239.253.93.47:6435
-#EXTINF:-1 group-title="央视频",CCTV女性时尚
-http://121.29.215.217:2083/rtp/239.253.92.144:6114
-#EXTINF:-1 group-title="央视频",遵化综合频道
-http://121.29.215.217:2083/rtp/239.253.93.177:6345
-#EXTINF:-1 group-title="央视频",康保综合频道
-http://121.29.215.217:2083/rtp/239.253.93.165:6333
-#EXTINF:-1 group-title="央视频",滦南综合频道
-http://121.29.215.217:2083/rtp/239.253.92.218:6100
-#EXTINF:-1 group-title="央视频",玉田综合频道
-http://121.29.215.217:2083/rtp/239.253.92.118:6133
-#EXTINF:-1 group-title="央视频",三河综合频道
-http://121.29.215.217:2083/rtp/239.253.93.143:6311
-#EXTINF:-1 group-title="央视频",成安综合频道
-http://121.29.215.217:2083/rtp/239.253.93.178:6346
-#EXTINF:-1 group-title="央视频",高碑店综合频道
-http://121.29.215.217:2083/rtp/239.253.93.23:6176
-#EXTINF:-1 group-title="央视频",唐县综合频道
-http://121.29.215.217:2083/rtp/239.253.93.30:6183
-#EXTINF:-1 group-title="央视频",临城新闻频道
-http://121.29.215.217:2083/rtp/239.253.93.167:6335
-#EXTINF:-1 group-title="央视频",柏乡综合频道
-http://121.29.215.217:2083/rtp/239.253.93.171:6339
-#EXTINF:-1 group-title="央视频",安平综合频道
-http://121.29.215.217:2083/rtp/239.253.93.36:6189
-#EXTINF:-1 group-title="央视频",CETV2
-http://121.29.215.217:2083/rtp/239.253.92.108:6136
-#EXTINF:-1 group-title="央视频",平泉综合频道
-http://121.29.215.217:2083/rtp/239.253.92.156:6012
-#EXTINF:-1 group-title="央视频",宁阳综合频道
-http://144.255.31.141:6688/udp/239.21.1.143:5002
-#EXTINF:-1 group-title="央视频",兰陵综合频道
-http://144.255.31.141:6688/udp/239.21.1.237:5002
-#EXTINF:-1 group-title="央视频",禹城综艺频道
-http://144.255.31.141:6688/udp/239.21.1.242:5002
-#EXTINF:-1 group-title="央视频",莘县综合频道
-http://144.255.31.141:6688/udp/239.21.1.211:5002
+#EXTINF:-1 group-title="央视频",南京科教频道
+http://49.77.104.95:8554/rtp/239.49.0.183:9434
+#EXTINF:-1 group-title="央视频",光山综合频道
+http://171.8.106.37:8800/rtp/239.16.10.94:2000
+#EXTINF:-1 group-title="央视频",许昌综合频道
+http://171.8.106.37:8800/rtp/239.16.10.47:2000
+#EXTINF:-1 group-title="央视频",平顶山教育台
+http://171.8.106.37:8800/rtp/239.16.20.27:10270
+#EXTINF:-1 group-title="央视频",新乡综合频道
+http://171.8.106.37:8800/rtp/239.16.20.18:10180
+#EXTINF:-1 group-title="央视频",兖州新闻频道
+http://144.255.31.141:6688/udp/239.21.1.224:5002
+#EXTINF:-1 group-title="央视频",夏津综合频道
+http://144.255.31.141:6688/udp/239.21.1.106:5002
+#EXTINF:-1 group-title="央视频",安丘综合频道
+http://144.255.31.141:6688/udp/239.21.2.13:5002
+#EXTINF:-1 group-title="央视频",宁津综合频道
+http://144.255.31.141:6688/udp/239.21.2.50:5002
+#EXTINF:-1 group-title="央视频",禹城综合频道
+http://144.255.31.141:6688/udp/239.21.1.241:5002
+#EXTINF:-1 group-title="央视频",聊城综合频道
+http://144.255.31.141:6688/udp/239.21.1.253:5002
+#EXTINF:-1 group-title="央视频",茌平综合频道
+http://144.255.31.141:6688/udp/239.21.1.219:5002
+#EXTINF:-1 group-title="央视频",荣成综合频道
+http://144.255.31.141:6688/udp/239.21.1.227:5002
 #EXTINF:-1 group-title="央视频",莱西综合频道
 http://144.255.31.141:6688/udp/239.21.1.247:5002
+#EXTINF:-1 group-title="央视频",莘县综合频道
+http://144.255.31.141:6688/udp/239.21.1.211:5002
+#EXTINF:-1 group-title="央视频",邹城综合频道
+http://144.255.31.141:6688/udp/239.21.1.185:5002
+#EXTINF:-1 group-title="央视频",郓城综合频道
+http://144.255.31.141:6688/udp/239.21.1.251:5002
+#EXTINF:-1 group-title="央视频",陵城综合频道
+http://144.255.31.141:6688/udp/239.21.2.24:5002
 #EXTINF:-1 group-title="央视频",齐河新闻频道
 http://144.255.31.141:6688/udp/239.21.1.230:5002
 #EXTINF:-1 group-title="央视频",青州综合频道
 http://144.255.31.141:6688/udp/239.21.1.232:5002
+#EXTINF:-1 group-title="央视频",巨野新闻频道
+http://144.255.31.141:6688/udp/239.21.1.215:5002
+#EXTINF:-1 group-title="央视频",平原综合频道
+http://144.255.31.141:6688/udp/239.21.1.243:5002
+#EXTINF:-1 group-title="央视频",平阴综合频道
+http://144.255.31.141:6688/udp/239.21.1.221:5002
+#EXTINF:-1 group-title="央视频",昌乐综合频道
+http://144.255.31.141:6688/udp/239.21.1.245:5002
+#EXTINF:-1 group-title="央视频",昌邑综合频道
+http://144.255.31.141:6688/udp/239.21.2.27:5002
+#EXTINF:-1 group-title="央视频",新泰综合频道
+http://144.255.31.141:6688/udp/239.21.1.210:5002
+#EXTINF:-1 group-title="央视频",曲阜综合频道
+http://144.255.31.141:6688/udp/239.21.1.225:5002
 #EXTINF:-1 group-title="央视频",梁山综合频道
 http://144.255.31.141:6688/udp/239.21.2.12:5002
 #EXTINF:-1 group-title="央视频",CETV1
-http://144.255.31.141:6688/udp/239.21.2.7:5002
+http://36.49.53.61:8800/rtp/239.37.0.193:5540
+#EXTINF:-1 group-title="央视频",CCTV风云音乐
+http://106.59.3.18:55555/rtp/239.200.200.86:8008
+#EXTINF:-1 group-title="央视频",CETV4
+http://106.59.3.18:55555/rtp/239.200.201.122:8784
+#EXTINF:-1 group-title="央视频",CCTV央视台球
+http://116.2.167.19:4010/rtp/232.0.0.60:1234
+#EXTINF:-1 group-title="央视频",CCTV风云足球
+http://116.2.167.19:4010/rtp/232.0.0.52:1234
+#EXTINF:-1 group-title="央视频",CCTV央视文化精品
+http://116.2.167.19:4010/rtp/232.0.0.56:1234
+#EXTINF:-1 group-title="央视频",CCTV世界地理
+http://116.2.167.19:4010/rtp/232.0.0.63:1234
 #EXTINF:-1 group-title="央视频",CETV-1
 http://120.76.248.139/live/bfgd/4200000135.m3u8
 #EXTGRP:卫视频
-#EXTINF:-1 group-title="卫视频",湖南卫视4K
-http://ddns.xryo.cn:8888/udp/239.111.205.63:5140
-#EXTINF:-1 group-title="卫视频",四川卫视4K
-http://ddns.xryo.cn:8888/udp/239.111.205.62:5140
+#EXTINF:-1 group-title="卫视频",北京卫视
+https://live.264788.xyz/channel/beijingweishi?streamid=117720dac7e490d78c4866d59a1b676b&livekey=01Whq5ncXSAY4QR6pxFecNJPn2TD9XzQG6tPi
+#EXTINF:-1 group-title="卫视频",江西卫视
+https://live.264788.xyz/channel/jiangxiweishi?streamid=b5108f0777ea691a0547a42a6dfd5d8b&livekey=01Whq5ncXSAY4QR6pxFecNJPn2TD9XzQG6tPi
 #EXTINF:-1 group-title="卫视频",广东卫视
-http://183.236.43.98:4013/udp/239.77.0.166:5146
+http://183.236.43.98:4013/udp/239.77.1.19:5146
 #EXTINF:-1 group-title="卫视频",广东珠江频道
-http://183.236.43.98:4013/udp/239.77.0.1:5146
-#EXTINF:-1 group-title="卫视频",广东民生频道
-http://183.236.43.98:4013/udp/239.77.0.225:5146
-#EXTINF:-1 group-title="卫视频",芷江综合
-https://liveplay-srs.voc.com.cn/hls/tv/20_68acda.m3u8
-#EXTINF:-1 group-title="卫视频",定襄综合
-http://lbyzztfe.live.sxmty.com/live/hls/645ff4c60e0a49f0a203abbd73dd8be9/0720e665f10f48e98c9639f4f492fb4a-1.m3u8?zshanxd
-#EXTINF:-1 group-title="卫视频",重庆光影
-http://home.scanflove.com:7788/rtp/235.254.198.91:1640$重庆cmc3+
+http://183.236.43.98:4013/udp/239.77.0.114:5146
+#EXTINF:-1 group-title="卫视频",深圳卫视
+http://183.236.43.98:4013/udp/239.77.1.3:5146
+#EXTINF:-1 group-title="卫视频",佛山公共频道
+http://183.236.43.98:4013/udp/239.253.43.53:5146
+#EXTINF:-1 group-title="卫视频",韶关新闻综合
+http://183.236.43.98:4013/udp/239.77.0.117:5146
+#EXTINF:-1 group-title="卫视频",潮州民生频道
+http://183.236.43.98:4013/udp/239.253.43.75:5146
+#EXTINF:-1 group-title="卫视频",广东体育
+http://net.manyee.net:18888/rtp/239.77.0.112:5146
+#EXTINF:-1 group-title="卫视频",江苏卫视
+http://hlsztemgsplive.miguvideo.com:8080/wd_r2/cctv/jiangsuhd/1200/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699067&netType=4&sid=5500199408&pid=2028597139&timestamp=20260518224627&Channel_ID=0116_2600037000-99000-200300220105388&ProgramID=623899368&ParentNodeID=-99&assertID=5500199408&client_ip=113.6.228.47&SecurityKey=20260518224627&promotionId=&mvid=5100156802&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=6697239d2ddc4efbcc4bd8ea01b4a328
+#EXTINF:-1 group-title="卫视频",湖北卫视
+http://hlsztemgsplive.miguvideo.com:8080/wd_r2/2018/ocn/hubeiwshd/2000/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=600633&netType=4&sid=5910022163&pid=2028597139&timestamp=20260518224451&Channel_ID=0116_2600037000-99000-200300220105385&ProgramID=947472496&ParentNodeID=-99&assertID=5910022163&client_ip=113.6.228.46&SecurityKey=20260518224451&promotionId=&mvid=5900004355&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=c2885fd0c2304a9716d79058cd4cde7e
+#EXTINF:-1 group-title="卫视频",辽宁卫视
+http://hlsztemgsplive.miguvideo.com:8080/wd_r2/2018/ocn/liaoningwshd/2000/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=600572&netType=4&sid=5910022198&pid=2028597139&timestamp=20260518224417&Channel_ID=0116_2600037000-99000-200300220105384&ProgramID=630291707&ParentNodeID=-99&assertID=5910022198&client_ip=113.6.228.46&SecurityKey=20260518224417&promotionId=&mvid=5101043014&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=5c77a7f64973fcafa2ca7775a683e0f4
+#EXTINF:-1 group-title="卫视频",东南卫视
+http://hlsztemgsplive.miguvideo.com:8080/migu/kailu/dongnanws/51/20230724/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=600717&netType=4&sid=5910022182&pid=2028597139&timestamp=20260518224343&Channel_ID=0116_2600037000-99000-200300220105383&ProgramID=849116810&ParentNodeID=-99&assertID=5910022182&client_ip=113.6.228.46&SecurityKey=20260518224343&promotionId=&mvid=5900006229&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=b532e35b0dae6b821e2fe1ae0547d2b5
+#EXTINF:-1 group-title="卫视频",东方卫视
+http://hlsztemgsplive.miguvideo.com:8080/wd_r4/dfl/dongfangwshd/1200/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=600697&netType=4&sid=5910022185&pid=2028597139&timestamp=20260518224703&Channel_ID=0116_2600037000-99000-200300220105389&ProgramID=651632648&ParentNodeID=-99&assertID=5910022185&client_ip=113.6.228.48&SecurityKey=20260518224703&promotionId=&mvid=5100043384&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=debf2ba3ef4c91c75dbf3c104cb33c36
+#EXTINF:-1 group-title="卫视频",河南民生
+http://cfss.cc/cdn/dy/594830048.flv
+#EXTINF:-1 group-title="卫视频",💚辽宁卫视
+http://k.061899.xyz/k.php?id=lnws
 #EXTINF:-1 group-title="卫视频",重庆红叶
 http://home.scanflove.com:7788/rtp/235.254.196.215:1132$重庆cmc3+
-#EXTINF:-1 group-title="卫视频",重庆军事
-http://home.scanflove.com:7788/rtp/235.254.198.83:1608$重庆cmc3+
-#EXTINF:-1 group-title="卫视频",重庆精选
-http://home.scanflove.com:7788/rtp/235.254.198.81:1600$重庆cmc3+
 #EXTINF:-1 group-title="卫视频",重庆美人
 http://home.scanflove.com:7788/rtp/235.254.198.80:1596$重庆cmc3+
-#EXTINF:-1 group-title="卫视频",江西卫视
-http://114.254.36.134:8888/rtp/239.3.1.123:8164
-#EXTINF:-1 group-title="卫视频",北京生活频道
-http://221.220.132.128:8012/rtp/239.3.1.117:8000
+#EXTINF:-1 group-title="卫视频",重庆汽摩
+http://home.scanflove.com:7788/rtp/235.254.196.221:1156$重庆cmc3+
+#EXTINF:-1 group-title="卫视频",重庆野外
+http://home.scanflove.com:7788/rtp/235.254.198.119:1752$重庆cmc3+
+#EXTINF:-1 group-title="卫视频",重庆音乐现场
+http://home.scanflove.com:7788/rtp/235.254.198.77:1584$重庆cmc3+
+#EXTINF:-1 group-title="卫视频",延边卫视
+https://srs.iyb983.cn/video/CYS/index.m3u8
+#EXTINF:-1 group-title="卫视频",北京财经频道
+http://221.220.132.128:8012/rtp/239.3.1.116:8000
 #EXTINF:-1 group-title="卫视频",北京国际频道
 http://221.220.132.128:8012/rtp/239.3.1.235:8000
-#EXTINF:-1 group-title="卫视频",天津卫视
-http://221.220.132.128:8012/rtp/239.3.1.141:1234
-#EXTINF:-1 group-title="卫视频",重庆卫视
-http://221.220.132.128:8012/rtp/239.3.1.122:8160
-#EXTINF:-1 group-title="卫视频",山东教育卫视
-http://221.220.132.128:8012/rtp/239.3.1.52:4120
-#EXTINF:-1 group-title="卫视频",北京卫视
-http://124.112.240.102:4022/rtp/238.1.78.162:7168
-#EXTINF:-1 group-title="卫视频",西藏卫视
-http://124.112.240.102:4022/rtp/238.1.78.101:6680
-#EXTINF:-1 group-title="卫视频",厦门卫视
-http://124.112.240.102:4022/rtp/238.1.78.246:7840
-#EXTINF:-1 group-title="卫视频",上海生活时尚
-http://124.112.240.102:4022/rtp/238.1.78.155:7112
-#EXTINF:-1 group-title="卫视频",旌德新闻综合
-http://124.112.240.102:4022/rtp/238.1.78.215:7592
-#EXTINF:-1 group-title="卫视频",卡酷少儿
-http://124.112.240.102:4022/rtp/238.1.78.97:6648
-#EXTINF:-1 group-title="卫视频",黄山新闻综合
-http://124.112.240.102:4022/rtp/238.1.78.130:6912
-#EXTINF:-1 group-title="卫视频",肥西新闻综合
-http://124.112.240.102:4022/rtp/238.1.78.185:7352
-#EXTINF:-1 group-title="卫视频",霍邱新闻综合
-http://124.112.240.102:4022/rtp/238.1.78.119:6824
-#EXTINF:-1 group-title="卫视频",淮北新闻综合
-http://124.112.240.102:4022/rtp/238.1.78.135:6952
-#EXTINF:-1 group-title="卫视频",六安社会生活
-http://124.112.240.102:4022/rtp/238.1.78.145:7032
-#EXTINF:-1 group-title="卫视频",淮北经济生活
-http://124.112.240.102:4022/rtp/238.1.78.136:6960
-#EXTINF:-1 group-title="卫视频",淮南新闻综合
-http://124.112.240.102:4022/rtp/238.1.78.113:6776
-#EXTINF:-1 group-title="卫视频",滁州新闻综合
-http://124.112.240.102:4022/rtp/238.1.78.132:6928
-#EXTINF:-1 group-title="卫视频",阜南新闻综合
-http://124.112.240.102:4022/rtp/238.1.79.11:4200
-#EXTINF:-1 group-title="卫视频",淮南民生频道
-http://124.112.240.102:4022/rtp/238.1.78.114:6784
-#EXTINF:-1 group-title="卫视频",寿县新闻综合
-http://124.112.240.102:4022/rtp/238.1.78.146:7040
-#EXTINF:-1 group-title="卫视频",芜湖新闻综合
-http://124.112.240.102:4022/rtp/238.1.78.112:6768
-#EXTINF:-1 group-title="卫视频",马鞍山科教生活
-http://124.112.240.102:4022/rtp/238.1.78.77:6488
-#EXTINF:-1 group-title="卫视频",安庆新闻综合
-http://124.112.240.102:4022/rtp/238.1.78.117:6808
-#EXTINF:-1 group-title="卫视频",安庆经济生活
-http://124.112.240.102:4022/rtp/238.1.78.118:6816
-#EXTINF:-1 group-title="卫视频",宿州新闻综合
-http://124.112.240.102:4022/rtp/238.1.78.121:6840
-#EXTINF:-1 group-title="卫视频",利辛新闻综合
-http://124.112.240.102:4022/rtp/238.1.78.196:7440
-#EXTINF:-1 group-title="卫视频",涡阳新闻综合
-http://124.112.240.102:4022/rtp/238.1.78.197:7448
-#EXTINF:-1 group-title="卫视频",固镇新闻综合
-http://124.112.240.102:4022/rtp/238.1.79.47:4488
-#EXTINF:-1 group-title="卫视频",广德生活频道
-http://124.112.240.102:4022/rtp/238.1.78.213:7576
-#EXTINF:-1 group-title="卫视频",广德新闻综合
-http://124.112.240.102:4022/rtp/238.1.78.212:7568
-#EXTINF:-1 group-title="卫视频",宿州公共频道
-http://124.112.240.102:4022/rtp/238.1.78.122:6848
-#EXTINF:-1 group-title="卫视频",睛彩河北
-http://106.116.126.134:4022/rtp/239.254.200.27:6000
-#EXTINF:-1 group-title="卫视频",秦皇岛新闻综合
-http://106.116.126.134:4022/rtp/239.254.200.39:6000
-#EXTINF:-1 group-title="卫视频",深圳卫视
-http://60.4.28.155:8077/rtp/239.253.92.86:8017
-#EXTINF:-1 group-title="卫视频",浙江卫视
-http://121.29.215.217:2083/rtp/239.253.92.90:8020
-#EXTINF:-1 group-title="卫视频",江苏卫视
-http://121.29.215.217:2083/rtp/239.253.92.88:8018
-#EXTINF:-1 group-title="卫视频",东南卫视
-http://121.29.215.217:2083/rtp/239.253.92.201:6146
-#EXTINF:-1 group-title="卫视频",山东卫视
-http://121.29.215.217:2083/rtp/239.253.92.207:8109
-#EXTINF:-1 group-title="卫视频",黑龙江卫视
-http://121.29.215.217:2083/rtp/239.253.92.85:8016
-#EXTINF:-1 group-title="卫视频",辽宁卫视
-http://121.29.215.217:2083/rtp/239.253.92.115:6056
-#EXTINF:-1 group-title="卫视频",湖北卫视
-http://121.29.215.217:2083/rtp/239.253.92.210:6567
-#EXTINF:-1 group-title="卫视频",秦皇岛公共频道
-http://121.29.215.217:2083/rtp/239.253.92.53:6022
-#EXTINF:-1 group-title="卫视频",唐山新闻综合
-http://121.29.215.217:2083/rtp/239.253.92.245:6089
-#EXTINF:-1 group-title="卫视频",廊坊新闻综合
-http://121.29.215.217:2083/rtp/239.253.92.164:6036
-#EXTINF:-1 group-title="卫视频",唐山公共频道
-http://121.29.215.217:2083/rtp/239.253.92.128:6028
-#EXTINF:-1 group-title="卫视频",保定新闻综合
-http://121.29.215.217:2083/rtp/239.253.93.2:6153
-#EXTINF:-1 group-title="卫视频",廊坊生活频道
-http://121.29.215.217:2083/rtp/239.253.92.166:6037
-#EXTINF:-1 group-title="卫视频",保定公共频道
-http://121.29.215.217:2083/rtp/239.253.93.4:6157
-#EXTINF:-1 group-title="卫视频",定州新闻综合
-http://121.29.215.217:2083/rtp/239.253.93.95:6260
-#EXTINF:-1 group-title="卫视频",邢台城市生活
-http://121.29.215.217:2083/rtp/239.253.93.10:6163
-#EXTINF:-1 group-title="卫视频",深州新闻综合
-http://121.29.215.217:2083/rtp/239.253.93.42:6195
-#EXTINF:-1 group-title="卫视频",涉县新闻综合
-http://121.29.215.217:2083/rtp/239.253.93.106:6273
-#EXTINF:-1 group-title="卫视频",河南文物宝库
-http://121.29.215.217:2083/rtp/239.253.93.180:6437
-#EXTINF:-1 group-title="卫视频",河南梨园频道
-http://121.29.215.217:2083/rtp/239.253.93.133:6441
-#EXTINF:-1 group-title="卫视频",河南武术世界
-http://121.29.215.217:2083/rtp/239.253.93.46:6434
-#EXTINF:-1 group-title="卫视频",霸州综合
-http://121.29.215.217:2083/rtp/239.253.93.209:6387
-#EXTINF:-1 group-title="卫视频",东方卫视
-http://144.255.31.141:6688/udp/239.21.1.111:5002
 #EXTINF:-1 group-title="卫视频",河北卫视
-http://144.255.31.141:6688/udp/239.21.1.168:5002
-#EXTINF:-1 group-title="卫视频",安徽卫视
-http://144.255.31.141:6688/udp/239.21.1.159:5002
-#EXTINF:-1 group-title="卫视频",河南卫视
-http://144.255.31.141:6688/udp/239.21.2.37:5002
+http://221.220.132.128:8012/rtp/239.3.1.148:8072
+#EXTINF:-1 group-title="卫视频",黑龙江卫视
+http://221.220.132.128:8012/rtp/239.3.1.133:8016
+#EXTINF:-1 group-title="卫视频",北京IPTV萌宠TV
+http://114.254.36.134:8888/rtp/239.3.1.102:8001
+#EXTINF:-1 group-title="卫视频",江苏城市频道
+http://49.77.104.95:8554/rtp/239.49.8.107:8000
+#EXTINF:-1 group-title="卫视频",云南卫视
+http://49.77.104.95:8554/rtp/239.49.1.235:6000
+#EXTINF:-1 group-title="卫视频",河南移动电视
+http://171.8.106.37:8800/rtp/239.16.20.204:12040
+#EXTINF:-1 group-title="卫视频",河南移动戏曲
+http://171.8.106.37:8800/rtp/239.16.20.120:11200
+#EXTINF:-1 group-title="卫视频",河南睛彩中原
+http://171.8.106.37:8800/rtp/239.16.20.122:11220
+#EXTINF:-1 group-title="卫视频",郑州1新闻综合
+http://171.8.106.37:8800/rtp/239.16.10.154:2000
+#EXTINF:-1 group-title="卫视频",郑州3文体旅游
+http://171.8.106.37:8800/rtp/239.16.10.156:2000
+#EXTINF:-1 group-title="卫视频",孟津综合综合
+http://171.8.106.37:8800/rtp/239.16.20.192:11920
+#EXTINF:-1 group-title="卫视频",安阳新闻综合
+http://171.8.106.37:8800/rtp/239.16.20.144:11440
+#EXTINF:-1 group-title="卫视频",杞县新闻综合
+http://171.8.106.37:8800/rtp/239.16.10.80:2000
+#EXTINF:-1 group-title="卫视频",重庆卫视
+http://171.8.106.37:8800/rtp/239.16.20.79:10790
+#EXTINF:-1 group-title="卫视频",山东卫视
+http://171.8.106.37:8800/rtp/239.16.20.80:10800
 #EXTINF:-1 group-title="卫视频",吉林卫视
-http://144.255.31.141:6688/udp/239.21.2.49:5002
-#EXTINF:-1 group-title="卫视频",海南卫视
-http://144.255.31.141:6688/udp/239.21.2.14:5002
-#EXTINF:-1 group-title="卫视频",青海卫视
-http://144.255.31.141:6688/udp/239.21.2.51:5002
-#EXTINF:-1 group-title="卫视频",贵州卫视
-http://144.255.31.141:6688/udp/239.21.1.166:5002
-#EXTINF:-1 group-title="卫视频",甘肃卫视
-http://144.255.31.141:6688/udp/239.21.2.22:5002
-#EXTINF:-1 group-title="卫视频",济南新闻综合
-http://144.255.31.141:6688/udp/239.21.1.94:5002
-#EXTINF:-1 group-title="卫视频",潍坊新闻综合
-http://144.255.31.141:6688/udp/239.21.1.77:5002
+http://171.8.106.37:8800/rtp/239.16.20.94:10940
+#EXTINF:-1 group-title="卫视频",上海东方财经
+http://171.8.106.37:8800/rtp/239.16.20.64:10640
+#EXTINF:-1 group-title="卫视频",湖南快乐垂钓
+http://171.8.106.37:8800/rtp/239.16.20.67:10670
+#EXTINF:-1 group-title="卫视频",湖南茶频道
+http://171.8.106.37:8800/rtp/239.16.20.68:10680
+#EXTINF:-1 group-title="卫视频",商丘1新闻综合
+http://171.8.106.37:8800/rtp/239.16.10.153:2000
+#EXTINF:-1 group-title="卫视频",许昌农业科教
+http://171.8.106.37:8800/rtp/239.16.10.60:2000
+#EXTINF:-1 group-title="卫视频",商丘2公共频道
+http://171.8.106.37:8800/rtp/239.16.10.168:2000
+#EXTINF:-1 group-title="卫视频",平顶山公共频道
+http://171.8.106.37:8800/rtp/239.16.20.152:11520
+#EXTINF:-1 group-title="卫视频",濮阳公共频道
+http://171.8.106.37:8800/rtp/239.16.20.184:11840
+#EXTINF:-1 group-title="卫视频",大象新闻
+http://171.8.106.37:8800/rtp/239.16.20.216:12160
+#EXTINF:-1 group-title="卫视频",河北少儿科教
+http://106.116.126.119:4022/rtp/239.254.200.21:6000
+#EXTINF:-1 group-title="卫视频",睛彩河北
+http://106.116.126.119:4022/rtp/239.254.200.27:6000
+#EXTINF:-1 group-title="卫视频",唐山公共频道
+http://106.116.126.119:4022/rtp/239.254.200.169:6000
+#EXTINF:-1 group-title="卫视频",保定新闻综合
+http://106.116.126.119:4022/rtp/239.254.200.144:6000
+#EXTINF:-1 group-title="卫视频",衡水新闻综合
+http://106.116.126.119:4022/rtp/239.254.200.147:6000
+#EXTINF:-1 group-title="卫视频",山西卫视
+http://106.116.126.119:4022/rtp/239.254.200.83:8172
+#EXTINF:-1 group-title="卫视频",湖南卫视
+http://144.255.31.141:6688/udp/239.21.1.158:5002
+#EXTINF:-1 group-title="卫视频",浙江卫视
+http://144.255.31.141:6688/udp/239.21.1.90:5002
+#EXTINF:-1 group-title="卫视频",潍坊经济生活
+http://144.255.31.141:6688/udp/239.21.1.78:5002
+#EXTINF:-1 group-title="卫视频",夏津公共频道
+http://144.255.31.141:6688/udp/239.21.1.102:5002
+#EXTINF:-1 group-title="卫视频",烟台新闻综合
+http://144.255.31.141:6688/udp/239.21.1.116:5002
+#EXTINF:-1 group-title="卫视频",烟台经济科技
+http://144.255.31.141:6688/udp/239.21.1.205:5002
+#EXTINF:-1 group-title="卫视频",聊城民生频道
+http://144.255.31.141:6688/udp/239.21.1.254:5002
+#EXTINF:-1 group-title="卫视频",阳信新闻综合
+http://144.255.31.141:6688/udp/239.21.1.252:5002
+#EXTINF:-1 group-title="卫视频",平度新闻综合
+http://144.255.31.141:6688/udp/239.21.1.228:5002
+#EXTINF:-1 group-title="卫视频",德州新闻综合
+http://144.255.31.141:6688/udp/239.21.1.75:5002
+#EXTINF:-1 group-title="卫视频",德州经济生活
+http://144.255.31.141:6688/udp/239.21.1.76:5002
 #EXTINF:-1 group-title="卫视频",烟台公共
 http://144.255.31.141:6688/udp/239.21.1.117:5002
 #EXTINF:-1 group-title="卫视频",济宁公共
 http://144.255.31.141:6688/udp/239.21.2.20:5002
-#EXTINF:-1 group-title="卫视频",淄博生活
-http://144.255.31.141:6688/udp/239.21.1.109:5002
-#EXTINF:-1 group-title="卫视频",云南娱乐频道
-http://106.59.2.72:55555/rtp/239.200.200.13:8848
-#EXTINF:-1 group-title="卫视频",广西卫视
-http://39.77.95.74:4002/rtp/239.253.254.197:8000
+#EXTINF:-1 group-title="卫视频",济宁生活
+http://144.255.31.141:6688/udp/239.21.1.139:5002
+#EXTINF:-1 group-title="卫视频",牟平生活
+http://144.255.31.141:6688/udp/239.21.2.11:5002
+#EXTINF:-1 group-title="卫视频",陕西银铃频道
+http://124.114.101.253:6789/rtp/239.112.205.20:5140
+#EXTINF:-1 group-title="卫视频",西安新闻综合
+http://124.114.101.253:6789/rtp/239.111.205.242:5140
+#EXTINF:-1 group-title="卫视频",河南梨园频道
+http://36.49.53.61:8800/rtp/239.37.0.228:5540
+#EXTINF:-1 group-title="卫视频",白山旅游生活2
+http://36.49.53.61:8800/rtp/239.37.0.138:5540
+#EXTINF:-1 group-title="卫视频",未知综合
+http://36.49.53.61:8800/rtp/239.37.0.172:5540
+#EXTINF:-1 group-title="卫视频",DFTV综合
+http://36.49.53.61:8800/rtp/239.37.0.179:5540
+#EXTINF:-1 group-title="卫视频",云南康旅频道
+http://106.59.3.18:55555/rtp/239.200.200.31:8860
+#EXTINF:-1 group-title="卫视频",四川卫视
+http://106.59.3.18:55555/udp/239.200.201.137:8796
+#EXTINF:-1 group-title="卫视频",贵州卫视
+http://106.59.3.18:55555/udp/239.200.201.119:8788
+#EXTINF:-1 group-title="卫视频",宁夏卫视
+http://106.59.3.18:55555/rtp/239.200.200.60:8308
+#EXTINF:-1 group-title="卫视频",内蒙卫视
+http://106.59.3.18:55555/rtp/239.200.200.57:8296
+#EXTINF:-1 group-title="卫视频",安徽卫视
+http://39.77.95.74:4002/rtp/239.253.254.87:8000
+#EXTINF:-1 group-title="卫视频",甘肃卫视
+http://39.77.95.74:4002/rtp/239.253.254.74:8000
+#EXTINF:-1 group-title="卫视频",河南卫视
+http://116.2.167.19:4010/rtp/232.0.0.80:1234
+#EXTINF:-1 group-title="卫视频",康巴藏语综合
+http://116.2.167.19:4010/rtp/232.0.0.109:1234
+#EXTINF:-1 group-title="卫视频",陕西体育休闲频道
+http://47.119.24.76:59093/956909356
 #EXTINF:-1 group-title="卫视频",湖州新闻综合
 http://hzcm-live.media.hugd.com/3f5fa7d64c7c46a38c6bd8ad35e836cc/65128273761b4731ae53729ea6dcf932.m3u8?auth_key=2277598215-9d21c15111244bea8d298c361d31a72e-0-d031198f58d44b0e91ba2e3f3b188865
 #EXTINF:-1 group-title="卫视频",湖州公共民生
 http://hzcm-live.media.hugd.com/1e6b554b9ab74513958c0e1ffe664d22/9acaa7634309494cb29a85eb12136607.m3u8?auth_key=2272900830-9a2389b8bf4e49d580d4ad807423d326-0-ea78a5c7a678c436263582d368f5009e
-#EXTINF:-1 group-title="卫视频",平湖新闻综合
-http://play-sh13.quklive.com/live/1690167908295069.m3u8?auth_key=2027466211-f190eec410c24473825cbe1d8541e545-0-f21db57ae1b534802c1cf7be86cc3aef
-#EXTINF:-1 group-title="卫视频",南京少儿
-http://nklive.nbs.cn/hls/e0981f3f-1a20-4a59-b8d1-17feb83a4610/index.m3u8
-#EXTINF:-1 group-title="卫视频",南京新闻综合
-http://nklive.nbs.cn/hls/d511bc9d-a694-4453-b3a2-4fc842cc97a1/index.m3u8
+#EXTINF:-1 group-title="卫视频",广西卫视
+http://120.76.248.139/live/bfgd/4200000116.m3u8
 #EXTINF:-1 group-title="卫视频",朝阳新闻综合
 http://120.76.248.139/live/bfgd/4200000282.m3u8
-#EXTINF:-1 group-title="卫视频",海宁新闻综合
-https://p2hs.vzan.com/slowlive/317913155078575177/live.m3u8
-#EXTINF:-1 group-title="卫视频",邯郸公共
-https://jwcdnqx.hebyun.com.cn/live/hdgg/1500k/tzwj_video.m3u8
+#EXTINF:-1 group-title="卫视频",平湖新闻综合
+http://play-sh13.quklive.com/live/1690167908295069.m3u8?auth_key=2027466211-f190eec410c24473825cbe1d8541e545-0-f21db57ae1b534802c1cf7be86cc3aef
 #EXTINF:-1 group-title="卫视频",邢台综合
 http://jwplay.hebyun.com.cn/live/xtsrmtzs/1500k/tzwj_video.m3u8
-#EXTINF:-1 group-title="卫视频",清河经济综艺
-https://jwcdnqx.hebyun.com.cn/live/qinghe1/1500k/tzwj_video.m3u8
-#EXTINF:-1 group-title="卫视频",平泉综合
-https://jwcdnqx.hebyun.com.cn/live/pqzh/1500k/tzwj_video.m3u8
+#EXTINF:-1 group-title="卫视频",海宁新闻综合
+https://p2hs.vzan.com/slowlive/317913155078575177/live.m3u8
 #EXTINF:-1 group-title="卫视频",任丘综合
 https://jwcdnqx.hebyun.com.cn/live/rqtv1/1500k/tzwj_video.m3u8
-#EXTINF:-1 group-title="卫视频",延边卫视
-https://srs.iyb983.cn:443/video/CYS/index.m3u8
+#EXTINF:-1 group-title="卫视频",平泉综合
+https://jwcdnqx.hebyun.com.cn/live/pqzh/1500k/tzwj_video.m3u8
+#EXTINF:-1 group-title="卫视频",宿州新闻综合
+http://live.ahsz.tv/video/s10001-szzh/index.m3u8
 #EXTINF:-1 group-title="卫视频",太谷新闻综合
 https://p2.vzan.com/slowlive/596867413819827251/live.m3u8?zbid=1725814272&tpid=1516989100&type=0
+#EXTINF:-1 group-title="卫视频",新闻综合
+https://www.freetv.top/migu/651632657.m3u8?migutoken=b4a3e55048f55ec1c8fc5b509fbdf32f2dc5d255f5f218e79e84ca9a87fb9f2239927cb11b448f18285b50b81b4cd50a1354e9be5a3283375e85372798c3f3eb3ad60adf45eb5615f68eb4825f
 #EXTINF:-1 group-title="卫视频",河北农民
 https://jwcdnqx.hebyun.com.cn/live/clzhpd/1500k/tzwj_video.m3u8?zhebd
 #EXTINF:-1 group-title="卫视频",福建公共
 https://live.264788.xyz/channel/fujianxiangcungonggong?streamid=2987cc24bada6a8c25589409a6452d9e&livekey=01WgOR41rriMmMkzNsd0UoaxJRwetZdxIvtVk
+#EXTINF:-1 group-title="卫视频",清河经济综艺
+https://jwcdnqx.hebyun.com.cn/live/qinghe1/1500k/tzwj_video.m3u8
 #EXTINF:-1 group-title="卫视频",福建旅游
 https://live.264788.xyz/channel/fujianlvyou?streamid=221239fcf3c7edb274f2f0760fe47f96&livekey=01WgOR41rriMmMkzNsd0UoaxJRwetZdxIvtVk
 #EXTINF:-1 group-title="卫视频",七龙珠
@@ -420,329 +442,257 @@ https://live.metshop.top/huya/11601966
 #EXTINF:-1 group-title="卫视频",人间卫视
 http://61.216.67.119:1935/bltvhd/bltv1/chunklist_w1266569526.m3u
 #EXTGRP:体育赛
+#EXTINF:-1 group-title="体育赛",风云足球
+https://live.goodiptv.club/api/yqgd.php?id=fyzq
 #EXTINF:-1 group-title="体育赛",游戏王
 https://live.ottiptv.cc/huya/20985856
-#EXTINF:-1 group-title="体育赛",足球小将
-https://live.ottiptv.cc/huya/25725150
+#EXTINF:-1 group-title="体育赛",花花努力健身中
+https://live.ottiptv.cc/huya/30805993
 #EXTINF:-1 group-title="体育赛",IPTV台球
 http://114.254.36.134:8888/rtp/239.3.1.85:4120
 #EXTINF:-1 group-title="体育赛",睛彩广场舞
 http://114.254.36.134:8888/rtp/239.3.1.128:8001
-#EXTINF:-1 group-title="体育赛",睛彩竞技
-http://114.254.36.134:8888/rtp/239.3.1.125:8001
 #EXTINF:-1 group-title="体育赛",睛彩羽毛球
 http://114.254.36.134:8888/rtp/239.3.1.127:8001
 #EXTINF:-1 group-title="体育赛",睛彩篮球
 http://114.254.36.134:8888/rtp/239.3.1.126:8001
-#EXTINF:-1 group-title="体育赛",IPTV足球
-http://221.220.132.128:8012/rtp/239.3.1.89:4120
-#EXTINF:-1 group-title="体育赛",羽毛球专区
-http://106.116.126.134:4022/rtp/239.254.201.214:7264
+#EXTINF:-1 group-title="体育赛",BesTV游戏
+http://36.49.53.61:8800/rtp/239.37.0.162:5540
+#EXTINF:-1 group-title="体育赛",咪咕体育
+http://36.49.53.61:8800/rtp/239.37.0.194:5540
+#EXTINF:-1 group-title="体育赛",上海游戏风云
+http://39.77.95.74:4002/rtp/239.253.254.95:8000
+#EXTINF:-1 group-title="体育赛",DDSports
+https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/b17adfe543354fdd8d189b110617cddd/index.m3u8
+#EXTINF:-1 group-title="体育赛",魅力足球
+https://www.freetv.top/migu/796070308.m3u8?migutoken=0a72668399c6f96d928c0bf0adbe330bbae95b55cfc10f2da9e830e2e06051b89a0e1db847eaa61f6b897e3efcb05ecc6160c2ce3c8073fb2d90c8ed191845e1ca16f6bcd3aaa13f6538d2074d
+#EXTINF:-1 group-title="体育赛",劲爆体育
+https://www.freetv.top/migu/796071336.m3u8?migutoken=1cc947d86cb584c31c31c88c005d55965238dbfff7ed75fca8451aed0b564786fde7e4b327e93b92dc96ef57e64e3bb56e8a9e921338080cdae817cb6125d8450b687659ecfee06be9c5d53ac6
+#EXTINF:-1 group-title="体育赛",游戏风云
+https://www.freetv.top/migu/790188417.m3u8?migutoken=0276ef43726b0a3df46f95059cfba0dc88fb58e0682005aef78c7fcce5c7101a4d1199cd5aa05c58eaed75bf3a107385ce216cf787ceb58c1839c276b121b05b72a1ec8d7c6f23c240511643c0
 #EXTGRP:少儿动
-#EXTINF:-1 group-title="少儿动",喜羊羊与灰太狼
-https://live.ottiptv.cc/huya/23865080
-#EXTINF:-1 group-title="少儿动",大头儿子小头爸爸
-https://live.ottiptv.cc/huya/20969114
+#EXTINF:-1 group-title="少儿动",动漫秀场
+https://live.264788.xyz/channel/dongmanxiuchang?streamid=ba65d04c9243ff3f584923ff1918e1ee&livekey=01Whq5ncXSAY4QR6psQ10H9GL9jLQJCwssQc4
 #EXTINF:-1 group-title="少儿动",上海动漫秀场
-http://124.112.240.102:4022/rtp/238.1.78.154:7104
-#EXTINF:-1 group-title="少儿动",海绵宝宝
-https://live.metshop.top/douyu/3949681
+http://171.8.106.37:8800/rtp/239.16.20.40:10400
+#EXTINF:-1 group-title="少儿动",优优宝贝
+http://36.49.53.61:8800/rtp/239.37.0.107:5540
+#EXTINF:-1 group-title="少儿动",新动漫
+http://36.49.53.61:8800/rtp/239.37.0.106:5540
+#EXTINF:-1 group-title="少儿动",华数动漫
+http://106.59.3.18:55555/rtp/239.200.200.75:9000
 #EXTGRP:新闻资
-#EXTINF:-1 group-title="新闻资",承德旅游文化
-http://121.29.215.217:2083/rtp/239.253.92.223:8113
-#EXTINF:-1 group-title="新闻资",慢直播1
-http://121.29.215.217:2083/rtp/239.253.94.1:6600
-#EXTINF:-1 group-title="新闻资",慢直播2
-http://121.29.215.217:2083/rtp/239.253.94.2:6601
-#EXTINF:-1 group-title="新闻资",临时直播
-http://121.29.215.217:2083/rtp/239.253.92.116:6029
+#EXTINF:-1 group-title="新闻资",单机/我的世界专场
+https://live.ottiptv.cc/huya/667788
+#EXTINF:-1 group-title="新闻资",永城新闻联播
+http://171.8.106.37:8800/rtp/239.16.10.93:2000
+#EXTINF:-1 group-title="新闻资",上海法治天地
+http://171.8.106.37:8800/rtp/239.16.20.156:11560
 #EXTINF:-1 group-title="新闻资",青州文化旅游
 http://144.255.31.141:6688/udp/239.21.1.231:5002
-#EXTINF:-1 group-title="新闻资",沂新闻
-http://144.255.31.141:6688/udp/239.21.1.114:5002
 #EXTINF:-1 group-title="新闻资",中国交通
 http://144.255.31.141:6688/udp/239.21.1.115:5002
-#EXTINF:-1 group-title="新闻资",邯郸新闻
-https://jwcdnqx.hebyun.com.cn/live/hdxwzh/1500k/tzwj_video.m3u8
+#EXTINF:-1 group-title="新闻资",诸城新闻
+http://144.255.31.141:6688/udp/239.21.1.217:5002
+#EXTINF:-1 group-title="新闻资",长清新闻
+http://144.255.31.141:6688/udp/239.21.1.107:5002
+#EXTINF:-1 group-title="新闻资",武术世界
+http://47.119.24.76:59093/958475359
 #EXTINF:-1 group-title="新闻资",滦平新闻
 http://jwplay.hebyun.com.cn/live/LPTV001/1500k/tzwj_video.m3u8
 #EXTGRP:音乐频
-#EXTINF:-1 group-title="音乐频",音乐小石榴
-https://live.ottiptv.cc/huya/17091681
+#EXTINF:-1 group-title="音乐频",助眠音乐专场
+https://live.ottiptv.cc/huya/21241811
 #EXTGRP:其他频
+#EXTINF:-1 group-title="其他频",🇰🇷韩国KBRAMA
+http://8.138.7.223/tv/korea.php?id=32
+#EXTINF:-1 group-title="其他频",佛山南海频道
+http://183.236.43.98:4013/udp/239.253.43.54:5146
+#EXTINF:-1 group-title="其他频",佛山顺德频道
+http://183.236.43.98:4013/udp/239.253.43.55:5146
 #EXTINF:-1 group-title="其他频",天祝电视台
 http://play.kankanlive.com/live/1656487214793905.flv
-#EXTINF:-1 group-title="其他频",天龙八部
-https://live.metshop.top/huya/20985816
+#EXTINF:-1 group-title="其他频",RTDoc-Русский
+https://rt-doc.rttv.com/dvr/rtdru/rtdru1080.m3u8
+#EXTINF:-1 group-title="其他频",更新日期::20
+http://hlsztemgsplive.miguvideo.com:8080/wd_r2/cctv/cctv1hd/1200/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=2201057821&pid=2028597139&timestamp=20260518225851&Channel_ID=0116_2600037000-99000-200300220105409&ProgramID=608807420&ParentNodeID=-99&assertID=2201057821&client_ip=113.6.228.60&SecurityKey=20260518225851&promotionId=&mvid=2201057821&mcid=500020&playurlVersion=WX-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=f537ddc81a84bf0d4cf6717730a29d3f
+#EXTINF:-1 group-title="其他频",笑傲江湖
+https://live.metshop.top/huya/26355790
+#EXTINF:-1 group-title="其他频",陈情令
+http://live.metshop.top/huya/29465862
 #EXTINF:-1 group-title="其他频",延禧攻略
 http://live.metshop.top/huya/26355864
-#EXTINF:-1 group-title="其他频",盗墓片系列
-https://live.ottiptv.cc/huya/11601981
-#EXTINF:-1 group-title="其他频",陆小凤专场
-https://live.ottiptv.cc/huya/11342427
-#EXTINF:-1 group-title="其他频",谍战片系列
-https://live.ottiptv.cc/huya/26355810
+#EXTINF:-1 group-title="其他频",万载电视台1
+http://play-a2.quklive.com/live/1739162440932308.flv
+#EXTINF:-1 group-title="其他频",东西湖发布
+http://cfss.cc/cdn/dy/wuhanlkgrmt.flv
+#EXTINF:-1 group-title="其他频",王宝强专场
+https://live.ottiptv.cc/huya/30080251
+#EXTINF:-1 group-title="其他频",怪兽片系列
+https://live.ottiptv.cc/huya/29982674
 #EXTINF:-1 group-title="其他频",郭富城专场
 https://live.ottiptv.cc/huya/20985865
-#EXTINF:-1 group-title="其他频",犯罪片系列
-https://live.ottiptv.cc/huya/30080165
-#EXTINF:-1 group-title="其他频",韩国综艺
-https://live.ottiptv.cc/huya/11336725
-#EXTINF:-1 group-title="其他频",警匪片系列
-https://live.ottiptv.cc/huya/30041512
 #EXTINF:-1 group-title="其他频",英雄片系列
 https://live.ottiptv.cc/huya/11601980
+#EXTINF:-1 group-title="其他频",五十公里桃花坞专场
+https://live.ottiptv.cc/huya/29465869
 #EXTINF:-1 group-title="其他频",幸福三重奏专场
 https://live.ottiptv.cc/huya/29982647
-#EXTINF:-1 group-title="其他频",高能少年团专场
-https://live.ottiptv.cc/huya/29982609
-#EXTINF:-1 group-title="其他频",端游/地下城与勇士专场
-https://live.ottiptv.cc/huya/21103948
-#EXTINF:-1 group-title="其他频",英国剧专区
-https://live.ottiptv.cc/huya/29982659
-#EXTINF:-1 group-title="其他频",美国剧专区
-https://live.ottiptv.cc/huya/30080138
+#EXTINF:-1 group-title="其他频",韩国剧专区
+https://live.ottiptv.cc/huya/23863787
+#EXTINF:-1 group-title="其他频",搞笑剧专区
+https://live.ottiptv.cc/huya/21059634
+#EXTINF:-1 group-title="其他频",端游/英雄联盟专场
+https://live.ottiptv.cc/huya/660000
+#EXTINF:-1 group-title="其他频",手游/和平精英专场
+https://live.ottiptv.cc/huya/660135
+#EXTINF:-1 group-title="其他频",手游/QQ飞车专场
+https://live.ottiptv.cc/huya/660117
+#EXTINF:-1 group-title="其他频",全职高手
+https://live.ottiptv.cc/huya/21059628
 #EXTINF:-1 group-title="其他频",单机/小霸王专场
 https://live.ottiptv.cc/huya/24723731
-#EXTINF:-1 group-title="其他频",小舞点歌台
-https://live.ottiptv.cc/huya/15590571
-#EXTINF:-1 group-title="其他频",24小时点歌台
-https://live.ottiptv.cc/huya/25261191
-#EXTINF:-1 group-title="其他频",海贼王
-https://live.ottiptv.cc/huya/29982634
-#EXTINF:-1 group-title="其他频",手游/火影忍者专场
-https://live.ottiptv.cc/huya/25567648
-#EXTINF:-1 group-title="其他频",手游/原神专场
-https://live.ottiptv.cc/huya/25567635
-#EXTINF:-1 group-title="其他频",日语专场
-https://live.ottiptv.cc/huya/21241795
-#EXTINF:-1 group-title="其他频",成龙历险记
-https://live.ottiptv.cc/huya/11352946
-#EXTINF:-1 group-title="其他频",瑞克与莫蒂
-https://live.ottiptv.cc/huya/29982655
-#EXTINF:-1 group-title="其他频",星辰变
-https://live.ottiptv.cc/huya/24514506
-#EXTINF:-1 group-title="其他频",飞天小女警
-https://live.ottiptv.cc/huya/11601958
-#EXTINF:-1 group-title="其他频",宫崎骏
-https://live.ottiptv.cc/huya/21059614
-#EXTINF:-1 group-title="其他频",魔法少女
-https://live.ottiptv.cc/huya/21059587
-#EXTINF:-1 group-title="其他频",四驱兄弟
-https://live.ottiptv.cc/huya/11352922
-#EXTINF:-1 group-title="其他频",全职猎人
-https://live.ottiptv.cc/huya/30080254
-#EXTINF:-1 group-title="其他频",樱桃小丸子
-https://live.ottiptv.cc/huya/11342394
-#EXTINF:-1 group-title="其他频",头文字D
-https://live.ottiptv.cc/huya/11352889
-#EXTINF:-1 group-title="其他频",玩具总动员
-https://live.ottiptv.cc/huya/30080256
-#EXTINF:-1 group-title="其他频",哪咤传奇
-https://live.ottiptv.cc/huya/26355782
-#EXTINF:-1 group-title="其他频",间谍过家家
-https://live.ottiptv.cc/huya/30080149
-#EXTINF:-1 group-title="其他频",元气少女缘结神
-https://live.ottiptv.cc/huya/11352967
-#EXTINF:-1 group-title="其他频",一人之上
-https://live.ottiptv.cc/huya/11602065
-#EXTINF:-1 group-title="其他频",男子高中生的日常
-https://live.ottiptv.cc/huya/20985858
-#EXTINF:-1 group-title="其他频",尸兄
-https://live.ottiptv.cc/huya/26355846
-#EXTINF:-1 group-title="其他频",反叛的鲁路修
-https://live.ottiptv.cc/huya/20969113
-#EXTINF:-1 group-title="其他频",葫芦兄弟
-https://live.ottiptv.cc/huya/20985834
 #EXTINF:-1 group-title="其他频",魔神英雄传
 https://live.ottiptv.cc/huya/21241839
-#EXTINF:-1 group-title="其他频",轻羽飞扬
-https://live.ottiptv.cc/huya/30805998
-#EXTINF:-1 group-title="其他频",新世纪福音战士
-https://live.ottiptv.cc/huya/20985862
-#EXTINF:-1 group-title="其他频",咒术回战
-https://live.ottiptv.cc/huya/21059561
-#EXTINF:-1 group-title="其他频",天地争霸美猴王
-https://live.ottiptv.cc/huya/29465859
-#EXTINF:-1 group-title="其他频",虫师
-https://live.ottiptv.cc/huya/21241791
+#EXTINF:-1 group-title="其他频",超自然武装当哒当
+https://live.ottiptv.cc/huya/20985850
+#EXTINF:-1 group-title="其他频",尸兄
+https://live.ottiptv.cc/huya/26355846
+#EXTINF:-1 group-title="其他频",元气少女缘结神
+https://live.ottiptv.cc/huya/11352967
 #EXTINF:-1 group-title="其他频",妙手仁心
 https://live.ottiptv.cc/huya/29465853
-#EXTINF:-1 group-title="其他频",清纯风2
-http://api.yujn.cn/api/zzxjj.php
-#EXTINF:-1 group-title="其他频",🔄美女2
-https://v.nrzj.vip/video.php
-#EXTINF:-1 group-title="其他频",CGTN纪录
-http://114.254.36.134:8888/rtp/239.3.1.216:4220
+#EXTINF:-1 group-title="其他频",星闪
+https://live.ottiptv.cc/huya/31062353
+#EXTINF:-1 group-title="其他频",爱吃桃子的喵
+https://live.ottiptv.cc/huya/18501378
 #EXTINF:-1 group-title="其他频",CGTN法语
-http://221.220.132.128:8012/rtp/239.3.1.218:4220
-#EXTINF:-1 group-title="其他频",IPTV武术
-http://221.220.132.128:8012/rtp/239.3.1.87:4120
-#EXTINF:-1 group-title="其他频",华数精选
-http://221.220.132.128:8012/rtp/239.3.1.74:4120
-#EXTINF:-1 group-title="其他频",上海乐游纪实
-http://124.112.240.102:4022/rtp/238.1.78.151:7080
-#EXTINF:-1 group-title="其他频",亳州农村频道
-http://124.112.240.102:4022/rtp/238.1.78.129:6904
-#EXTINF:-1 group-title="其他频",铜陵教育科技
-http://124.112.240.102:4022/rtp/238.1.78.141:7000
-#EXTINF:-1 group-title="其他频",涿鹿电视
-http://106.116.126.134:4022/rtp/239.254.201.145:5272
-#EXTINF:-1 group-title="其他频",阜城电视
-http://106.116.126.134:4022/rtp/239.254.201.98:5361
-#EXTINF:-1 group-title="其他频",迁安电视
-http://106.116.126.134:4022/rtp/239.254.201.109:5199
-#EXTINF:-1 group-title="其他频",故城电视
-http://106.116.126.134:4022/rtp/239.254.201.126:5362
-#EXTINF:-1 group-title="其他频",大厂融媒体中心
-http://121.29.215.217:2083/rtp/239.253.92.253:6244
-#EXTINF:-1 group-title="其他频",崇礼融媒体中心
-http://121.29.215.217:2083/rtp/239.253.93.147:6315
-#EXTINF:-1 group-title="其他频",饶阳电视台
-http://121.29.215.217:2083/rtp/239.253.93.40:6193
-#EXTINF:-1 group-title="其他频",清河电视台
-http://121.29.215.217:2083/rtp/239.253.93.44:6197
-#EXTINF:-1 group-title="其他频",故城电视台
-http://121.29.215.217:2083/rtp/239.253.93.161:6329
-#EXTINF:-1 group-title="其他频",快乐垂钓
-http://121.29.215.217:2083/rtp/239.253.93.213:6391
-#EXTINF:-1 group-title="其他频",赵县电视台
-http://121.29.215.217:2083/rtp/239.253.93.140:6308
-#EXTINF:-1 group-title="其他频",顺平电视
-http://121.29.215.217:2083/rtp/239.253.93.148:6316
-#EXTINF:-1 group-title="其他频",赤城电视
-http://121.29.215.217:2083/rtp/239.253.93.160:6328
-#EXTINF:-1 group-title="其他频",卢龙电视
-http://121.29.215.217:2083/rtp/239.253.93.206:6384
-#EXTINF:-1 group-title="其他频",丰南电视
-http://121.29.215.217:2083/rtp/239.253.92.231:6070
-#EXTINF:-1 group-title="其他频",迁西电视
-http://121.29.215.217:2083/rtp/239.253.92.247:6091
-#EXTINF:-1 group-title="其他频",滦州电视
-http://121.29.215.217:2083/rtp/239.253.92.97:6138
-#EXTINF:-1 group-title="其他频",大城电视
-http://121.29.215.217:2083/rtp/239.253.92.230:6068
-#EXTINF:-1 group-title="其他频",CGTN俄语
-http://121.29.215.217:2083/rtp/239.253.93.199:6377
-#EXTINF:-1 group-title="其他频",永清电视
-http://121.29.215.217:2083/rtp/239.253.93.172:6340
-#EXTINF:-1 group-title="其他频",邯山电视
-http://121.29.215.217:2083/rtp/239.253.93.146:6314
-#EXTINF:-1 group-title="其他频",安新电视
-http://121.29.215.217:2083/rtp/239.253.93.107:6274
+http://114.254.36.134:8888/rtp/239.3.1.218:4220
+#EXTINF:-1 group-title="其他频",郑州2商都频道
+http://171.8.106.37:8800/rtp/239.16.10.155:2000
+#EXTINF:-1 group-title="其他频",郑州4豫剧频道
+http://171.8.106.37:8800/rtp/239.16.10.157:2000
+#EXTINF:-1 group-title="其他频",上海金色学堂
+http://171.8.106.37:8800/rtp/239.16.20.115:11150
+#EXTINF:-1 group-title="其他频",IPTV导视
+http://171.8.106.37:8800/rtp/239.16.10.218:2000
+#EXTINF:-1 group-title="其他频",平顶山城市频道
+http://171.8.106.37:8800/rtp/239.16.20.151:11510
+#EXTINF:-1 group-title="其他频",中式八球国际公开赛
+http://106.116.126.119:4022/rtp/239.254.200.187:6000
+#EXTINF:-1 group-title="其他频",临漳电视台
+http://106.116.126.119:4022/rtp/239.254.201.73:5221
+#EXTINF:-1 group-title="其他频",肃宁电视
+http://106.116.126.119:4022/rtp/239.254.201.122:5336
 #EXTINF:-1 group-title="其他频",定陶TV-1
 http://144.255.31.141:6688/udp/239.21.1.244:5002
-#EXTINF:-1 group-title="其他频",文登TV-1
-http://144.255.31.141:6688/udp/239.21.1.174:5002
-#EXTINF:-1 group-title="其他频",青岛4
-http://144.255.31.141:6688/udp/239.21.1.72:5002
-#EXTINF:-1 group-title="其他频",菏泽2
-http://144.255.31.141:6688/udp/239.21.2.18:5002
+#EXTINF:-1 group-title="其他频",新泰乡村频道
+http://144.255.31.141:6688/udp/239.21.1.248:5002
 #EXTINF:-1 group-title="其他频",宁阳2
 http://144.255.31.141:6688/udp/239.21.1.144:5002
-#EXTINF:-1 group-title="其他频",寿光蔬菜
-http://144.255.31.141:6688/udp/239.21.1.218:5002
+#EXTINF:-1 group-title="其他频",菏泽2
+http://144.255.31.141:6688/udp/239.21.2.18:5002
+#EXTINF:-1 group-title="其他频",快乐垂钓
+http://36.49.53.61:8800/rtp/239.37.0.244:5540
+#EXTINF:-1 group-title="其他频",扶余电视台
+http://36.49.53.61:8800/rtp/239.37.0.180:5540
+#EXTINF:-1 group-title="其他频",TTV1
+http://36.49.53.61:8800/rtp/239.37.0.132:5540
+#EXTINF:-1 group-title="其他频",延边TV2
+http://36.49.53.61:8800/rtp/239.37.0.249:5540
+#EXTINF:-1 group-title="其他频",TTV洮南1
+http://36.49.53.61:8800/rtp/239.37.0.218:5540
+#EXTINF:-1 group-title="其他频",未知TV
+http://36.49.53.61:8800/rtp/239.37.0.171:5540
 #EXTINF:-1 group-title="其他频",澜湄国际频道
-http://106.59.2.72:55555/rtp/239.200.200.33:8024
+http://106.59.3.18:55555/rtp/239.200.200.33:8024
 #EXTINF:-1 group-title="其他频",CGTN英语
-http://106.59.2.72:55555/udp/239.200.200.30:8500
-#EXTINF:-1 group-title="其他频",CBS2LosAngeles
-http://bgdc.live:25461/catrinamcdermott/catrinamcdermott/215482
-#EXTINF:-1 group-title="其他频",ITV1UK
-http://fr3d0m.tebasya.work:8080/JVanmci423/dncSExXxmS/1173
-#EXTINF:-1 group-title="其他频",ITV2UK
-http://fr3d0m.tebasya.work:8080/JVanmci423/dncSExXxmS/1174
-#EXTINF:-1 group-title="其他频",BravoVault
-https://d4whmvwm0rdvi.cloudfront.net/manifest/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-nbcu-linear/61a276d1-8291-4018-aba2-146304f96043/4.m3u8
-#EXTINF:-1 group-title="其他频",ITV4UK
-http://fr3d0m.tebasya.work:8080/JVanmci423/dncSExXxmS/1175
-#EXTINF:-1 group-title="其他频",VICE
-https://d1ocru52bkg5e9.cloudfront.net/v1/manifest/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-tqr9z4dqrkb9m/b07d20d9-38d3-44e4-a74d-386f99542384/3.m3u8
-#EXTINF:-1 group-title="其他频",E4UK
-http://epicboss.live/bjune@teksavvy.com/5193594414/9437
+http://106.59.3.18:55555/udp/239.200.200.30:8500
+#EXTINF:-1 group-title="其他频",CGTN西班牙语
+http://106.59.3.18:55555/udp/239.200.201.184:4220
+#EXTINF:-1 group-title="其他频",IPTV4
+http://106.59.3.18:55555/rtp/239.200.200.71:8012
+#EXTINF:-1 group-title="其他频",IPTV6
+http://106.59.3.18:55555/udp/239.200.201.81:4120
+#EXTINF:-1 group-title="其他频",IPTV5
+http://106.59.3.18:55555/udp/239.200.201.5:4120
+#EXTINF:-1 group-title="其他频",CGTN阿拉伯语
+http://39.77.95.74:4002/rtp/239.253.254.184:8000
+#EXTINF:-1 group-title="其他频",IPTV地理
+http://116.2.167.19:4010/rtp/232.0.0.197:1234
+#EXTINF:-1 group-title="其他频",IPTV3
+http://116.2.167.19:4010/rtp/232.0.0.118:1234
+#EXTINF:-1 group-title="其他频",CGTN
+http://47.119.24.76:59093/609017205
+#EXTINF:-1 group-title="其他频",RTEOneIE
+http://epicboss.live/bjune@teksavvy.com/5193594414/4628
 #EXTINF:-1 group-title="其他频",茉莉
 https://live06.zuqiu106.com/live/98871911.flv
-#EXTINF:-1 group-title="其他频",🔄美女展示2
-http://xjj2.716888.xyz/fenlei/zj/xuejie/xuejie.php
-#EXTINF:-1 group-title="其他频",🔄美女展示9
-http://xjj2.716888.xyz/fenlei/zj/cos/cos.php
-#EXTINF:-1 group-title="其他频",🔄美女热舞2
-http://xjj2.716888.xyz/fenlei/zj/gengxin/gengxin.php
-#EXTINF:-1 group-title="其他频",🔄美女展示1
-http://xjj2.716888.xyz/fenlei/zj/jipinyz/jipinyz.php
-#EXTINF:-1 group-title="其他频",:47
-https://iptv.catvod.com/live.php?id=CCTV1&line=4
 #EXTINF:-1 group-title="其他频",湖州文化娱乐
 http://hzcm-live.media.hugd.com/613c47f0ab0d4eaa98b21378d0db6ded/0051d31c9dd543a7825eea4e49675b2a.m3u8?auth_key=2277598059-0a5ebfa1c0dc4671b42a60810fc37039-0-fa625b7d1feab612062453c12e3c8887
-#EXTINF:-1 group-title="其他频",南京教科
-http://nklive.nbs.cn/hls/75b3c462-b831-4de7-a34b-5d3221db2069/index.m3u8
-#EXTINF:-1 group-title="其他频",邯郸科技教育
-https://jwcdnqx.hebyun.com.cn/live/hdkj/1500k/tzwj_video.m3u8
-#EXTINF:-1 group-title="其他频",中华小当家
-https://live.metshop.top/huya/11342413
-#EXTINF:-1 group-title="其他频",三国演义
-https://live.metshop.top/huya/11602081
-#EXTINF:-1 group-title="其他频",视频7.1.412声道
-https://mos-vod-drcn.dbankcdn.cn/P_VT/video_injection/3282D63676C3EAC291CFD5D891CB5D3A8C52A5B9AA8EBEF72D0BEF0A34EAEFC0134D9B0/v3/M2040549141360156160/chunjianghuayueyevivid.mp4
+#EXTINF:-1 group-title="其他频",🔄美女展示14
+http://xjj2.716888.xyz/fenlei/zj/tianmei/tianmei.php
+#EXTINF:-1 group-title="其他频",🔄美女展示6
+http://xjj2.716888.xyz/fenlei/zj/manyao/manyao.php
+#EXTINF:-1 group-title="其他频",:47
+https://iptv.catvod.com/live.php?id=CCTV1&line=4
 #EXTINF:-1 group-title="其他频",春晚2024
 https://p2.bdstatic.com/rtmp.liveshow.lss-user.baidubce.com/live/stream_bduid_6488563992_8982723413/merged_1707497046297_88536_25144_41936.m3u8
-#EXTINF:-1 group-title="其他频",龙门飞甲
-http://jsmov2.a.yximgs.com/bs3/video-hls/5203346449046555193_hlsb.m3u8
+#EXTINF:-1 group-title="其他频",视频7.1.412声道
+https://mos-vod-drcn.dbankcdn.cn/P_VT/video_injection/3282D63676C3EAC291CFD5D891CB5D3A8C52A5B9AA8EBEF72D0BEF0A34EAEFC0134D9B0/v3/M2040549141360156160/chunjianghuayueyevivid.mp4
+#EXTINF:-1 group-title="其他频",天龙八部
+https://live.ottiptv.cc/yy/1351814644
+#EXTINF:-1 group-title="其他频",鹿鼎记
+https://live.ottiptv.cc/yy/28265277
+#EXTINF:-1 group-title="其他频",新白娘子传奇
+https://live.ottiptv.cc/yy/1354490667
 #EXTINF:-1 group-title="其他频",倩女幽魂妖魔道
 http://jsmov2.a.yximgs.com/bs3/video-hls/5232901391302199073_hlsb.m3u8
 #EXTINF:-1 group-title="其他频",倩女幽魂道道道
 http://jsmov2.a.yximgs.com/bs3/video-hls/5216294367991385255_hlsb.m3u8
-#EXTINF:-1 group-title="其他频",笑傲江湖
-https://live.metshop.top/huya/26355790
-#EXTINF:-1 group-title="其他频",RTDE
-https://rt-ger.rttv.com/dvr/rtdeutsch/playlist_4500Kb.m3u8
+#EXTINF:-1 group-title="其他频",龙门飞甲
+http://jsmov2.a.yximgs.com/bs3/video-hls/5203346449046555193_hlsb.m3u8
+#EXTINF:-1 group-title="其他频",RTEspañol
+https://rt-esp.rttv.com/dvr/rtesp/playlist_4500Kb.m3u8
 #EXTINF:-1 group-title="其他频",RTFrançais
 https://rt-fra.rttv.com/dvr/rtfrance/playlist_4500Kb.m3u8
 #EXTINF:-1 group-title="其他频",RTDocumentary
 https://rt-rtd.rttv.com/dvr/rtdoc/playlist_4500Kb.m3u8
-#EXTINF:-1 group-title="其他频",RTEspañol
-https://rt-esp.rttv.com/dvr/rtesp/playlist_4500Kb.m3u8
-#EXTINF:-1 group-title="其他频",RTBalkan
-https://rt-srb.rttv.com/dvr/rtbalkan/playlist_4500Kb.m3u8
-#EXTINF:-1 group-title="其他频",RTDoc-Русский
-https://rt-doc.rttv.com/dvr/rtdru/rtdru1080.m3u8
+#EXTINF:-1 group-title="其他频",RTDE
+https://rt-ger.rttv.com/dvr/rtdeutsch/playlist_4500Kb.m3u8
 #EXTINF:-1 group-title="其他频",RTArabic
 https://rt-arb.rttv.com/dvr/rtarab/playlist_4500Kb.m3u8
-#EXTINF:-1 group-title="其他频",PetClubTV
-https://cdn-apse1-prod.tsv2.amagi.tv/linear/amg01076-lightningintern-petclub-samsungnz/playlist.m3u8
 #EXTINF:-1 group-title="其他频",射雕英雄传
 https://live.metshop.top/huya/23824164
-#EXTINF:-1 group-title="其他频",CBCNews
-https://dbrb49pjoymg4.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/master.m3u8?ads.xumo_channelId=99991276
-#EXTINF:-1 group-title="其他频",ABCNewsLive
-https://d4ybyqrhce41r.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod-xumo-linear-nbcu-hlsv3/master.m3u8?ads.channelId=99991626
-#EXTINF:-1 group-title="其他频",新三国
-http://live.metshop.top/huya/11352944
-#EXTINF:-1 group-title="其他频",新水浒传
-http://live.metshop.top/huya/11342384
-#EXTINF:-1 group-title="其他频",更新日期::10
-http://hlsztemgsplive.miguvideo.com:8080/wd_r2/cctv/cctv1hd/1200/index.m3u8?msisdn=f863b466d46e2ff46401579155d4a125&mdspid=&spid=699004&netType=4&sid=2201057821&pid=2028597139&timestamp=20260517222648&Channel_ID=0116_2600037000-99000-200300220105266&ProgramID=608807420&ParentNodeID=-99&assertID=2201057821&client_ip=36.133.43.95&SecurityKey=20260517222648&promotionId=&mvid=2201057821&mcid=500020&playurlVersion=ZQ-A1-9.5.1-RELEASE&userid=1834153345&jmhm=f863b466d46e2ff46401579155d4a125&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&encrypt=54317a158ba8163765e43b9e8112c196
+#EXTINF:-1 group-title="其他频",三国演义
+https://live.metshop.top/huya/11602081
+#EXTINF:-1 group-title="其他频",猫和老鼠
+https://live.metshop.top/huya/11352879
+#EXTINF:-1 group-title="其他频",中华小当家
+https://live.metshop.top/huya/11342413
+#EXTINF:-1 group-title="其他频",RTBalkan
+https://rt-srb.rttv.com/dvr/rtbalkan/playlist_4500Kb.m3u8
 #EXTINF:-1 group-title="其他频",春晚2025
 https://res.cctvnews.cctv.com/video/3005/record/cctv/merge1/133396667284143308839013005/8fbd6180bdef4da19f6155cf6b4652e1-4.m3u8
+#EXTINF:-1 group-title="其他频",新水浒传
+http://live.metshop.top/huya/11342384
+#EXTINF:-1 group-title="其他频",新三国
+http://live.metshop.top/huya/11352944
+#EXTINF:-1 group-title="其他频",倚天屠龙记
+http://live.metshop.top/huya/11342403
+#EXTINF:-1 group-title="其他频",铁齿铜牙纪晓岚
+http://live.metshop.top/huya/11342396
 #EXTINF:-1 group-title="其他频",神探狄仁杰第三部
 http://live.metshop.top/huya/11342425
 #EXTINF:-1 group-title="其他频",士兵突击
 http://live.metshop.top/huya/11342430
-#EXTINF:-1 group-title="其他频",鬼吹灯之精绝古城
-http://live.metshop.top/huya/11352871
-#EXTINF:-1 group-title="其他频",康熙王朝
-http://live.metshop.top/huya/11352940
 #EXTINF:-1 group-title="其他频",亮剑
 http://live.metshop.top/huya/30080238
-#EXTINF:-1 group-title="其他频",鬼吹灯之龙岭迷窟
-http://live.metshop.top/huya/29465863
-#EXTINF:-1 group-title="其他频",倚天屠龙记
-http://live.metshop.top/huya/11342403
 #EXTINF:-1 group-title="其他频",神雕侠侣
 http://live.metshop.top/huya/11352964
+#EXTINF:-1 group-title="其他频",鬼吹灯之精绝古城
+http://live.metshop.top/huya/11352871
 #EXTINF:-1 group-title="其他频",雪豹
 http://live.metshop.top/huya/29580970
-#EXTINF:-1 group-title="其他频",铁齿铜牙纪晓岚
-http://live.metshop.top/huya/11342396
-#EXTINF:-1 group-title="其他频",陈情令
-http://live.metshop.top/huya/29465862
+#EXTINF:-1 group-title="其他频",鬼吹灯之龙岭迷窟
+http://live.metshop.top/huya/29465863
